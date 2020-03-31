@@ -1,0 +1,177 @@
+" Vim 本体の機能の設定
+set encoding=utf-8
+scriptencoding utf-8
+
+let $VIM_CONFIG_HOME = $HOME."/.vim"
+" Unload default plugins.
+let g:no_gvimrc_example         = 1
+let g:no_vimrc_example          = 1
+let g:loaded_gzip               = 1
+let g:loaded_tar                = 1
+let g:loaded_tarPlugin          = 1
+let g:loaded_zip                = 1
+let g:loaded_zipPlugin          = 1
+let g:loaded_rrhelper           = 1
+let g:loaded_vimball            = 1
+let g:loaded_vimballPlugin      = 1
+let g:loaded_getscript          = 1
+let g:loaded_getscriptPlugin    = 1
+let g:loaded_netrw              = 1
+let g:loaded_netrwPlugin        = 1
+let g:loaded_netrwSettings      = 1
+let g:loaded_netrwFileHandlers  = 1
+let g:did_install_default_menus = 1
+let g:skip_loading_mswin        = 1
+let g:did_install_syntax_menu   = 1
+let g:loaded_2html_plugin       = 1
+
+"=をファイル名の一部と認識させない
+set isfname-== isfname+=32
+set shell=zsh
+
+" Highlight VCS conflict markers
+match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
+
+"ファイルをひらいたとき最後にカーソルがあった場所に移動
+augroup vimrcEx
+  au BufRead * if line("'\"") > 0 && line("'\"") <= line("$") |
+  \ exe "normal g`\"" | endif
+augroup END
+
+
+
+set number         " 行番号を表示する
+set cursorline     " カーソル行の背景色を変える
+set laststatus=2   " ステータス行を常に表示
+set cmdheight=2    " メッセージ表示欄を2行確保
+set showmatch      " 対応する括弧を強調表示
+set helpheight=999 " ヘルプを画面いっぱいに開く
+set list           " 不可視文字を表示
+set breakindent            " インデントされた行の折り返しを綺麗に
+"" 不可視文字の表示記号指定
+set listchars=tab:\|-,trail:-,nbsp:%,eol:↲,extends:❯,precedes:❮
+
+""移動設定
+set backspace=indent,eol,start "Backspaceキーの影響範囲に制限を設けない
+set whichwrap=b,s,h,l,<,>,[,] "行頭行末の左右移動で行をまたぐ
+set scrolloff=8                "上下8行の視界を確保
+set sidescrolloff=16           " 左右スクロール時の視界を確保
+set sidescroll=1               " 左右スクロールは一文字づつ行う
+""ファイル処理関連
+set confirm "保存されていないファイルがあるときは終了前に保存確認
+set hidden "保存されていないファイルがあるときでも別のファイルを開くことが出来る
+set autoread "外部でファイルに変更がされた場合は読みなおす
+""検索設定
+set hlsearch "検索文字列をハイライトする
+set incsearch "インクリメンタルサーチを行う
+set ignorecase "大文字と小文字を区別しない
+set smartcase "大文字と小文字が混在した言葉で検索を行った場合に限り、大文字と小文字を区別する
+set wrapscan "最後尾まで検索を終えたら次の検索で先頭に移る
+""タブ、インデント設定
+set expandtab "タブ入力を複数の空白入力に置き換える
+set tabstop=4 "画面上でタブ文字が占める幅
+set shiftwidth=4 "自動インデントでずれる幅
+set softtabstop=4 "連続した空白に対してタブキーやバックスペースキーでカーソルが動く幅
+set autoindent "改行時に前の行のインデントを継続する
+set smartindent "改行時に入力された行の末尾に合わせて次の行のインデントを増減する
+""コピペ関連
+""OSのクリップボードをレジスタ指定無しで Yank, Put 出来るようにする
+set clipboard=unnamed,unnamedplus
+"" マウスの入力を受け付ける
+set mouse=
+""コマンドライン関連
+"" コマンドラインモードでTABキーによるファイル名補完を有効にする
+set wildmenu wildmode=list:longest,full
+"" コマンドラインの履歴を1000件保存する
+set history=1000
+""ビープ音すべてを無効にする
+set visualbell t_vb=
+set fileencoding=utf-8
+""オートコメントアウト無効
+au FileType * setlocal formatoptions-=ro
+
+"" ステータス
+let g:airline_theme = 'badwolf'
+" virtulenvを認識しているか確認用に、現在activateされているvirtualenvを表示(vim-virtualenvの拡張)
+let g:airline#extensions#virtualenv#enabled = 1
+" gitのHEADから変更した行の+-を非表示(vim-gitgutterの拡張)
+let g:airline#extensions#hunks#enabled = 0
+
+""color
+set redrawtime=3000
+syntax on
+colo Tomorrow-Night-Bright  "default
+autocmd! BufEnter,BufNewFile *.go colo Tomorrow-Night-Bright
+autocmd! BufLeave *.go colo Tomorrow-Night-Bright
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_functions = 1
+autocmd FileType go :highlight goErr cterm=bold ctermfg=214
+autocmd FileType go :match goErr /\<err\>/
+"autocmd ColorScheme * highlight Constant ctermfg=207
+set t_Co=256
+filetype plugin indent on
+autocmd FileType js  setlocal sw=2 sts=2 ts=2 et
+autocmd FileType vue  setlocal sw=2 sts=2 ts=2 et
+
+
+""バックアップ設定
+if isdirectory($VIM_CONFIG_HOME."/backup") == 0
+    call mkdir($VIM_CONFIG_HOME."/backup")
+endif
+set directory=$VIM_CONFIG_HOME/backup
+set backupdir=$VIM_CONFIG_HOME/backup
+if has('persistent_undo')
+    set undodir=$VIM_CONFIG_HOME/backup
+    set undofile
+endif
+
+""保存時の設定
+" 末尾の空白削除
+autocmd BufWritePre * :%s/\s\+$//ge
+
+let g:mapleader = ','
+let g:maplocalleader = ','
+cabbr w!! w !sudo tee > /dev/null %
+
+" git commit 時にはプラグインは読み込まない
+if $HOME != $USERPROFILE && $GIT_EXEC_PATH != ''
+  finish
+end
+
+
+"" プラグインがインストールされるディレクトリ
+let s:minpac_dir = expand($VIM_CONFIG_HOME.'/pack/minpac')
+if isdirectory(s:minpac_dir) == 0
+    call mkdir(s:minpac_dir .'/opt', "p")
+endif
+" minpac 本体
+let s:minpac_repo_dir = s:minpac_dir .'/opt/minpac'
+if isdirectory(s:minpac_dir .'/opt') == 0
+    call mkdir(s:minpac_dir .'/opt', "p")
+endif
+
+
+let s:minpac_download = 0
+
+" minpac がなければ github から落としてくる
+if has('vim_starting')
+  if !isdirectory(s:minpac_repo_dir)
+    echo "Install minpac ..."
+    execute '!git clone --depth 1 https://github.com/k-takata/minpac ' . s:minpac_repo_dir
+    let s:minpac_download = 1
+  endif
+endif
+
+
+packadd minpac
+call minpac#init()
+call minpac#add('k-takata/minpac', {'type': 'opt'})
+
+
+
+" 各種設定の読み込み
+call map(sort(split(globpath(&runtimepath, '_config/*.vim'))), {->[execute('exec "so" v:val')]})
+
+hi NonText    ctermfg=59
+hi SpecialKey ctermfg=59
