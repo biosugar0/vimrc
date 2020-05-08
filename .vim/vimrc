@@ -39,6 +39,7 @@ augroup vimrcEx
 augroup END
 
 
+let g:findroot_not_for_subdir = 0
 
 set number         " 行番号を表示する
 set cursorline     " カーソル行の背景色を変える

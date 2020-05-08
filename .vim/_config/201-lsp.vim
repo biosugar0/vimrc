@@ -4,7 +4,10 @@ function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> gd <plug>(lsp-definition)
   nmap <buffer> gi <plug>(lsp-implementation)
   nmap <buffer> gr <plug>(lsp-rename)
+  nmap <buffer> gn <plug>(lsp-next-diagnostic)
   nmap <buffer> == <plug>(lsp-document-format)
+  nmap <buffer> ,n <plug>(lsp-next-error)
+  nmap <buffer> ,p <plug>(lsp-previous-error)
   nmap <buffer> gD <plug>(lsp-references)
   nmap <buffer> gs <plug>(lsp-document-symbol)
   nmap <buffer> gS <plug>(lsp-workspace-symbol)
@@ -32,7 +35,7 @@ let g:asyncomplete_auto_completeopt = 1
 let g:asyncomplete_popup_delay = 500
 let g:lsp_text_edit_enabled = 1
 let g:lsp_diagnostics_float_cursor = 1
-
+let g:lsp_settings_filetype_go = ['gopls', 'golangci-lint-langserver']
 let g:lsp_settings = {
             \ 'workspace_config': {'gopls': {
             \ 'staticcheck': v:true,
