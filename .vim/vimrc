@@ -2,6 +2,7 @@
 set encoding=utf-8
 scriptencoding utf-8
 
+
 let $VIM_CONFIG_HOME = $HOME."/.vim"
 " Unload default plugins.
 let g:no_gvimrc_example         = 1
@@ -176,3 +177,4 @@ call map(sort(split(globpath(&runtimepath, '_config/*.vim'))), {->[execute('exec
 
 hi NonText    ctermfg=59
 hi SpecialKey ctermfg=59
+set helplang=ja
