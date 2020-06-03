@@ -1,3 +1,11 @@
+"hook function
+function! s:ripgrep(hooktype, name)
+    if executable('rg') == 0
+        echom "ripgrep not found run 'brew install ripgrep'"
+        echom system("brew install ripgrep")
+    endif
+endfunction
+
 call minpac#add('prabirshrestha/async.vim')
 call minpac#add('prabirshrestha/asyncomplete.vim')
 call minpac#add('prabirshrestha/asyncomplete-lsp.vim')
@@ -18,7 +26,7 @@ call minpac#add('mattn/vim-findroot')
 call minpac#add('unblevable/quick-scope')
 call minpac#add('vim-jp/vimdoc-ja')
 call minpac#add('junegunn/fzf', {'do': {-> fzf#install()}})
-call minpac#add('junegunn/fzf.vim')
+call minpac#add('junegunn/fzf.vim',{'do': function('s:ripgrep') })
 call minpac#add('bkad/CamelCaseMotion')
 call minpac#add('rhysd/accelerated-jk')
 call minpac#add('easymotion/vim-easymotion')
@@ -29,6 +37,4 @@ call minpac#add('tpope/vim-abolish')
 call minpac#add('tpope/vim-repeat')
 call minpac#add('wellle/context.vim')
 call minpac#add('sheerun/vim-polyglot')
-"call minpac#add('Rigellute/rigel')
 call minpac#add('chriskempson/vim-tomorrow-theme')
-
