@@ -29,4 +29,6 @@ call minpac#add('tpope/vim-abolish')
 call minpac#add('tpope/vim-repeat')
 call minpac#add('wellle/context.vim')
 call minpac#add('sheerun/vim-polyglot')
-call minpac#add('Rigellute/rigel')
+"call minpac#add('Rigellute/rigel')
+call minpac#add('chriskempson/vim-tomorrow-theme')
+

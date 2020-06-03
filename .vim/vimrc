@@ -103,7 +103,7 @@ let g:airline#extensions#hunks#enabled = 0
 set redrawtime=3000
 syntax on
 set termguicolors
-colorscheme rigel
+colorscheme Tomorrow-Night-Bright
 set t_Co=256
 filetype plugin indent on
 autocmd FileType js  setlocal sw=2 sts=2 ts=2 et
