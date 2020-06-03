@@ -24,4 +24,6 @@ highlight goParamName ctermfg=50
 highlight goField ctermfg=51
 highlight goVarDefs ctermfg=40
 highlight goVarDefs ctermfg=lightgreen
-highlight GoString ctermfg=darkmagenta
+highlight GoString ctermfg=85
+highlight goRawString ctermfg=85
+
