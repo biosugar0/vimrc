@@ -1,9 +1,99 @@
-" Vim 本体の機能の設定
+let $VIM_CONFIG_HOME = $HOME."/.vim"
+""保存時の設定
+" 末尾の空白削除
+autocmd BufWritePre * :%s/\s\+$//ge
+
+let g:mapleader = ','
+let g:maplocalleader = ','
+cabbr w!! w !sudo tee > /dev/null %
+
+" git commit 時にはプラグインは読み込まない
+if $HOME != $USERPROFILE && $GIT_EXEC_PATH != ''
+  finish
+end
+
+
+"" プラグインがインストールされるディレクトリ
+let s:minpac_dir = expand($VIM_CONFIG_HOME.'/pack/minpac')
+if isdirectory(s:minpac_dir) == 0
+    call mkdir(s:minpac_dir .'/opt', "p")
+endif
+" minpac 本体
+let s:minpac_repo_dir = s:minpac_dir .'/opt/minpac'
+if isdirectory(s:minpac_dir .'/opt') == 0
+    call mkdir(s:minpac_dir .'/opt', "p")
+endif
+
+
+let s:minpac_download = 0
+
+" minpac がなければ github から落としてくる
+if has('vim_starting')
+  if !isdirectory(s:minpac_repo_dir)
+    echo "Install minpac ..."
+    execute '!git clone --depth 1 https://github.com/k-takata/minpac ' . s:minpac_repo_dir
+    let s:minpac_download = 1
+  endif
+endif
+
+
+packadd minpac
+call minpac#init()
+call minpac#add('k-takata/minpac', {'type': 'opt'})
+
+" 各種設定の読み込み
+call map(sort(split(globpath(&runtimepath, '_config/*.vim'))), {->[execute('exec "so" v:val')]})
+set helplang=ja
+
+""保存時の設定
+" 末尾の空白削除
+autocmd BufWritePre * :%s/\s\+$//ge
+
+let g:mapleader = ','
+let g:maplocalleader = ','
+cabbr w!! w !sudo tee > /dev/null %
+
+" git commit 時にはプラグインは読み込まない
+if $HOME != $USERPROFILE && $GIT_EXEC_PATH != ''
+  finish
+end
+
+
+"" プラグインがインストールされるディレクトリ
+let s:minpac_dir = expand($VIM_CONFIG_HOME.'/pack/minpac')
+if isdirectory(s:minpac_dir) == 0
+    call mkdir(s:minpac_dir .'/opt', "p")
+endif
+" minpac 本体
+let s:minpac_repo_dir = s:minpac_dir .'/opt/minpac'
+if isdirectory(s:minpac_dir .'/opt') == 0
+    call mkdir(s:minpac_dir .'/opt', "p")
+endif
+
+
+let s:minpac_download = 0
+
+" minpac がなければ github から落としてくる
+if has('vim_starting')
+  if !isdirectory(s:minpac_repo_dir)
+    echo "Install minpac ..."
+    execute '!git clone --depth 1 https://github.com/k-takata/minpac ' . s:minpac_repo_dir
+    let s:minpac_download = 1
+  endif
+endif
+
+
+packadd minpac
+call minpac#init()
+call minpac#add('k-takata/minpac', {'type': 'opt'})
+
+" 各種設定の読み込み
+call map(sort(split(globpath(&runtimepath, '_config/*.vim'))), {->[execute('exec "so" v:val')]})
+set helplang=ja
 set encoding=utf-8
 scriptencoding utf-8
 
 
-let $VIM_CONFIG_HOME = $HOME."/.vim"
 " Unload default plugins.
 let g:no_gvimrc_example         = 1
 let g:no_vimrc_example          = 1
@@ -117,14 +207,16 @@ endif
 set directory=$VIM_CONFIG_HOME/backup
 set backupdir=$VIM_CONFIG_HOME/backup
 if has('persistent_undo')
-    set undodir=$VIM_CONFIG_HOME/backup
+    if !isdirectory(expand($VIM_CONFIG_HOME."/backup/undo"))
+        call mkdir(expand($VIM_CONFIG_HOME."/backup/undo"),"p")
+    endif
+    set undodir=$VIM_CONFIG_HOME/backup/undo
     set undofile
 endif
 
 ""保存時の設定
 " 末尾の空白削除
 autocmd BufWritePre * :%s/\s\+$//ge
-
 let g:mapleader = ','
 let g:maplocalleader = ','
 cabbr w!! w !sudo tee > /dev/null %
