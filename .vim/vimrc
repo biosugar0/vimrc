@@ -1,10 +1,10 @@
+let g:mapleader = "\<space>"
+let g:maplocalleader = "\<space>"
 let $VIM_CONFIG_HOME = $HOME."/.vim"
 ""保存時の設定
 " 末尾の空白削除
 autocmd BufWritePre * :%s/\s\+$//ge
 
-let g:mapleader = ','
-let g:maplocalleader = ','
 cabbr w!! w !sudo tee > /dev/null %
 
 " git commit 時にはプラグインは読み込まない
@@ -49,8 +49,6 @@ set helplang=ja
 " 末尾の空白削除
 autocmd BufWritePre * :%s/\s\+$//ge
 
-let g:mapleader = ','
-let g:maplocalleader = ','
 cabbr w!! w !sudo tee > /dev/null %
 
 " git commit 時にはプラグインは読み込まない
@@ -217,8 +215,6 @@ endif
 ""保存時の設定
 " 末尾の空白削除
 autocmd BufWritePre * :%s/\s\+$//ge
-let g:mapleader = ','
-let g:maplocalleader = ','
 cabbr w!! w !sudo tee > /dev/null %
 
 " git commit 時にはプラグインは読み込まない

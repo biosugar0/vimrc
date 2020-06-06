@@ -1,12 +1,12 @@
-nnoremap <silent> ,f :GFiles<CR>
-nnoremap <silent> ,F :GFiles?<CR>
-nnoremap <silent> ,,f :Files<CR>
-nnoremap <silent> ,,F :Files?<CR>
-nnoremap <silent> ,b :Buffers<CR>
-nnoremap <silent> ,l :BLines<CR>
-nnoremap <silent> ,h :History<CR>
-nnoremap <silent> ,m :Mark<CR>
-nnoremap <silent> ,r :Rg<CR>
+nnoremap <silent> <leader>f :GFiles<CR>
+nnoremap <silent> <leader>F :GFiles?<CR>
+nnoremap <silent> <leader><leader>f :Files<CR>
+nnoremap <silent> <leader><leader>F :Files?<CR>
+nnoremap <silent> <leader>b :Buffers<CR>
+nnoremap <silent> <leader>l :BLines<CR>
+nnoremap <silent> <leader>h :History<CR>
+nnoremap <silent> <leader>m :Mark<CR>
+nnoremap <silent> <leader>r :Rg<CR>
 imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-l> <plug>(fzf-complete-line)
