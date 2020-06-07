@@ -85,6 +85,8 @@ set shell=zsh
 ""オートコメントアウト無効
 au FileType * setlocal formatoptions-=ro
 cabbr w!! w !sudo tee > /dev/null %
+" 数字の増加減少でマイナスを扱わない
+set nrformats+=unsigned
 
 ""バックアップ設定
 if isdirectory($VIM_CONFIG_HOME."/backup") == 0
