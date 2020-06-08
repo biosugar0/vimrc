@@ -30,7 +30,7 @@ let g:loaded_2html_plugin       = 1
 " 末尾の空白削除
 autocmd BufWritePre * :%s/\s\+$//ge
 set number         " 行番号を表示する
-set cursorline     " カーソル行の背景色を変える
+"set cursorline     " カーソル行の背景色を変える
 set laststatus=2   " ステータス行を常に表示
 set cmdheight=2    " メッセージ表示欄を2行確保
 set showmatch      " 対応する括弧を強調表示
@@ -114,7 +114,9 @@ filetype plugin indent on
 autocmd FileType js  setlocal sw=2 sts=2 ts=2 et
 autocmd FileType vue  setlocal sw=2 sts=2 ts=2 et
 
-
+" lazy drawing
+set lazyredraw
+set ttyfast
 "ファイルをひらいたとき最後にカーソルがあった場所に移動
 augroup vimrcEx
   au BufRead * if line("'\"") > 0 && line("'\"") <= line("$") |
