@@ -13,3 +13,4 @@ imap "" ""<Left>
 imap '' ''<Left>
 imap <> <><Left>
 imap `` ``<Left>
+cnoremap ./ %:h
