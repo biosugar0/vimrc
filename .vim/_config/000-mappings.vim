@@ -14,3 +14,4 @@ imap '' ''<Left>
 imap <> <><Left>
 imap `` ``<Left>
 cnoremap ./ %:h
+nnoremap <leader>vn :<C-u>setlocal number!<CR>
