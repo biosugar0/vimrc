@@ -6,6 +6,14 @@ function! s:ripgrep(hooktype, name)
     endif
 endfunction
 
+function! s:gtran(hooktype, name)
+    if executable('gtran') == 0
+        echom "gtran not found run 'go get github.com/skanehira/gtran'"
+        echom system("go get github.com/skanehira/gtran")
+    endif
+endfunction
+
+
 call minpac#add('prabirshrestha/async.vim')
 call minpac#add('prabirshrestha/asyncomplete.vim')
 call minpac#add('prabirshrestha/asyncomplete-lsp.vim')
@@ -38,3 +46,4 @@ call minpac#add('tpope/vim-unimpaired')
 call minpac#add('christoomey/vim-tmux-navigator')
 call minpac#add('lambdalisue/gina.vim')
 call minpac#add('kana/vim-altr')
+call minpac#add('skanehira/translate.vim',{'do': function('s:gtran') })
