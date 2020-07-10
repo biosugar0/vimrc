@@ -22,8 +22,24 @@ let g:go_hightlight_structs = 1
 let g:go_hightlight_interfaces = 1
 highlight goParamName ctermfg=50
 highlight goField ctermfg=51
-highlight goVarDefs ctermfg=40
 highlight goVarDefs ctermfg=lightgreen
 highlight GoString ctermfg=85
 highlight goRawString ctermfg=85
-
+let g:terminal_ansi_colors = [
+    \ '#666666',
+    \ '#f43753',
+    \ '#c9d05c',
+    \ '#ffc24b',
+    \ '#b3deef',
+    \ '#d3b987',
+    \ '#73cef4',
+    \ '#eeeeee',
+    \ '#666666',
+    \ '#f43753',
+    \ '#c9d05c',
+    \ '#ffc24b',
+    \ '#b3deef',
+    \ '#d3b987',
+    \ '#73cef4',
+    \ '#ffffff'
+    \ ]

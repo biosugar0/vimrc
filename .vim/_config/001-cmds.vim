@@ -35,3 +35,9 @@ function! s:get_syn_info()
         \ " guibg: " . linkedSyn.guibg
 endfunction
 command! SyntaxInfo call s:get_syn_info()
+
+function! s:www(word) abort
+  execute('term ++close ++shell w3m google.com/search\?q="' . a:word . '"')
+endfunction
+
+command! -nargs=1 WWW call s:www(<f-args>)
