@@ -14,3 +14,11 @@ imap '' ''<Left>
 imap <> <><Left>
 imap `` ``<Left>
 nnoremap <silent> <leader>vn :<C-u>setlocal number!<CR>
+nnoremap ; :
+xnoremap ; :
+nnoremap : ;
+xnoremap : ;
+cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>
+cnoremap <Up>   <C-p>
+cnoremap <Down> <C-n>

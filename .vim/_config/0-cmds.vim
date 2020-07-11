@@ -40,4 +40,10 @@ function! s:www(word) abort
   execute('term ++close ++shell w3m google.com/search\?q="' . a:word . '"')
 endfunction
 
+"Vim plugin for yank popup window text
+function! s:gg(package) abort
+  execute('term ++close ++shell w3m pkg.go.dev/' . a:package)
+endfunction
+
 command! -nargs=1 WWW call s:www(<f-args>)
+command! -nargs=1 GG call s:gg(<f-args>)
