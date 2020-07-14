@@ -1,12 +1,10 @@
-if !exists('g:loaded_pyank') || has('nvim')
+if exists('g:loaded_pyank') || has('nvim')
   finish
 endif
+
 nmap <leader>y <Plug>(PopYank)
 
-if exists('g:loaded_translate')
-    finish
-endif
-
+" dependency translate.vim {{
 nunmap <leader>y
 
 function! s:Ptranslate()
@@ -20,3 +18,4 @@ endfunction
 
 command! -nargs=0 Ptranslate call s:Ptranslate()
 nmap <leader>y :<C-u>Ptranslate<CR>
+"}}
