@@ -47,3 +47,4 @@ endfunction
 
 command! -nargs=1 WWW call s:www(<f-args>)
 command! -nargs=1 GG call s:gg(<f-args>)
+

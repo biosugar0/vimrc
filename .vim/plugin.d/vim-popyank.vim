@@ -1,4 +1,4 @@
-if exists('g:loaded_pyank') || has('nvim')
+if !exists('g:loaded_pyank') || has('nvim')
   finish
 endif
 

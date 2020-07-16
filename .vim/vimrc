@@ -1,6 +1,24 @@
 let g:mapleader = "\<space>"
 let g:maplocalleader = "\<space>"
-let $VIM_CONFIG_HOME = $HOME."/.vim"
+let $VIMHOME = expand('<sfile>:p:h')
+function! s:mkdir(...) abort
+    if isdirectory(a:1)
+        return
+    endif
+    return call('mkdir', a:000)
+endfunction
+
+
+" Environment {{{
+set undodir=~/.vim/backup/undo
+
+" Make sure required directories exist
+call s:mkdir(&undodir, 'p')
+
+"""バックアップ設定
+set undofile
+
+set virtualedit=all " allow virtual editing in all modes
 
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
@@ -99,19 +117,6 @@ cabbr w!! w !sudo tee > /dev/null %
 " 数字の増加減少でマイナスを扱わない
 set nrformats+=unsigned
 
-""バックアップ設定
-if isdirectory($VIM_CONFIG_HOME."/backup") == 0
-    call mkdir($VIM_CONFIG_HOME."/backup")
-endif
-set directory=$VIM_CONFIG_HOME/backup
-set backupdir=$VIM_CONFIG_HOME/backup
-if has('persistent_undo')
-    if !isdirectory(expand($VIM_CONFIG_HOME."/backup/undo"))
-        call mkdir(expand($VIM_CONFIG_HOME."/backup/undo"),"p")
-    endif
-    set undodir=$VIM_CONFIG_HOME/backup/undo
-    set undofile
-endif
 
 ""color
 set redrawtime=3000
@@ -141,19 +146,12 @@ end
 
 
 "" プラグインがインストールされるディレクトリ
-let s:minpac_dir = expand($VIM_CONFIG_HOME.'/pack/minpac')
-if isdirectory(s:minpac_dir) == 0
-    call mkdir(s:minpac_dir .'/opt', "p")
-endif
-" minpac 本体
-let s:minpac_repo_dir = s:minpac_dir .'/opt/minpac'
-if isdirectory(s:minpac_dir .'/opt') == 0
-    call mkdir(s:minpac_dir .'/opt', "p")
-endif
-
+let s:minpac_dir = expand($VIMHOME.'/pack/minpac')
+call s:mkdir(s:minpac_dir.'/opt', 'p')
 
 let s:minpac_download = 0
-
+" minpac 本体
+let s:minpac_repo_dir = s:minpac_dir .'/opt/minpac'
 " minpac がなければ github から落としてくる
 if has('vim_starting')
   if !isdirectory(s:minpac_repo_dir)
@@ -163,19 +161,13 @@ if has('vim_starting')
   endif
 endif
 
-packadd minpac
-call minpac#init()
-call minpac#add('k-takata/minpac', {'type': 'opt'})
-
-" 各種設定の読み込み
-call map(sort(split(globpath(&runtimepath, '_config/*.vim'))), {->[execute('exec "so" v:val')]})
-set helplang=ja " helpを日本語に
-
-let g:findroot_not_for_subdir = 0
-"" ステータス
-let g:airline_theme = 'badwolf'
-" virtulenvを認識しているか確認用に、現在activateされているvirtualenvを表示(vim-virtualenvの拡張)
-let g:airline#extensions#virtualenv#enabled = 1
-" gitのHEADから変更した行の+-を非表示(vim-gitgutterの拡張)
-let g:airline#extensions#hunks#enabled = 0
-
+" plugin設定
+source $VIMHOME/minpack.vim
+"
+" Load conf.d/*.vim
+function! s:load_configurations() abort
+  for path in glob('$VIMHOME/conf.d/*.vim', 1, 1, 1)
+    execute printf('source %s', fnameescape(path))
+  endfor
+endfunction
+call s:load_configurations()
