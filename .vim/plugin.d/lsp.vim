@@ -13,7 +13,6 @@ function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> gS <plug>(lsp-workspace-symbol)
   vmap <buffer> = <plug>(lsp-document-range-format)
   nmap <buffer> gt <plug>(lsp-type-definition)
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
   nmap <buffer> K <Plug>(lsp-hover)
 endfunction
 
@@ -28,8 +27,8 @@ let g:lsp_diagnostics_enabled = 1
 let g:asyncomplete_auto_popup = 1
 let g:asyncomplete_auto_completeopt = 1
 let g:asyncomplete_popup_delay = 180
-let g:lsp_text_edit_enabled = 1
 let g:lsp_insert_text_enabled = 1
+let g:lsp_text_edit_enabled = 1
 let g:lsp_diagnostics_float_cursor = 1
 let g:lsp_settings_filetype_go = ['gopls', 'golangci-lint-langserver']
 let g:lsp_settings = {
