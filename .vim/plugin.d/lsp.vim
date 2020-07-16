@@ -13,9 +13,6 @@ function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> gS <plug>(lsp-workspace-symbol)
   vmap <buffer> = <plug>(lsp-document-range-format)
   nmap <buffer> gt <plug>(lsp-type-definition)
-  imap <expr> <tab> pumvisible() ? "\<C-n>" : "\<tab>"
-  inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
   inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
   nmap <buffer> K <Plug>(lsp-hover)
 endfunction
