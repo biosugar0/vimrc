@@ -54,6 +54,8 @@ if exists('*minpac#init')
     call minpac#add('lambdalisue/gina.vim')
     call minpac#add('kana/vim-altr')
     call minpac#add('skanehira/translate.vim',{'do': function('s:gtran') })
+    call minpac#add('vim-test/vim-test')
+    call minpac#add('tpope/vim-dispatch')
     call minpac#add('biosugar0/vim-popyank')
 endif
 packloadall

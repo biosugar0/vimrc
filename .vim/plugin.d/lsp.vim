@@ -14,6 +14,7 @@ function! s:on_lsp_buffer_enabled() abort
   vmap <buffer> = <plug>(lsp-document-range-format)
   nmap <buffer> gt <plug>(lsp-type-definition)
   nmap <buffer> K <Plug>(lsp-hover)
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
 endfunction
 
 augroup lsp_install
@@ -31,14 +32,27 @@ let g:lsp_insert_text_enabled = 1
 let g:lsp_text_edit_enabled = 1
 let g:lsp_diagnostics_float_cursor = 1
 let g:lsp_settings_filetype_go = ['gopls', 'golangci-lint-langserver']
-let g:lsp_settings = {
-            \ 'workspace_config': {'gopls': {
-            \ 'staticcheck': v:true,
-            \ 'completeUnimported': v:true,
-            \ 'caseSensitiveCompletion': v:true,
-            \ 'usePlaceholders': v:true,
-            \ 'completionDocumentation': v:true,
-            \ 'watchFileChanges': v:true,
-            \ 'hoverKind': 'SingleLine',
-            \   }},
-            \}
+let g:lsp_settings['gopls'] = {
+\ 'workspace_config': {
+        \ 'staticcheck': v:true,
+        \ 'completeUnimported': v:true,
+        \ 'caseSensitiveCompletion': v:true,
+        \ 'usePlaceholders': v:true,
+        \ 'completionDocumentation': v:true,
+        \ 'watchFileChanges': v:true,
+        \ 'hoverKind': 'SingleLine',
+        \ 'analyses': {
+            \ 'nonewvars': v:true,
+            \ 'unusedparams': v:true
+        \ },
+    \ },
+\ 'initialization_options': {
+    \ 'usePlaceholders': v:true,
+    \ "completeUnimported": v:true,
+    \ "staticcheck": v:true,
+    \ 'analyses': {
+        \ 'nonewvars': v:true,
+        \ 'unusedparams': v:true
+        \ },
+    \ },
+\ }
