@@ -48,3 +48,12 @@ endfunction
 command! -nargs=1 WWW call s:www(<f-args>)
 command! -nargs=1 GG call s:gg(<f-args>)
 
+if executable('rg')
+    let &grepprg = 'rg --vimgrep --hidden'
+    set grepformat=%f:%l:%c:%m
+endif
+
+augroup AutoQuickfix
+    autocmd!
+    autocmd QuickFixCmdPost *grep* cwindow
+augroup END

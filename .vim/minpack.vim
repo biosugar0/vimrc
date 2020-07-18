@@ -57,6 +57,9 @@ if exists('*minpac#init')
     call minpac#add('vim-test/vim-test')
     call minpac#add('tpope/vim-dispatch')
     call minpac#add('biosugar0/vim-popyank')
+    call minpac#add('previm/previm')
+    call minpac#add('junegunn/vim-easy-align')
+    call minpac#add('thinca/vim-qfreplace')
 endif
 packloadall
 
