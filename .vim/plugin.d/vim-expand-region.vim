@@ -1,2 +1,2 @@
-vmap <leader>v <Plug>(expand_region_expand)
+vmap m <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
