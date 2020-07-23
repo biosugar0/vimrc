@@ -52,6 +52,7 @@ let g:loaded_netrwFileHandlers = 1
 ""保存時の設定
 " 末尾の空白削除
 autocmd BufWritePre * :%s/\s\+$//ge
+autocmd FileType json autocmd BufWritePre <buffer> %!python -m json.tool
 
 augroup vimrc-auto-mkdir  " {{{
   autocmd!
