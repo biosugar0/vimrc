@@ -57,3 +57,16 @@ augroup AutoQuickfix
     autocmd!
     autocmd QuickFixCmdPost *grep* cwindow
 augroup END
+
+function! s:termopen() abort
+    let name = split(bufname(), '\/\/')
+    if len(name) < 2
+        return
+    endif
+    call execute(printf('term ++curwin ++close ++shell %s', name[1]))
+endfunction
+
+augroup terminal
+  au!
+  au BufReadCmd term://* call s:termopen()
+augroup END

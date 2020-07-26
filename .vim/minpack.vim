@@ -21,7 +21,6 @@ if exists('*minpac#init')
     call minpac#init()
     call minpac#add('k-takata/minpac', {'type': 'opt'})
 
-    call minpac#add('prabirshrestha/async.vim')
     call minpac#add('prabirshrestha/asyncomplete.vim')
     call minpac#add('prabirshrestha/asyncomplete-lsp.vim')
     call minpac#add('prabirshrestha/vim-lsp')
