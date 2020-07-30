@@ -53,6 +53,7 @@ let g:loaded_netrwFileHandlers = 1
 " 末尾の空白削除
 autocmd BufWritePre * :%s/\s\+$//ge
 autocmd FileType json autocmd BufWritePre <buffer> %!python -m json.tool
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
 augroup vimrc-auto-mkdir  " {{{
   autocmd!
