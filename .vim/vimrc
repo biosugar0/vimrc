@@ -11,13 +11,15 @@ endfunction
 
 " Environment {{{
 set undodir=~/.vim/backup/undo
+set dir=~/.vim/backup/swp
+
 
 " Make sure required directories exist
 call s:mkdir(&undodir, 'p')
+call s:mkdir(&dir, 'p')
 
 """バックアップ設定
 set undofile
-
 set virtualedit=all " allow virtual editing in all modes
 
 " Highlight VCS conflict markers
@@ -54,6 +56,9 @@ let g:loaded_netrwFileHandlers = 1
 autocmd BufWritePre * :%s/\s\+$//ge
 autocmd FileType json autocmd BufWritePre <buffer> %!python -m json.tool
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+"強制全保存終了を無効化。
+nnoremap ZZ <Nop>
+nnoremap <C-d> <Nop>
 
 augroup vimrc-auto-mkdir  " {{{
   autocmd!
@@ -75,6 +80,7 @@ set list           " 不可視文字を表示
 set breakindent            " インデントされた行の折り返しを綺麗に
 "" 不可視文字の表示記号指定
 set listchars=tab:\|-,trail:-,nbsp:%,eol:↲,extends:❯,precedes:❮
+set foldmethod=marker
 
 ""移動設定
 set backspace=indent,eol,start "Backspaceキーの影響範囲に制限を設けない
