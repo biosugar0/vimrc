@@ -58,3 +58,10 @@ let g:lsp_settings['gopls'] = {
         \ },
     \ },
 \ }
+let g:lsp_settings['golangci-lint-langserver'] = {
+\ 'initialization_options': {
+    \ 'command': ['golangci-lint', 'run', '--enable-all',
+      \  '--disable', 'lll', '--disable','gochecknoglobals',
+      \  '--out-format', 'json']
+  \ },
+\}
