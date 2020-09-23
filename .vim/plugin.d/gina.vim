@@ -95,7 +95,7 @@ call gina#custom#execute(
       \)
 
 call gina#custom#command#option(
-      \ '/\%(branch\|changes\|grep\|log\|status\)',
+      \ '/\%(branch\|changes\|grep\|log\)',
       \ '--opener', 'vsplit'
       \)
 call gina#custom#execute(
