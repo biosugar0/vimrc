@@ -17,7 +17,8 @@ function! s:gtran(hooktype, name)
 endfunction
 
 
-if exists('*minpac#init')
+if !exists('g:loaded_minpac')
+    packadd minpac
     call minpac#init()
     call minpac#add('k-takata/minpac', {'type': 'opt'})
 
@@ -76,7 +77,6 @@ call s:load_configurations()
 
 if !exists('*s:init')
   function! s:init() abort
-    packadd minpac
     execute 'source' fnameescape(s:script)
   endfunction
 endif
