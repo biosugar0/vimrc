@@ -1,23 +1,14 @@
 let s:script = expand('<sfile>')
 
-
-"hook function
-function! s:ripgrep(hooktype, name)
-    if executable('rg') == 0
-        echom "ripgrep not found run 'brew install ripgrep'"
-        echom system("brew install ripgrep")
-    endif
-endfunction
-
-function! s:gtran(hooktype, name)
-    if executable('gtran') == 0
-        echom "gtran not found run 'go get github.com/skanehira/gtran'"
-        echom system("go get github.com/skanehira/gtran")
-    endif
-endfunction
-
-
 if !exists('g:loaded_minpac')
+    "hook function
+    function! s:ripgrep(hooktype, name)
+        if executable('rg') == 0
+            echom "ripgrep not found run 'brew install ripgrep'"
+            echom system("brew install ripgrep")
+        endif
+    endfunction
+
     packadd minpac
     call minpac#init()
     call minpac#add('k-takata/minpac', {'type': 'opt'})
@@ -52,7 +43,7 @@ if !exists('g:loaded_minpac')
     call minpac#add('prabirshrestha/vim-lsp')
     call minpac#add('previm/previm')
     call minpac#add('sheerun/vim-polyglot')
-    call minpac#add('skanehira/translate.vim',{'do': function('s:gtran') })
+    call minpac#add('skanehira/translate.vim')
     call minpac#add('terryma/vim-expand-region')
     call minpac#add('terryma/vim-multiple-cursors')
     call minpac#add('thinca/vim-qfreplace')
