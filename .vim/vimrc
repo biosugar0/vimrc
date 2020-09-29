@@ -1,5 +1,3 @@
-let g:mapleader = "\<space>"
-let g:maplocalleader = "\<space>"
 let $VIMHOME = expand('<sfile>:p:h')
 function! s:mkdir(...) abort
     if isdirectory(a:1)
@@ -9,7 +7,6 @@ function! s:mkdir(...) abort
 endfunction
 
 
-" Environment {{{
 set undodir=~/.vim/backup/undo
 set dir=~/.vim/backup/swp
 
@@ -46,6 +43,7 @@ let g:loaded_zipPlugin            = 1
 let g:no_gvimrc_example           = 1
 let g:no_vimrc_example            = 1
 let g:skip_loading_mswin          = 1
+
 ""保存時の設定
 " 末尾の空白削除
 autocmd BufWritePre * :%s/\s\+$//ge
@@ -55,7 +53,7 @@ autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 nnoremap ZZ <Nop>
 nnoremap <C-d> <Nop>
 
-augroup vimrc-auto-mkdir  " {{{
+augroup vimrc-auto-mkdir
   autocmd!
   autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
   function! s:auto_mkdir(dir, force)  " {{{
@@ -63,8 +61,8 @@ augroup vimrc-auto-mkdir  " {{{
     \    input(printf('"%s" does not exist. Create? [y/N]', a:dir)) =~? '^y\%[es]$')
       call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
     endif
-  endfunction  " }}}
-augroup END  " }}}
+  endfunction
+augroup END
 
 "set cursorline     " カーソル行の背景色を変える
 set laststatus=2   " ステータス行を常に表示
@@ -147,12 +145,6 @@ augroup vimrcEx
   au BufRead * if line("'\"") > 0 && line("'\"") <= line("$") |
   \ exe "normal g`\"" | endif
 augroup END
-
-" git commit 時にはプラグインは読み込まない " ------------------------------
-if $HOME != $USERPROFILE && $GIT_EXEC_PATH != ''
-  finish
-end
-
 
 "" プラグインがインストールされるディレクトリ
 let s:minpac_dir = expand($VIMHOME.'/pack/minpac')
