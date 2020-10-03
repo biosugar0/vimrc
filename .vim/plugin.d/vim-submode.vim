@@ -1,4 +1,14 @@
 let g:submode_timeout=v:false
+call submode#enter_with('blockmove', 'x', 'r', 'Mk', '<Plug>(textmanip-move-up)'   )
+call submode#enter_with('blockmove', 'x', 'r', 'Mj', '<Plug>(textmanip-move-down)' )
+call submode#enter_with('blockmove', 'x', 'r', 'Mh', '<Plug>(textmanip-move-left)' )
+call submode#enter_with('blockmove', 'x', 'r', 'Ml', '<Plug>(textmanip-move-right)')
+call submode#leave_with('blockmove', 'x', 'r', '<Esc>')
+call submode#map('blockmove', 'x', 'r', 'k', '<Plug>(textmanip-move-up)'   )
+call submode#map('blockmove', 'x', 'r', 'j', '<Plug>(textmanip-move-down)' )
+call submode#map('blockmove', 'x', 'r', 'h', '<Plug>(textmanip-move-left)' )
+call submode#map('blockmove', 'x', 'r', 'l', '<Plug>(textmanip-move-right)')
+call submode#map('blockmove', 'x', 'r', 't', '<Plug>(textmanip-toggle-mode)')
 
 " scroll down and enter chromectl mode.
 call submode#enter_with('chromectl', 'n', 'r', '<leader>j', '<Plug>(ChromeDown)')
@@ -8,7 +18,7 @@ call submode#enter_with('chromectl', 'n', 'r', '<leader>k', '<Plug>(ChromeUp)')
 call submode#enter_with('chromectl', 'n', 'r', '<leader>x', '<Plug>(ChromeTabClose)')
 "
 
-" in chromectl mode{{{
+" in chromectl mode
 " scroll down
 call submode#map('chromectl', 'n', 'r', 'j', '<Plug>(ChromeDown)')
 " scroll up
@@ -33,4 +43,3 @@ call submode#map('chromectl', 'n', 'r', 'v', ':<C-u>ChromeStroke "v"<CR>')
 call submode#map('chromectl', 'n', 'r', 'E', ':<C-u>ChromeStrokeCode 53<CR>')
 " send Enter by Vimium
 call submode#map('chromectl', 'n', 'r', 'e', ':<C-u>ChromeStrokeCode 76<CR>')
-"}}}

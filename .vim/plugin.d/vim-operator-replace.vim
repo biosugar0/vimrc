@@ -1,1 +1,2 @@
-nmap r <Plug>(operator-replace)
+nmap R <Plug>(operator-replace)
+
