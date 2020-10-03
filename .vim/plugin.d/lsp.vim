@@ -4,7 +4,8 @@ function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> gd <plug>(lsp-definition)
   nmap <buffer> gi <plug>(lsp-implementation)
   nmap <buffer> gr <plug>(lsp-rename)
-  nmap <buffer> gn <plug>(lsp-next-diagnostic)
+  nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
+  nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
   nmap <buffer> == <plug>(lsp-document-format)
   nmap <buffer> <leader>n <plug>(lsp-next-error)
   nmap <buffer> <leader>p <plug>(lsp-previous-error)
@@ -25,14 +26,15 @@ augroup END
 command! LspDebug let lsp_log_verbose=1 | let lsp_log_file = expand('~/lsp.log')
 autocmd BufWritePre <buffer> LspDocumentFormatSync
 let g:lsp_diagnostics_enabled = 1
-let g:asyncomplete_auto_popup = 1
-let g:asyncomplete_auto_completeopt = 1
+let g:asyncomplete_auto_popup = 0
+let g:asyncomplete_auto_completeopt = 0
 let g:asyncomplete_popup_delay = 100
 let g:lsp_insert_text_enabled = 1
 let g:lsp_text_edit_enabled = 1
 let g:lsp_diagnostics_float_cursor = 1
 let g:lsp_diagnostics_float_delay = 100
 let g:lsp_highlight_reference_enabled = 1
+set completeopt=menuone,noinsert,noselect
 let g:lsp_settings_filetype_go = ['gopls', 'golangci-lint-langserver']
 let g:lsp_settings['gopls'] = {
 \ 'workspace_config': {
