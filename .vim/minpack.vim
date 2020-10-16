@@ -1,17 +1,18 @@
 let s:script = expand('<sfile>')
 
 if !exists('g:loaded_minpac')
-    "hook function
+    "hook function{{{
     function! s:ripgrep(hooktype, name)
         if executable('rg') == 0
             echom "ripgrep not found run 'brew install ripgrep'"
             echom system("brew install ripgrep")
         endif
     endfunction
-
+"}}}
     packadd minpac
     call minpac#init()
     call minpac#add('k-takata/minpac', {'type': 'opt'})
+    " PLUGINS{{{
     call minpac#add('airblade/vim-gitgutter')
     call minpac#add('biosugar0/chrome.vim')
     call minpac#add('biosugar0/vim-popyank')
@@ -45,6 +46,7 @@ if !exists('g:loaded_minpac')
     call minpac#add('prabirshrestha/asyncomplete.vim')
     call minpac#add('prabirshrestha/vim-lsp')
     call minpac#add('previm/previm')
+    call minpac#add('rhysd/conflict-marker.vim')
     call minpac#add('sheerun/vim-polyglot')
     call minpac#add('skanehira/translate.vim')
     call minpac#add('t9md/vim-textmanip')
@@ -59,17 +61,19 @@ if !exists('g:loaded_minpac')
     call minpac#add('vim-airline/vim-airline-themes')
     call minpac#add('vim-jp/vimdoc-ja')
     call minpac#add('vim-test/vim-test')
+"}}}
 endif
 
 packloadall
 
-" Load plugin.d/*.vim
+" Load plugin.d/*.vim{{{
 function! s:load_configurations() abort
   for path in glob('$VIMHOME/plugin.d/*.vim', 1, 1, 1)
     execute printf('source %s', fnameescape(path))
   endfor
 endfunction
 call s:load_configurations()
+"}}}
 
 if !exists('*s:init')
   function! s:init() abort
