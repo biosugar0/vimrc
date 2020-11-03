@@ -14,3 +14,4 @@ cnoremap <C-n> <Down>
 cnoremap <Up>   <C-p>
 cnoremap <Down> <C-n>
 nnoremap } :ls<CR>:b<Space>
+nnoremap p "0p
