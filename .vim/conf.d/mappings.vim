@@ -14,4 +14,8 @@ cnoremap <C-n> <Down>
 cnoremap <Up>   <C-p>
 cnoremap <Down> <C-n>
 nnoremap } :ls<CR>:b<Space>
-nnoremap p "0p
+ " Helpful delete/change into blackhole buffer
+ nmap <leader>d "_d
+ nmap <leader>c "_c
+ nmap <space>d "_d
+ nmap <space>c "_c
