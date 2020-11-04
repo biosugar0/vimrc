@@ -14,6 +14,7 @@ if !exists('g:loaded_minpac')
     call minpac#add('k-takata/minpac', {'type': 'opt'})
     " PLUGINS{{{
     call minpac#add('AndrewRadev/linediff.vim')
+    call minpac#add('LeafCage/yankround.vim')
     call minpac#add('airblade/vim-gitgutter')
     call minpac#add('biosugar0/chrome.vim')
     call minpac#add('biosugar0/vim-popyank')
