@@ -17,8 +17,6 @@ nnoremap } :ls<CR>:b<Space>
  " Helpful delete/change into blackhole buffer
  nmap <leader>d "_d
  nmap <leader>c "_c
- nmap <space>d "_d
- nmap <space>c "_c
  " turn off highlight on enter twice
  nnoremap <silent><Esc><Esc> :<C-u>nohlsearch<CR>
  nnoremap <silent><C-l><C-l> :<C-u>nohlsearch<CR>
