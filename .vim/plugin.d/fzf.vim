@@ -6,7 +6,7 @@ nnoremap <silent> <leader>b :Buffers<CR>
 nnoremap <silent> <leader>l :BLines<CR>
 nnoremap <silent> <leader>h :History<CR>
 nnoremap <silent> <leader>m :Mark<CR>
-nnoremap <silent> <leader>r :Rg<CR>
+nnoremap <silent> <leader>R :Rg<CR>
 imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 nmap <leader><tab> <plug>(fzf-maps-n)
