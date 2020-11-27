@@ -109,3 +109,9 @@ call gina#custom#mapping#nmap(
       \ '<Plug>(gina-branch-delete)',
       \ {'mode': 'n', 'silent': 1}
       \)
+call gina#custom#mapping#nmap(
+      \ 'branch',
+      \ 'n',
+      \ '<Plug>(gina-branch-new)',
+      \ {'nmap': 1, 'silent': 1}
+      \)
