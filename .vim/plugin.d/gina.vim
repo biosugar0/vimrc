@@ -102,3 +102,10 @@ call gina#custom#execute(
       \ '/\%(status\|branch\|ls\|grep\|changes\|tag\)',
       \ 'setlocal winfixheight',
       \)
+
+call gina#custom#mapping#nmap(
+      \ 'branch',
+      \ 'dd',
+      \ '<Plug>(gina-branch-delete)',
+      \ {'mode': 'n', 'silent': 1}
+      \)
