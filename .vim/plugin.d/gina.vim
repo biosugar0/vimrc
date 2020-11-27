@@ -21,6 +21,8 @@ nnoremap <silent> <Leader>aL :<C-u>Gina log :%<CR>
 nnoremap <silent> <Leader>af :<C-u>Gina ls<CR>
 nnoremap <silent> <Leader>ars :<C-u>Gina show <C-r><C-w><CR>
 nnoremap <silent> <Leader>arc :<C-u>Gina changes <C-r><C-w><CR>
+nnoremap <silent> <Leader>ao :Gina browse --extract :<CR>
+xnoremap <silent> <Leader>ao :Gina browse --extract :<CR>
 
 call gina#custom#command#option(
       \ 'commit', '-v|--verbose'
