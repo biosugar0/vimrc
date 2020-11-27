@@ -21,6 +21,8 @@ nnoremap <silent> <Leader>aL :<C-u>Gina log :%<CR>
 nnoremap <silent> <Leader>af :<C-u>Gina ls<CR>
 nnoremap <silent> <Leader>ars :<C-u>Gina show <C-r><C-w><CR>
 nnoremap <silent> <Leader>arc :<C-u>Gina changes <C-r><C-w><CR>
+nnoremap <silent> <Leader>ao :Gina browse --extract :<CR>
+xnoremap <silent> <Leader>ao :Gina browse --extract :<CR>
 
 call gina#custom#command#option(
       \ 'commit', '-v|--verbose'
@@ -101,4 +103,17 @@ call gina#custom#command#option(
 call gina#custom#execute(
       \ '/\%(status\|branch\|ls\|grep\|changes\|tag\)',
       \ 'setlocal winfixheight',
+      \)
+
+call gina#custom#mapping#nmap(
+      \ 'branch',
+      \ 'dd',
+      \ '<Plug>(gina-branch-delete)',
+      \ {'mode': 'n', 'silent': 1}
+      \)
+call gina#custom#mapping#nmap(
+      \ 'branch',
+      \ 'n',
+      \ '<Plug>(gina-branch-new)',
+      \ {'nmap': 1, 'silent': 1}
       \)

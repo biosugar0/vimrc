@@ -20,3 +20,4 @@ xnoremap <leader>c "_c
  " turn off highlight on enter twice
 nnoremap <silent><Esc><Esc> :<C-u>nohlsearch<CR>
 nnoremap <silent><C-l><C-l> :<C-u>nohlsearch<CR>
+nnoremap qt  :<C-u>tabclose<CR>
