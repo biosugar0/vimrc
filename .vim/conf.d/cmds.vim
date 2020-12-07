@@ -69,3 +69,9 @@ augroup terminal
   au!
   au BufReadCmd term://* call s:termopen()
 augroup END
+
+" auto reload Vim setting
+augroup source-vimrc
+  autocmd!
+  autocmd BufWritePost *vim,*vimrc source $MYVIMRC | set foldmethod=marker
+augroup END
