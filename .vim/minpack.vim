@@ -64,6 +64,7 @@ if !exists('g:loaded_minpac')
     call minpac#add('vim-airline/vim-airline-themes')
     call minpac#add('vim-jp/vimdoc-ja')
     call minpac#add('vim-test/vim-test')
+    call minpac#add('skanehira/gh.vim')
 "}}}
 endif
 
