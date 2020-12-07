@@ -2,4 +2,4 @@
 install:
 	@cp .vimrc ~/.vimrc
 	@cp -r .vim ~/
-	@vim -c :q
+	vim -c :q
