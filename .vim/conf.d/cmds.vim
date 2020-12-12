@@ -75,3 +75,5 @@ augroup source-vimrc
   autocmd!
   autocmd BufWritePost *vim,*vimrc source $MYVIMRC | set foldmethod=marker
 augroup END
+
+nnoremap <expr> 0 getline('.')[0 : col('.') - 2] =~# '^\s\+$' ? '0' : '^'
