@@ -1,4 +1,3 @@
-let g:fzf_layout = { 'down': '40%' }
 nnoremap <silent> <leader>f :Files<CR>
 nnoremap <silent> <leader>F :Files?<CR>
 nnoremap <silent> <leader>gf :GFiles<CR>
