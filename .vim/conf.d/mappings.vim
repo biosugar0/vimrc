@@ -3,6 +3,9 @@ let g:maplocalleader = "\<space>"
 "jjをescに
 inoremap <silent> jj <ESC>
 tnoremap <silent> <ESC> <C-\><C-n>
+" termianl modeでペースト
+tmap <silent> <C-v> <C-w>"=getreg("")<CR>
+
 " change window size
 nnoremap <S-Left>  <C-w><<CR>
 nnoremap <S-Right> <C-w>><CR>
