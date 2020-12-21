@@ -1,5 +1,9 @@
+" fzf settings
+let $FZF_DEFAULT_OPTS="--layout=reverse"
+let $FZF_DEFAULT_COMMAND="rg --line-number --no-heading --files --hidden --glob '!.git/**'"
+
+let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'border': 'sharp' } }
 nnoremap <silent> <leader>f :Files<CR>
-nnoremap <silent> <leader>F :Files?<CR>
 nnoremap <silent> <leader>gf :GFiles<CR>
 nnoremap <silent> <leader>gF :GFiles?<CR>
 nnoremap <silent> <leader>b :Buffers<CR>

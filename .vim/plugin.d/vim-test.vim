@@ -9,4 +9,4 @@ let test#go#gotest#options = {
   \ 'suite':   '-v -count=1',
 \}
 
-let g:test#strategy = 'dispatch'
+let test#strategy = 'vimterminal'
