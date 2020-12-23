@@ -28,6 +28,7 @@ autocmd BufWritePre <buffer> LspDocumentFormatSync
 let g:lsp_diagnostics_enabled = 1
 let g:asyncomplete_auto_popup = 1
 let g:asyncomplete_matchfuzzy = 1
+let g:asyncomplete_min_chars = 2
 let g:asyncomplete_auto_completeopt = 0
 let g:asyncomplete_popup_delay = 10
 let g:lsp_insert_text_enabled = 1
