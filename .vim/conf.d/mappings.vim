@@ -4,7 +4,7 @@ let g:maplocalleader = "\<space>"
 inoremap <silent> jj <ESC>
 tnoremap <silent> <ESC> <C-\><C-n>
 " termianl modeでペースト
-tnoremap <expr> <leader><leader>v getreg("")
+tnoremap <expr> <C-v> getreg("")
 
 " create a new empty buffer with current register
 nnoremap <silent> <Space>ap <Cmd>tabnew<Cr>]p:call deletebufline('%', 1, 1)<Cr>
