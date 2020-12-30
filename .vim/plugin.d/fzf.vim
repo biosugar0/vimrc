@@ -21,7 +21,8 @@ autocmd FileType fzf tnoremap <silent> <buffer> <Esc> <C-g>
 let g:fzf_action = {
                 \'ctrl-t':'tab split',
                 \'ctrl-s':'split',
-                \'ctrl-v':'vsplit'
+                \'ctrl-e':'edit',
+                \'enter':'vsplit'
                 \}
 
 command! -bang -nargs=* Rg
