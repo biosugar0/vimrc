@@ -18,6 +18,12 @@ xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
 autocmd FileType fzf tnoremap <silent> <buffer> <Esc> <C-g>
 
+let g:fzf_action = {
+                \'ctrl-t':'tab split',
+                \'ctrl-s':'split',
+                \'ctrl-v':'vsplit'
+                \}
+
 command! -bang -nargs=* Rg
       \ call fzf#vim#grep(
       \   'rg --line-number --no-heading '.shellescape(<q-args>), 0,
