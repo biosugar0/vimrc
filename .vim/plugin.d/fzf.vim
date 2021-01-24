@@ -24,7 +24,8 @@ let g:fzf_action = {
                 \'ctrl-e':'edit',
                 \'enter':'vsplit'
                 \}
-
+set grepprg=rg\ --vimgrep\ --no-heading
+set grepformat=%f:%l:%c:%m,%f:%l:%m
 command! -bang -nargs=* Rg
       \ call fzf#vim#grep(
       \   'rg --line-number --no-heading '.shellescape(<q-args>), 0,

@@ -1,9 +1,9 @@
-nnoremap <silent> <Leader>ee :<C-u>Fern . -drawer -toggle -reveal=%<CR>
+nnoremap <silent> <Leader>ee :<C-u>Fern . -drawer -toggle -stay -keep -reveal=%<CR>
 
 let g:fern#renderer = "nerdfont"
 augroup my-fern-startup
   autocmd! *
-  autocmd VimEnter * ++nested if argc() == 0 && !exists("s:std_in") | Fern <C-r>=<SID>smart_path()<CR><CR> | endif
+  autocmd VimEnter * ++nested if argc() == 0 && !exists("s:std_in") | Fern <C-r>=<SID>smart_path() -drawer -stay -keep -toggle -reveal=%<CR><CR> | endif
 augroup END
 
 function! s:smart_path() abort
