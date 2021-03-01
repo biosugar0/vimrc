@@ -9,3 +9,6 @@ call submode#map('blockmove', 'x', 'r', 'j', '<Plug>(textmanip-move-down)' )
 call submode#map('blockmove', 'x', 'r', 'h', '<Plug>(textmanip-move-left)' )
 call submode#map('blockmove', 'x', 'r', 'l', '<Plug>(textmanip-move-right)')
 call submode#map('blockmove', 'x', 'r', 't', '<Plug>(textmanip-toggle-mode)')
+
+call submode#enter_with('toggleCase', 'n', '', 'crl', ':<C-u>ConvertCaseLoop<CR>'   )
+call submode#map('toggleCase', 'n', '', 'l', ':<C-u>ConvertCaseLoop<CR>')
