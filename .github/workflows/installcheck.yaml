@@ -10,5 +10,6 @@ jobs:
     runs-on: macos-10.15
     steps:
       - uses: actions/checkout@master
+      - uses: rhysd/action-setup-vim@v1
       - name: vim setting
         run: make install
