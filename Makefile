@@ -5,3 +5,5 @@ install:
 	@cp -r .vim ~/
 	@ls ~/
 	vim -c :q
+test:
+	vim -c :q
