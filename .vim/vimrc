@@ -16,6 +16,10 @@ set shell=zsh
 au FileType * setlocal formatoptions-=ro
 "w!!でsudoで保存"
 cabbr w!! w !sudo tee > /dev/null %
+" utf-8{{{
+set encoding=utf-8
+scriptencoding utf-8
+"}}}
 "バックアップ設定{{{
 "アンドゥファイル用のディレクトリ
 set undodir=~/.vim/backup/undo
@@ -104,6 +108,7 @@ set wrapscan   " 最後尾まで検索を終えたら次の検索で先頭に移
 "タブ、インデント設定{{{
 autocmd FileType js  setlocal sw=2 sts=2 ts=2 et
 autocmd FileType vue  setlocal sw=2 sts=2 ts=2 et
+autocmd FileType vim  setlocal sw=2 sts=2 ts=2 et
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 set expandtab     " タブ入力を複数の空白入力に置き換える
 set tabstop=4     " 画面上でタブ文字が占める幅
@@ -121,10 +126,6 @@ set wildmenu wildmode=list:longest,full " コマンドラインモードでTAB�
 set history=1000                        " コマンドラインの履歴を1000件保存する
 set visualbell t_vb=                    " ビープ音すべてを無効にする
 "}}}
-" utf-8{{{
-set fileencoding=utf-8
-set encoding=utf-8
-scriptencoding utf-8"}}}
 "ファイルをひらいたとき最後にカーソルがあった場所に移動{{{
 augroup vimrcEx
   au BufRead * if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -160,7 +161,7 @@ source $VIMHOME/minpack.vim
 
 if s:minpac_download == 1
   echom 'run plugins install.'
-  :PackUpdate
+  :PackInstall
 endif
 
 " Load plugin.d/*.vim{{{
