@@ -159,9 +159,8 @@ call s:load_configurations()
 source $VIMHOME/minpack.vim
 
 if s:minpac_download == 1
-  echom 'run plugins install,then terminate.'
-  1sleep
-  :PackInstall
+  echom 'run plugins install.'
+  :PackUpdate
 endif
 
 " Load plugin.d/*.vim{{{
