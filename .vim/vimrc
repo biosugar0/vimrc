@@ -162,8 +162,8 @@ source $VIMHOME/minpack.vim
 if s:minpac_download == 1
   echom 'run plugins install.'
   :PackInstall
+  packloadall
 endif
-
 " Load plugin.d/*.vim{{{
 function! s:load_configurations() abort
   for path in glob('$VIMHOME/plugin.d/*.vim', 1, 1, 1)
