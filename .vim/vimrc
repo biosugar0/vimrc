@@ -157,6 +157,11 @@ call s:load_configurations()
 "}}}
 " plugin設定
 source $VIMHOME/minpack.vim
+
+if !exists('s:minpac_download')
+  :PackInstall
+endif
+
 " Load plugin.d/*.vim{{{
 function! s:load_configurations() abort
   for path in glob('$VIMHOME/plugin.d/*.vim', 1, 1, 1)
