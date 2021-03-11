@@ -158,7 +158,7 @@ call s:load_configurations()
 " plugin設定
 source $VIMHOME/minpack.vim
 
-if !exists('s:minpac_download')
+if s:minpac_download == 1
   echom 'run plugins install,then terminate.'
   1sleep
   :PackInstall
