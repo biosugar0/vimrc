@@ -170,3 +170,4 @@ function! s:load_configurations() abort
   endfor
 endfunction
 call s:load_configurations()
+"}}}
