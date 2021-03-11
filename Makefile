@@ -4,6 +4,6 @@ install:
 	@ls ~/.vimrc
 	@cp -r .vim ~/
 	@ls ~/
-	vim -c :q
+	vim -c :PackInstall
 test:
 	vim -c :q
