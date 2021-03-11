@@ -69,18 +69,10 @@ if !exists('g:loaded_minpac')
         call minpac#add('vim-test/vim-test')
     "}}}
 	endfunction
+    call PackInit()
 endif
 
 packloadall
-
-" Load plugin.d/*.vim{{{
-function! s:load_configurations() abort
-  for path in glob('$VIMHOME/plugin.d/*.vim', 1, 1, 1)
-    execute printf('source %s', fnameescape(path))
-  endfor
-endfunction
-call s:load_configurations()
-"}}}
 
 if !exists('*s:init')
   function! s:init() abort
