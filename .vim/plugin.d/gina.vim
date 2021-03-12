@@ -25,19 +25,13 @@ nnoremap <silent> <Leader>ao :Gina browse --extract :<CR>
 xnoremap <silent> <Leader>ao :Gina browse --extract :<CR>
 
 
-command! -nargs=? PR call s:pr(<f-args>)
+command! -nargs=? PR Gina browse --scheme=pr <args>
 nnoremap <leader>aw :PR<CR>
 
-function! s:pr(...)
-  call extend(g:gina#command#browse#translation_patterns['github\.com'][1],
-              \ {'pr':'https://\1/\2/\3/pull/new/%c0'})
-  if a:0 >= 1
-    execute(":Gina browse --scheme=pr ".a:1)
-  else
-    execute(":Gina browse --scheme=pr")
-  end
-endfunction
 
+call extend(g:gina#command#browse#translation_patterns['github\.com'][1],
+              \ {'pr':'https://\1/\2/\3/pull/new/%c0'}
+              \)
 call gina#custom#command#option(
       \ 'commit', '-v|--verbose'
       \)
