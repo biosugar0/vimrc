@@ -1,14 +1,12 @@
 let s:script = expand('<sfile>')
 
-if !exists('g:loaded_minpac')
-    "hook function{{{
-    function! s:ripgrep(hooktype, name)
-        if executable('rg') == 0
-            echom "ripgrep not found run 'brew install ripgrep'"
-            echom system("brew install ripgrep")
-        endif
-    endfunction
-endif
+"hook function{{{
+function! s:ripgrep(hooktype, name)
+    if executable('rg') == 0
+        echom "ripgrep not found run 'brew install ripgrep'"
+        echom system("brew install ripgrep")
+    endif
+endfunction
 "}}}
 function! PackInit() abort
   packadd minpac
@@ -29,7 +27,7 @@ function! PackInit() abort
   call minpac#add('hrsh7th/vim-eft')
   call minpac#add('hrsh7th/vim-vsnip')
   call minpac#add('hrsh7th/vim-vsnip-integ')
-  call minpac#add('junegunn/fzf', {'do': './install --all'})
+  call minpac#add('junegunn/fzf', {'do': {-> system('./install --all')}})
   call minpac#add('junegunn/fzf.vim',{'do': function('s:ripgrep') })
   call minpac#add('junegunn/vim-easy-align')
   call minpac#add('kana/vim-altr')
