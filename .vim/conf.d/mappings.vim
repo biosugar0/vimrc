@@ -31,9 +31,13 @@ nnoremap qt  :<C-u>tabclose<CR>
 nnoremap <expr> 0 getline('.')[0 : col('.') - 2] =~# '^\s\+$' ? '0' : '^'
 
 command! -nargs=0 PR call s:pr()
-nnoremap <leader>aw  :PR
+nnoremap <leader>aw :PR
 
 function! s:pr()
-  call system("gh pr create")
-  call system("gh pr view --web")
+  if executable('gh') == 0
+      echom "gh not found run 'brew install gh'"
+      echom system("brew install github/gh/gh")
+  endif
+  execute('term ++close ++shell gh pr create')
+  execute('term ++close ++shell gh pr view --web')
 endfunction
