@@ -24,6 +24,13 @@ nnoremap <silent> <Leader>arc :<C-u>Gina changes <C-r><C-w><CR>
 nnoremap <silent> <Leader>ao :Gina browse --extract :<CR>
 xnoremap <silent> <Leader>ao :Gina browse --extract :<CR>
 
+
+command! -nargs=? PR Gina browse --scheme=pr <args>
+nnoremap <leader>aw :PR<CR>
+
+call extend(g:gina#command#browse#translation_patterns['github\.com'][1],
+              \ {'pr':'https://\1/\2/\3/pull/new/%c0'}
+              \)
 call gina#custom#command#option(
       \ 'commit', '-v|--verbose'
       \)
