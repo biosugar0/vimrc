@@ -28,7 +28,6 @@ xnoremap <silent> <Leader>ao :Gina browse --extract :<CR>
 command! -nargs=? PR Gina browse --scheme=pr <args>
 nnoremap <leader>aw :PR<CR>
 
-
 call extend(g:gina#command#browse#translation_patterns['github\.com'][1],
               \ {'pr':'https://\1/\2/\3/pull/new/%c0'}
               \)
