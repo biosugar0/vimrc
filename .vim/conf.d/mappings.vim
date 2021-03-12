@@ -29,3 +29,11 @@ nnoremap <silent><Esc><Esc> :<C-u>nohlsearch<CR>
 nnoremap <silent><C-l><C-l> :<C-u>nohlsearch<CR>
 nnoremap qt  :<C-u>tabclose<CR>
 nnoremap <expr> 0 getline('.')[0 : col('.') - 2] =~# '^\s\+$' ? '0' : '^'
+
+command! -nargs=0 PR call s:pr()
+nnoremap <leader>aw  :PR
+
+function! s:pr()
+  call system("gh pr create")
+  call system("gh pr view --web")
+endfunction
