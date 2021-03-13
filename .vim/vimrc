@@ -151,9 +151,11 @@ endif
 "}}}
 " Load conf.d/*.vim{{{
 function! s:load_configurations() abort
-  for path in glob('$VIMHOME/conf.d/*.vim', 1, 1, 1)
-    execute printf('source %s', fnameescape(path))
-  endfor
+  if g:loaded_minpac ==1
+    for path in glob('$VIMHOME/conf.d/*.vim', 1, 1, 1)
+      execute printf('source %s', fnameescape(path))
+    endfor
+  endif
 endfunction
 call s:load_configurations()
 "}}}
