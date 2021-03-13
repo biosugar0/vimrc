@@ -164,7 +164,7 @@ if s:minpac_download == 1
   echo exists('g:plugin_installed')
   :PackInstall
   echo exists('g:plugin_installed')
-  while !exists(g:plugin_installed)
+  while !exists('g:plugin_installed')
       1sleep
       echo exists('g:plugin_installed')
   endwhile
