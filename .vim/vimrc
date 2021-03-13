@@ -6,7 +6,6 @@ function! s:mkdir(...) abort
     return call('mkdir', a:000)
 endfunction
 
-let max_length = v:echospace + ((&cmdheight - 1) * &columns)
 set nrformats= "すべての数を10進数として扱う
 set nrformats+=unsigned " 数字の増加減少でマイナスを扱わない
 "=をファイル名の一部と認識させない
