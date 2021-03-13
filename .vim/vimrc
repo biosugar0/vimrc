@@ -174,5 +174,7 @@ function! s:load_configurations() abort
     endif
   endif
 endfunction
+
+packloadall
 call s:load_configurations()
 "}}}
