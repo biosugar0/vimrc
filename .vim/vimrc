@@ -161,7 +161,9 @@ source $VIMHOME/minpack.vim
 
 if s:minpac_download == 1
   echom 'run plugins install.'
+  echo exists(g:plugin_installed)
   :PackInstall
+  echo exists(g:plugin_installed)
   while !exists(g:plugin_installed)
       1sleep
       echo exists(g:plugin_installed)
