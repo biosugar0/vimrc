@@ -6,6 +6,7 @@ function! s:mkdir(...) abort
     return call('mkdir', a:000)
 endfunction
 
+let max_length = v:echospace + ((&cmdheight - 1) * &columns)
 set nrformats= "すべての数を10進数として扱う
 set nrformats+=unsigned " 数字の増加減少でマイナスを扱わない
 "=をファイル名の一部と認識させない
@@ -164,11 +165,11 @@ if s:minpac_download == 1
   :PackInstall
   packloadall
 endif
-"" Load plugin.d/*.vim{{{
-"function! s:load_configurations() abort
-"  for path in glob('$VIMHOME/plugin.d/*.vim', 1, 1, 1)
-"    execute printf('source %s', fnameescape(path))
-"  endfor
-"endfunction
-"call s:load_configurations()
-""}}}
+" Load plugin.d/*.vim{{{
+function! s:load_configurations() abort
+  for path in glob('$VIMHOME/plugin.d/*.vim', 1, 1, 1)
+    execute printf('source %s', fnameescape(path))
+  endfor
+endfunction
+call s:load_configurations()
+"}}}
