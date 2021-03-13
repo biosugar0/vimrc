@@ -169,7 +169,9 @@ if s:minpac_download == 1
       echo exists('g:plugin_installed')
   endwhile
   echo exists('g:plugin_installed')
+  1sleep
   packloadall
+  1sleep
 endif
 " Load plugin.d/*.vim{{{
 function! s:load_configurations() abort
