@@ -1,9 +1,10 @@
 .PHONY: install
 install:
+	@echo [Vim Setting] install vim settings...
 	@cp .vimrc ~/.vimrc
 	@cp -r .vim ~/
 	@yes | vim -c :qa
-	@vim -c ":normal 1 ee"
+	@echo [Vim Setting] install completed.
 test:
 	@cp .vimrc ~/.vimrc
 	@cp -r .vim ~/
