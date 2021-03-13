@@ -34,7 +34,6 @@ function! PackInit() abort
         call minpac#add('kana/vim-altr')
         call minpac#add('kana/vim-operator-replace')
         call minpac#add('kana/vim-operator-user')
-        call minpac#add('kana/vim-submode')
         call minpac#add('kana/vim-textobj-user')
         call minpac#add('lambdalisue/fern-renderer-nerdfont.vim')
         call minpac#add('lambdalisue/fern.vim')
