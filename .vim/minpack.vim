@@ -73,7 +73,7 @@ function! PackInit() abort
 endfunction
 call PackInit()
 
-command! PackInstall call PackInit() | call minpac#update('') | call minpac#status()
+command! PackInstall call PackInit() | call minpac#update('',{'do': 'let g:plugin_installed = 1'})
 command! PackUpdate  call PackInit() | call minpac#update('', {'do': 'call minpac#status()'})
 command! PackClean   call PackInit() | call minpac#clean()
 command! PackStatus  call PackInit() | call minpac#status()

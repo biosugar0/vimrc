@@ -162,6 +162,11 @@ source $VIMHOME/minpack.vim
 if s:minpac_download == 1
   echom 'run plugins install.'
   :PackInstall
+  while !exists(g:plugin_installed)
+      1sleep
+      echo exists(g:plugin_installed)
+  endwhile
+  echo exists(g:plugin_installed)
 endif
 " Load plugin.d/*.vim{{{
 function! s:load_configurations() abort
