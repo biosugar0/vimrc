@@ -164,11 +164,11 @@ if s:minpac_download == 1
   :PackInstall
   packloadall
 endif
-" Load plugin.d/*.vim{{{
-function! s:load_configurations() abort
-  for path in glob('$VIMHOME/plugin.d/*.vim', 1, 1, 1)
-    execute printf('source %s', fnameescape(path))
-  endfor
-endfunction
-call s:load_configurations()
-"}}}
+"" Load plugin.d/*.vim{{{
+"function! s:load_configurations() abort
+"  for path in glob('$VIMHOME/plugin.d/*.vim', 1, 1, 1)
+"    execute printf('source %s', fnameescape(path))
+"  endfor
+"endfunction
+"call s:load_configurations()
+""}}}
