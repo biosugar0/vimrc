@@ -38,34 +38,36 @@ let g:lsp_diagnostics_float_delay = 100
 let g:lsp_highlight_reference_enabled = 1
 set completeopt=menuone,noinsert,noselect
 let g:lsp_settings_filetype_go = ['gopls', 'golangci-lint-langserver']
-let g:lsp_settings['gopls'] = {
-\ 'workspace_config': {
-        \ 'staticcheck': v:true,
-        \ 'completeUnimported': v:true,
-        \ 'caseSensitiveCompletion': v:true,
-        \ 'usePlaceholders': v:true,
-        \ 'completionDocumentation': v:true,
-        \ 'watchFileChanges': v:true,
-        \ 'hoverKind': 'SingleLine',
-        \ 'analyses': {
-            \ 'nonewvars': v:true,
-            \ 'unusedparams': v:true
+let g:lsp_settings = {
+  \'gopls':{
+    \'workspace_config': {
+      \'staticcheck': v:true,
+      \'completeUnimported': v:true,
+      \'caseSensitiveCompletion': v:true,
+      \'usePlaceholders': v:true,
+      \'completionDocumentation': v:true,
+      \'watchFileChanges': v:true,
+      \'hoverKind': 'SingleLine',
+      \'analyses': {
+          \'nonewvars': v:true,
+          \'unusedparams': v:true
+      \},
+    \},
+    \'initialization_options': {
+      \ 'usePlaceholders': v:true,
+      \ "completeUnimported": v:true,
+      \ "staticcheck": v:true,
+      \ 'analyses': {
+          \ 'nonewvars': v:true,
+          \ 'unusedparams': v:true
         \ },
     \ },
-\ 'initialization_options': {
-    \ 'usePlaceholders': v:true,
-    \ "completeUnimported": v:true,
-    \ "staticcheck": v:true,
-    \ 'analyses': {
-        \ 'nonewvars': v:true,
-        \ 'unusedparams': v:true
-        \ },
-    \ },
-\ }
-let g:lsp_settings['golangci-lint-langserver'] = {
-\ 'initialization_options': {
-    \ 'command': ['golangci-lint', 'run', '--enable-all',
-      \  '--disable', 'lll', '--disable','gochecknoglobals',
-      \  '--out-format', 'json']
-  \ },
+  \},
+  \'golangci-lint-langserver':{
+    \'initialization_options': {
+        \'command': ['golangci-lint', 'run', '--enable-all',
+          \'--disable', 'lll', '--disable','gochecknoglobals',
+          \'--out-format', 'json']
+    \},
+  \},
 \}
