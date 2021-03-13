@@ -8,5 +8,5 @@ install:
 test:
 	vim -c :q
 clean:
-	rm -y ~/.vim
-	rm -y ~/.vimrc
+	rm  ~/.vim
+	rm  ~/.vimrc
