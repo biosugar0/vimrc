@@ -148,14 +148,26 @@ if has('vim_starting')
   endif
 endif
 "}}}
-" Load conf.d/*.vim{{{
+" Load functions{{{
+" Load conf.d/*.vim
 function! s:load_configurations() abort
   for path in glob('$VIMHOME/conf.d/*.vim', 1, 1, 1)
     execute printf('source %s', fnameescape(path))
   endfor
 endfunction
-call s:load_configurations()
+
+" Load plugin.d/*.vim
+function! s:load_plugin_configurations() abort
+  if exists('g:loaded_minpac')
+    if g:loaded_minpac ==1
+      for path in glob('$VIMHOME/plugin.d/*.vim', 1, 1, 1)
+        execute printf('source %s', fnameescape(path))
+      endfor
+    endif
+  endif
+endfunction
 "}}}
+call s:load_configurations()
 " plugin設定
 source $VIMHOME/minpack.vim
 
@@ -165,18 +177,9 @@ if s:minpac_download == 1
   while !exists('g:plugin_installed')
       1sleep
   endwhile
+  packloadall
+  call s:load_plugin_configurations()
+  :qa
 endif
 
-" Load plugin.d/*.vim{{{
-function! s:load_configurations() abort
-  if exists('g:loaded_minpac')
-    if g:loaded_minpac ==1
-      for path in glob('$VIMHOME/plugin.d/*.vim', 1, 1, 1)
-        execute printf('source %s', fnameescape(path))
-      endfor
-    endif
-  endif
-endfunction
-
-call s:load_configurations()
-"}}}
+call s:load_plugin_configurations()
