@@ -68,11 +68,10 @@ function! PackInit() abort
         call minpac#add('vim-jp/vimdoc-ja')
         call minpac#add('vim-test/vim-test')
         "}}}
+        packloadall
   endif
 endfunction
 call PackInit()
-
-packloadall
 
 command! PackInstall call PackInit() | call minpac#update('') | call minpac#status()
 command! PackUpdate  call PackInit() | call minpac#update('', {'do': 'call minpac#status()'})
