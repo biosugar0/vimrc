@@ -7,3 +7,6 @@ install:
 	vim -c :qa
 test:
 	vim -c :q
+clean:
+	rm -y ~/.vim
+	rm -y ~/.vimrc
