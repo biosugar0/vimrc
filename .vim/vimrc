@@ -178,6 +178,7 @@ if s:minpac_download == 1
       1sleep
   endwhile
   packloadall
+  echom 'plugins install complete.'
 endif
 
 call s:load_plugin_configurations()
