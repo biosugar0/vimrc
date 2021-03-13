@@ -176,7 +176,6 @@ if s:minpac_download == 1
   while !exists('g:plugin_installed')
       1sleep
   endwhile
-  packloadall
 endif
 
 call s:load_plugin_configurations()
