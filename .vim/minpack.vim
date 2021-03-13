@@ -74,7 +74,7 @@ call PackInit()
 
 packloadall
 
-command! PackInstall call PackInit() | call minpac#update('', {'do': 'qa'})
+command! PackInstall call PackInit() | call minpac#update('') | call minpac#status()
 command! PackUpdate  call PackInit() | call minpac#update('', {'do': 'call minpac#status()'})
 command! PackClean   call PackInit() | call minpac#clean()
 command! PackStatus  call PackInit() | call minpac#status()
