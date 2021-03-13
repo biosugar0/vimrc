@@ -2,5 +2,4 @@
 
 ## Install
 
-* `cp .vimrc ~/`
-* `cp -r .vim ~/`
+* `make install`
