@@ -11,7 +11,7 @@ endfunction
 function! PackInit() abort
     if !exists('g:loaded_minpac')
         packadd minpac
-        call minpac#init({'progress_open': 'none','verbose':'0'})
+        call minpac#init({'progress_open': 'none'})
         call minpac#add('k-takata/minpac', {'type': 'opt'})
         " PLUGINS{{{
         call minpac#add('AndrewRadev/linediff.vim')

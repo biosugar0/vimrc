@@ -4,9 +4,7 @@ install:
 	@ls ~/.vimrc
 	@cp -r .vim ~/
 	@ls ~/
-	@vim -c :qa
-test:
-	vim -c :q
+	@yes | vim -c :qa
 clean:
 	@rm -rf ~/.vim
 	@rm -rf ~/.vimrc
