@@ -58,7 +58,6 @@ function! PackInit() abort
         call minpac#add('skanehira/translate.vim')
         call minpac#add('t9md/vim-textmanip')
         call minpac#add('thinca/vim-qfreplace')
-        call minpac#add('tpope/vim-abolish')
         call minpac#add('mopp/vim-operator-convert-case')
         call minpac#add('tpope/vim-dispatch')
         call minpac#add('tpope/vim-repeat')
