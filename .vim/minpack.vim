@@ -60,6 +60,7 @@ function! PackInit() abort
         call minpac#add('t9md/vim-textmanip')
         call minpac#add('thinca/vim-qfreplace')
         call minpac#add('tpope/vim-dispatch')
+        call minpac#add('itchyny/vim-winfix')
         call minpac#add('tpope/vim-repeat')
         call minpac#add('vim-airline/vim-airline')
         call minpac#add('vim-airline/vim-airline-themes')
