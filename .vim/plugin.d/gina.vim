@@ -13,6 +13,7 @@ nnoremap <silent> <Leader>ab :<C-u>Gina branch -av<CR>
 nnoremap <silent> <Leader>at :<C-u>Gina tag<CR>
 nnoremap <silent> <Leader>ag :<C-u>Gina grep<CR>
 nnoremap <silent> <Leader>aq :<C-u>Gina qrep<CR>
+nnoremap <silent> <Leader>ap :<C-u>Gina push<CR>
 nnoremap <silent> <Leader>ad :<C-u>Gina changes origin/HEAD...<CR>
 nnoremap <silent> <Leader>ah :<C-u>Gina log --graph<CR>
 nnoremap <silent> <Leader>aH :<C-u>Gina log --graph --all<CR>
