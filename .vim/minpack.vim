@@ -28,6 +28,7 @@ function! PackInit() abort
         call minpac#add('hrsh7th/vim-eft')
         call minpac#add('hrsh7th/vim-vsnip')
         call minpac#add('hrsh7th/vim-vsnip-integ')
+        call minpac#add('itchyny/vim-winfix') " この問題を解決 https://vim-jp.org/slacklog/CJMV3MSLR/2021/04/#ts-1617342668.288800
         call minpac#add('junegunn/fzf', {'do': {-> system('./install --all')}})
         call minpac#add('junegunn/fzf.vim',{'do': function('s:ripgrep') })
         call minpac#add('junegunn/vim-easy-align')
@@ -35,6 +36,7 @@ function! PackInit() abort
         call minpac#add('kana/vim-operator-replace')
         call minpac#add('kana/vim-operator-user')
         call minpac#add('kana/vim-textobj-user')
+        call minpac#add('lambdalisue/fern-hijack.vim')
         call minpac#add('lambdalisue/fern-renderer-nerdfont.vim')
         call minpac#add('lambdalisue/fern.vim')
         call minpac#add('lambdalisue/gina.vim')
@@ -60,7 +62,6 @@ function! PackInit() abort
         call minpac#add('t9md/vim-textmanip')
         call minpac#add('thinca/vim-qfreplace')
         call minpac#add('tpope/vim-dispatch')
-        call minpac#add('itchyny/vim-winfix')
         call minpac#add('tpope/vim-repeat')
         call minpac#add('vim-airline/vim-airline')
         call minpac#add('vim-airline/vim-airline-themes')
