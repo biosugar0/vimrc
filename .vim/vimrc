@@ -74,6 +74,7 @@ augroup vimrc-auto-mkdir
 augroup END
 "}}}
 " 表示設定{{{
+set diffopt=vertical
 set laststatus=2   " ステータス行を常に表示
 set cmdheight=2    " メッセージ表示欄を2行確保
 set showmatch      " 対応する括弧を強調表示
