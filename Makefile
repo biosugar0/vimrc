@@ -7,6 +7,15 @@ install: /usr/local/bin/bat
 	@yes | vim -c :qa
 	@echo [Vim Setting] install completed.
 
+.PHONY: installn
+installn: /usr/local/bin/bat
+	echo install
+	@echo [Vim Setting] install vim settings...
+	@ln -s $(PWD)/.vimrc $(HOME)/.vimrc
+	@ln -s $(PWD)/.vim $(HOME)/.vim
+	@yes | vim -c :qa
+	@echo [Vim Setting] install completed.
+
 /usr/local/Homebrew/bin/brew:
 	@/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	

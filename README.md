@@ -7,4 +7,8 @@ Vim version >= 8.2.0860
 
 ## Install
 
+### by copy
 * `make install`
+
+### by ln
+* `make installn`
