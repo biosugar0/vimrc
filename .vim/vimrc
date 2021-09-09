@@ -55,7 +55,7 @@ let g:no_vimrc_example            = 1
 let g:skip_loading_mswin          = 1"}}}
 "保存時の設定{{{
 "末尾の空白削除
-autocmd FileType go autocmd BufWritePre * :%s/\s\+$//ge
+autocmd FileType go,sql,python,vim,sh autocmd BufWritePre * :%s/\s\+$//ge
 " json formatter
 autocmd FileType json autocmd BufWritePre <buffer> %!python -m json.tool
 "強制全保存終了を無効化。
@@ -153,25 +153,21 @@ endif
 " Load functions{{{
 " Load conf.d/*.vim
 function! s:load_configurations() abort
-  for path in glob('$VIMHOME/conf.d/*.vim', 1, 1, 1)
-    execute printf('source %s', fnameescape(path))
-  endfor
+  ru! conf.d/*.vim
 endfunction
 
 " Load plugin.d/*.vim
 function! s:load_plugin_configurations() abort
   if exists('g:loaded_minpac')
     if g:loaded_minpac ==1
-      for path in glob('$VIMHOME/plugin.d/*.vim', 1, 1, 1)
-        execute printf('source %s', fnameescape(path))
-      endfor
+      ru! plugin.d/*.vim
     endif
   endif
 endfunction
 "}}}
 call s:load_configurations()
 " plugin設定
-source $VIMHOME/minpack.vim
+ru minpack.vim
 
 if s:minpac_download == 1
   :PackInstall
