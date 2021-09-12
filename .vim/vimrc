@@ -167,7 +167,7 @@ endfunction
 "}}}
 call s:load_configurations()
 " plugin設定
-ru minpack.vim
+ru minpac.vim
 
 if s:minpac_download == 1
   :PackInstall
