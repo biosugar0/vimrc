@@ -1,34 +1,25 @@
 " fzf settings
-let $FZF_DEFAULT_OPTS="--layout=reverse"
-let $FZF_DEFAULT_COMMAND="rg --line-number --no-heading --files --hidden --glob '!.git/**'"
 
-let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'border': 'sharp' } }
-nnoremap <silent> <leader>f :Files<CR>
-nnoremap <silent> <leader>gf :GFiles<CR>
-nnoremap <silent> <leader>gF :GFiles?<CR>
-nnoremap <silent> <leader>b :Buffers<CR>
-nnoremap <silent> <leader>l :BLines<CR>
-nnoremap <silent> <leader>h :History<CR>
-nnoremap <silent> <leader>m :Mark<CR>
-nnoremap <silent> <leader>R :Rg<CR>
-imap <c-x><c-k> <plug>(fzf-complete-word)
-imap <c-x><c-f> <plug>(fzf-complete-path)
-nmap <leader><tab> <plug>(fzf-maps-n)
-xmap <leader><tab> <plug>(fzf-maps-x)
-omap <leader><tab> <plug>(fzf-maps-o)
-autocmd FileType fzf tnoremap <silent> <buffer> <Esc> <C-g>
+let g:fzf_preview_default_fzf_options = {
+\ '--reverse': v:true,
+\ '--preview-window': 'wrap',
+\ '--exact': v:true,
+\ '--no-sort': v:true,
+\ }
 
-let g:fzf_action = {
-                \'ctrl-t':'tab split',
-                \'ctrl-s':'split',
-                \'ctrl-e':'edit',
-                \'enter':'vsplit'
-                \}
-set grepprg=rg\ --vimgrep\ --no-heading
-set grepformat=%f:%l:%c:%m,%f:%l:%m
-command! -bang -nargs=* Rg
-      \ call fzf#vim#grep(
-      \   'rg --line-number --no-heading '.shellescape(<q-args>), 0,
-      \   fzf#vim#with_preview({'options': '--exact --reverse --delimiter : --nth 3..'}, 'right:50%:wrap'))
+let g:fzf_preview_mru_limit = 500
+let g:fzf_preview_grep_cmd  = 'rg --line-number --no-heading --color=never --sort=path'
 
-inoremap <expr> <c-f><c-i> fzf#vim#complete('gopkgs -format "{{.ImportPath}}"')
+nnoremap <silent> <leader>h :<C-u>FzfPreviewGrepHelpRpc<CR>
+nnoremap <silent> <leader>R :<C-u>FzfPreviewProjectGrepRpc<CR>
+
+nnoremap <silent> <leader>f :<C-u>FzfPreviewProjectFilesRpc<CR>
+nnoremap <silent> <leader>gf :<C-u>FzfPreviewFromResourcesRpc project_mru git<CR>
+nnoremap <silent> <leader>b :<C-u>FzfPreviewBuffersRpc<CR>
+nnoremap <silent> <leader>m :<C-u>FzfPreviewMarksRpc<CR>
+nnoremap <silent> <leader>o :<C-u>FzfPreviewFromResourcesRpc buffer project_mru<CR>
+nnoremap <silent> <leader><C-o> :<C-u>FzfPreviewJumpsRpc<CR>
+nnoremap <silent> <leader>/     :<C-u>FzfPreviewLinesRpc --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
+nnoremap <silent> <leader>*     :<C-u>FzfPreviewLinesRpc --add-fzf-arg=--no-sort --add-fzf-arg=--query="'<C-r>=expand('<cword>')<CR>"<CR>
+
+"nnoremap <silent> <leader>R :<C-u>FzfPreviewProjectGrepRpc --add-fzf-arg=--nth=3 --add-fzf-arg=--delimiter=":" <CR>

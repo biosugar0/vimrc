@@ -30,8 +30,6 @@ function! PackInit() abort
         call minpac#add('hrsh7th/vim-vsnip-integ')
         call minpac#add('itchyny/vim-winfix') " この問題を解決 https://vim-jp.org/slacklog/CJMV3MSLR/2021/04/#ts-1617342668.288800
         call minpac#add('junegunn/fzf', {'do': {-> system('./install --all')}})
-        call minpac#add('junegunn/fzf.vim',{'do': function('s:ripgrep') })
-        call minpac#add('yssl/QFEnter')
         call minpac#add('junegunn/vim-easy-align')
         call minpac#add('kana/vim-altr')
         call minpac#add('kana/vim-operator-replace')
@@ -68,6 +66,8 @@ function! PackInit() abort
         call minpac#add('vim-airline/vim-airline-themes')
         call minpac#add('vim-jp/vimdoc-ja')
         call minpac#add('vim-test/vim-test')
+        call minpac#add('yssl/QFEnter')
+        call minpac#add('yuki-yano/fzf-preview.vim', { 'rev': 'release/rpc','do': function('s:ripgrep') })
         "}}}
         packloadall
   endif
