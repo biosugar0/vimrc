@@ -32,3 +32,9 @@ command! -bang -nargs=* Rg
       \   fzf#vim#with_preview({'options': '--exact --reverse --delimiter : --nth 3..'}, 'right:50%:wrap'))
 
 inoremap <expr> <c-f><c-i> fzf#vim#complete('gopkgs -format "{{.ImportPath}}"')
+
+let g:helppaths = uniq(sort(split(globpath(&runtimepath, 'doc/**', 1), '\n')))
+command! -bang -nargs=* HelpRg
+      \ call fzf#vim#grep(
+      \   'rg --line-number --no-heading -g "*" "" '. join(g:helppaths).shellescape(<q-args>), 1,
+      \   fzf#vim#with_preview({'options': '--exact --reverse --delimiter : --nth 3..'}, 'right:90%'), <bang>0)
