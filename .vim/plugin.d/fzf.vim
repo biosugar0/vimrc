@@ -1,5 +1,6 @@
 " fzf settings
 let $FZF_PREVIEW_PLUGIN_HELP_ROOT_DIR = $HOME.'/.vim/pack/minpac/start'
+let $FZF_PREVIEW_PREVIEW_BAT_THEME = 'OneHalfDark'
 let g:fzf_preview_default_fzf_options = {
 \ '--reverse': v:true,
 \ '--preview-window': 'wrap',
