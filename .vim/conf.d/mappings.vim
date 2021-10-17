@@ -3,6 +3,8 @@ let g:maplocalleader = "\<space>"
 "jjをescに
 inoremap <silent> jj <ESC>
 tnoremap <silent> <ESC> <C-\><C-n>
+cnoremap <expr> j
+      \ getcmdline()[getcmdpos()-2] ==# 'j' ? '<BS><C-c>' : 'j'
 " termianl modeでペースト
 tnoremap <expr> <C-v> getreg("")
 
