@@ -25,7 +25,7 @@ let g:terminal_ansi_colors = [
     \ '#ffffff'
     \ ]
 
-let g:polyglot_disabled = ['csv']
+let g:polyglot_disabled = ['csv' , 'ftdetect']
 let g:go_highlight_array_whitespace_error = 1
 let g:go_highlight_chan_whitespace_error = 1
 let g:go_highlight_extra_types = 1
