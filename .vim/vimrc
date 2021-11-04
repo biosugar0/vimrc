@@ -51,7 +51,8 @@ let g:loaded_zip                  = 1
 let g:loaded_zipPlugin            = 1
 let g:no_gvimrc_example           = 1
 let g:no_vimrc_example            = 1
-let g:skip_loading_mswin          = 1"}}}
+let g:skip_loading_mswin          = 1
+"}}}
 "保存時の設定{{{
 "末尾の空白削除
 autocmd FileType go,sql,python,vim,sh autocmd BufWritePre * :%s/\s\+$//ge
