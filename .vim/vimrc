@@ -94,7 +94,6 @@ set scrolloff=8                " 上下8行の視界を確保
 set sidescrolloff=16           " 左右スクロール時の視界を確保
 set sidescroll=1               " 左右スクロールは一文字づつ行う
 set nostartofline              " 移動時にx軸をそのままにする
-set nowrap                     " 遅いのでオフにする
 "}}}
 "ファイル処理関連{{{
 set confirm  " 保存されていないファイルがあるときは終了前に保存確認
