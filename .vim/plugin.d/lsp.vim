@@ -25,54 +25,54 @@ function! s:on_lsp_buffer_enabled() abort
 
   " commands
   command! LspDebug let lsp_log_verbose=1 | let lsp_log_file = expand('~/lsp.log')
-
-  " lsp config
-  let g:lsp_diagnostics_enabled = 1
-  let g:asyncomplete_auto_popup = 1
-  let g:asyncomplete_matchfuzzy = 1
-  let g:asyncomplete_min_chars = 2
-  let g:asyncomplete_auto_completeopt = 0
-  let g:asyncomplete_popup_delay = 10
-  let g:lsp_insert_text_enabled = 1
-  let g:lsp_text_edit_enabled = 1
-  let g:lsp_diagnostics_float_cursor = 1
-  let g:lsp_diagnostics_float_delay = 100
-  let g:lsp_highlight_reference_enabled = 1
-  let g:lsp_settings_filetype_go = ['gopls', 'golangci-lint-langserver']
-  let g:lsp_settings = {
-    \'gopls':{
-      \'workspace_config': {
-        \'staticcheck': v:true,
-        \'completeUnimported': v:true,
-        \'caseSensitiveCompletion': v:true,
-        \'usePlaceholders': v:true,
-        \'completionDocumentation': v:true,
-        \'watchFileChanges': v:true,
-        \'hoverKind': 'SingleLine',
-        \'analyses': {
-            \'nonewvars': v:true,
-            \'unusedparams': v:true
-        \},
-      \},
-      \'initialization_options': {
-        \ 'usePlaceholders': v:true,
-        \ "completeUnimported": v:true,
-        \ "staticcheck": v:true,
-        \ 'analyses': {
-            \ 'nonewvars': v:true,
-            \ 'unusedparams': v:true
-          \ },
-      \ },
-    \},
-    \'golangci-lint-langserver':{
-      \'initialization_options': {
-          \'command': ['golangci-lint', 'run', '--enable-all',
-            \'--disable', 'lll', '--disable','gochecknoglobals',
-            \'--out-format', 'json']
-      \},
-    \},
-  \}
 endfunction
+
+" lsp config
+let g:lsp_diagnostics_enabled = 1
+let g:asyncomplete_auto_popup = 1
+let g:asyncomplete_matchfuzzy = 1
+let g:asyncomplete_min_chars = 2
+let g:asyncomplete_auto_completeopt = 0
+let g:asyncomplete_popup_delay = 10
+let g:lsp_insert_text_enabled = 1
+let g:lsp_text_edit_enabled = 1
+let g:lsp_diagnostics_float_cursor = 1
+let g:lsp_diagnostics_float_delay = 100
+let g:lsp_highlight_reference_enabled = 1
+let g:lsp_settings_filetype_go = ['gopls', 'golangci-lint-langserver']
+let g:lsp_settings = {
+\'gopls':{
+  \'workspace_config': {
+    \'staticcheck': v:true,
+    \'completeUnimported': v:true,
+    \'caseSensitiveCompletion': v:true,
+    \'usePlaceholders': v:true,
+    \'completionDocumentation': v:true,
+    \'watchFileChanges': v:true,
+    \'hoverKind': 'SingleLine',
+    \'analyses': {
+        \'nonewvars': v:true,
+        \'unusedparams': v:true
+    \},
+  \},
+  \'initialization_options': {
+    \ 'usePlaceholders': v:true,
+    \ "completeUnimported": v:true,
+    \ "staticcheck": v:true,
+    \ 'analyses': {
+        \ 'nonewvars': v:true,
+        \ 'unusedparams': v:true
+      \ },
+  \ },
+\},
+\'golangci-lint-langserver':{
+  \'initialization_options': {
+      \'command': ['golangci-lint', 'run', '--enable-all',
+        \'--disable', 'lll', '--disable','gochecknoglobals',
+        \'--out-format', 'json']
+  \},
+\},
+\}
 
 augroup lsp_install
   au!
