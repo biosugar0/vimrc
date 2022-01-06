@@ -47,6 +47,10 @@ endfunction
 command! -nargs=1 WWW call s:www(<f-args>)
 command! -nargs=1 GG call s:gg(<f-args>)
 
+" json formatter
+"autocmd FileType json autocmd BufWritePre <buffer> %!python -m json.tool
+command! -nargs=0 JsonFmt %!python -m json.tool
+
 if executable('rg')
     let &grepprg = 'rg --vimgrep --hidden'
     set grepformat=%f:%l:%c:%m

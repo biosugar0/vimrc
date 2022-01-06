@@ -2,7 +2,6 @@
 install: /usr/local/bin/bat
 	echo install
 	@echo [Vim Setting] install vim settings...
-	@cp .vimrc ~/.vimrc
 	@cp -r .vim ~/
 	@yes | vim -c :qa
 	@echo [Vim Setting] install completed.
@@ -11,7 +10,6 @@ install: /usr/local/bin/bat
 installn: /usr/local/bin/bat
 	echo install
 	@echo [Vim Setting] install vim settings...
-	@ln -s $(PWD)/.vimrc $(HOME)/.vimrc
 	@ln -s $(PWD)/.vim $(HOME)/.vim
 	@yes | vim -c :qa
 	@echo [Vim Setting] install completed.
@@ -25,10 +23,8 @@ installn: /usr/local/bin/bat
 
 .PHONY: test
 test:
-	@cp .vimrc ~/.vimrc
 	@cp -r .vim ~/
 	@yes | vim -c :qa
 .PHONY: clean
 clean:
 	@rm -rf ~/.vim
-	@rm -rf ~/.vimrc

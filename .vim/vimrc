@@ -56,8 +56,6 @@ let g:skip_loading_mswin          = 1
 "保存時の設定{{{
 "末尾の空白削除
 autocmd FileType go,sql,python,vim,sh autocmd BufWritePre * :%s/\s\+$//ge
-" json formatter
-autocmd FileType json autocmd BufWritePre <buffer> %!python -m json.tool
 "強制全保存終了を無効化。
 nnoremap ZZ <Nop>
 nnoremap <C-d> <Nop>
