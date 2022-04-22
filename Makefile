@@ -17,9 +17,12 @@ installn: /usr/local/bin/bat
 /usr/local/Homebrew/bin/brew:
 	@/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	
-/usr/local/bin/bat:
-	@make /usr/local/Homebrew/bin/brew
+/usr/local/bin/bat: /usr/local/Homebrew/bin/brew
 	@brew install bat
+
+/usr/local/bin/node: /usr/local/Homebrew/bin/brew
+	@brew install bat
+
 
 .PHONY: test
 test:
