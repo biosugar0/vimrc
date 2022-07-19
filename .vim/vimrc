@@ -5,6 +5,53 @@ function! s:mkdir(...) abort
     return call('mkdir', a:000)
 endfunction
 
+
+augroup vimrc-auto-createfile
+  autocmd!
+  autocmd BufRead,BufNewFile $MEMO_DIRECTORY* setlocal path+=$MEMO_DIRECTORY/**
+  set suffixesadd+=.md
+  nnoremap <silent> gf :call <sid>open_file_or_create_new()<CR>
+
+  function! s:open_file_or_create_new() abort
+    let l:path = expand('<cfile>')
+    if empty(l:path)
+      return
+    endif
+
+    try
+      exe 'norm!gf'
+    catch /.*/
+      echo 'New file.'
+      let l:new_path = fnamemodify(expand('%:p:h') . '/' . l:path, ':p')
+      if !empty(fnamemodify(l:new_path, ':e')) "Edit immediately if file has extension
+        return execute('edit '.l:new_path)
+      endif
+
+      let l:suffixes = split(&suffixesadd, ',')
+
+      for l:suffix in l:suffixes
+        if filereadable(l:new_path.l:suffix)
+          return execute('edit '.l:new_path.l:suffix)
+        endif
+      endfor
+
+      return execute('edit '.l:new_path.l:suffixes[0])
+    endtry
+  endfunction
+augroup END
+
+" Normal mode切替時にIMEをOFFにする
+if has('mac')
+  set ttimeoutlen=1
+  let g:imeoff = 'osascript -e "tell application \"System Events\" to key code 102"'
+  augroup MyIMEGroup
+    autocmd!
+    autocmd InsertLeave * :call system(g:imeoff)
+  augroup END
+  noremap <silent> <ESC> <ESC>:call system(g:imeoff)<CR>
+endif
+
+
 set nrformats= "すべての数を10進数として扱う
 set nrformats+=unsigned " 数字の増加減少でマイナスを扱わない
 "=をファイル名の一部と認識させない
@@ -82,7 +129,7 @@ set breakindent    " インデントされた行の折り返しを綺麗に
 "" 不可視文字の表示記号指定
 set listchars=tab:\|-,trail:-,nbsp:%,eol:↲,extends:❯,precedes:❮
 set foldmethod=marker
-set lazyredraw " lazy drawing
+"set lazyredraw " lazy drawing
 set ttyfast
 "}}}
 "移動設定{{{
