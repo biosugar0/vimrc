@@ -3,6 +3,8 @@ repo = 'Shougo/ddc.vim'
 on_event = 'InsertEnter'
 depends = ['denops.vim']
 hook_source = '''
+  set completeopt=menuone,noinsert,noselect
+  setlocal signcolumn=yes
   call ddc#custom#patch_global('sources', ['nvim-lsp', 'vsnip',  'around', 'file'])
   call ddc#custom#patch_global('completionMenu', 'pum.vim')
   call ddc#custom#patch_global('sourceParams', {
@@ -19,7 +21,7 @@ hook_source = '''
         \ 'nvim-lsp': {
         \   'mark': 'lsp',
         \   'matchers': ['matcher_head'],
-        \   'forceCompletionPattern': '\.\w*|:\w*|->\w*' },
+        \   'forceCompletionPattern': '\.|:|->|"\w+/*' },
         \ 'file': {
         \   'mark': 'file',
         \   'isVolatile': v:true,
@@ -27,8 +29,9 @@ hook_source = '''
         \ 'vsnip': {'dup': v:true, 'mark': 'snip'},
         \ })
   call ddc#enable()
-  inoremap <Tab> <Cmd>call pum#map#insert_relative(+1)<CR>
-  inoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
+  inoremap <C-n>   <Cmd>call pum#map#insert_relative(+1)<CR>
+  inoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
+  imap <silent><expr> <CR>  pum#visible() ? '<Cmd>call pum#map#confirm()<CR>' : '<CR>'
 '''
 
 
@@ -69,14 +72,19 @@ repo = 'hrsh7th/vim-vsnip'
 on_source = 'ddc.vim'
 depends = ['vim-vsnip-integ']
 hook_add = '''
-imap <expr> <C-k>   vsnip#available(1)  ? '<Plug>(vsnip-expand)'         : '<C-k>'
-imap <expr> <C-j>   vsnip#available(1)  ? '<Plug>(vsnip-expand)'         : '<C-j>'
 imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
 smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-imap <expr> <Tab>   vsnip#available(1)  ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-smap <expr> <Tab>   vsnip#available(1)  ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-imap <expr> <S-Tab> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-smap <expr> <S-Tab> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+nmap        s   <Plug>(vsnip-select-text)
+xmap        s   <Plug>(vsnip-select-text)
+nmap        S   <Plug>(vsnip-cut-text)
+xmap        S   <Plug>(vsnip-cut-text)
+
 '''
 [[plugins]]
 repo = 'hrsh7th/vim-vsnip-integ'
@@ -91,7 +99,7 @@ EOF
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
 on_event = 'BufEnter'
-depends = ['pum.vim','mason-lspconfig.nvim']
+depends = ['pum.vim','mason-lspconfig.nvim','denops-signature_help']
 hook_source= '''
 lua << EOF
 local on_attach = function(client, bufnr)
@@ -115,6 +123,8 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
   buf_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
   buf_set_keymap("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
+
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -130,9 +140,45 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 local nvim_lsp = require('lspconfig')
 local mason_lspconfig = require('mason-lspconfig')
 
+local settings = {
+    sumneko_lua = {
+        Lua = {
+            runtime = {
+                version = 'LuaJIT',
+            },
+            diagnostics = {
+                globals = { 'vim' },
+            },
+            workspace = {
+                library = vim.api.nvim_get_runtime_file("", true),
+            },
+            telemetry = {
+                enable = false,
+            },
+            completion = {
+                callSnippet = 'Replace',
+            },
+        },
+    },
+    gopls = {
+        gopls = {
+            usePlaceholders = true,
+            completeUnimported = true,
+            staticcheck = true,
+            analyses = {
+                nonewvars = true,
+                unusedparams = true,
+            },
+        },
+    },
+}
+
+
 mason_lspconfig.setup_handlers({ function(server_name)
   local opts = {}
   opts.on_attach = on_attach
+  opts.capabilities = capabilities
+  opts.settings = settings[target],
   nvim_lsp[server_name].setup(opts)
 end })
 
@@ -159,7 +205,11 @@ on_source = 'nvim-lspconfig'
 repo = 'matsui54/denops-signature_help'
 on_source = 'ddc.vim'
 hook_source = '''
+let g:signature_help_config = {
+    \ 'style': "currentLabelOnly",
+    \ }
 call signature_help#enable()
+let g:lsp_signature_help_enabled = 0
 '''
 
 [[plugins]]
