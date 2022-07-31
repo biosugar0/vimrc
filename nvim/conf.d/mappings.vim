@@ -1,5 +1,3 @@
-let g:mapleader = "\<space>"
-let g:maplocalleader = "\<space>"
 "jjをescに
 inoremap <silent> jj <ESC>
 tnoremap <silent> <ESC> <C-\><C-n>

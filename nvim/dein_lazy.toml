@@ -99,34 +99,32 @@ EOF
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
 on_event = 'BufEnter'
-depends = ['pum.vim','mason-lspconfig.nvim','denops-signature_help']
+depends = ['pum.vim','mason-lspconfig.nvim','fidget.nvim','denops-signature_help']
 hook_source= '''
 lua << EOF
 local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-  local opts = { noremap = true, silent = true }
-  buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-  buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-  buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-  buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-  buf_set_keymap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-  buf_set_keymap("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
-  buf_set_keymap("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
-  buf_set_keymap("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
-  buf_set_keymap("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
-  buf_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-  buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-  buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-  buf_set_keymap("n", "<space>e", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
-  buf_set_keymap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
-  buf_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
-  buf_set_keymap("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
-  buf_set_keymap('n', '==', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  local bufopts = { noremap=true, silent=true, buffer=bufnr }
+  vim.keymap.set('n', 'gD', vim.lsp.buf.references, bufopts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+  vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+  vim.keymap.set('n', '<space>wl', function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, bufopts)
+  vim.keymap.set('n', 'gT', vim.lsp.buf.type_definition, bufopts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set('n', '<space>e', vim.lsp.diagnostic.show_line_diagnostics, bufopts)
+  vim.keymap.set('n', '[d', vim.lsp.diagnostic.goto_prev, bufopts)
+  vim.keymap.set('n', ']d', vim.lsp.diagnostic.goto_next, bufopts)
+  vim.keymap.set('n', '<space>q', vim.lsp.diagnostic.set_loclist, bufopts)
+  vim.keymap.set('n', '==', vim.lsp.buf.formatting, bufopts)
   buf_set_option( 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -226,11 +224,27 @@ call popup_preview#enable()
 '''
 
 [[plugins]]
+repo = 'j-hui/fidget.nvim'
+hook_source = '''
+lua require("fidget").setup({})
+'''
+
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter-textobjects'
+
+[[plugins]]
+repo = 'David-Kunz/treesitter-unit'
+
+[[plugins]]
 repo = 'nvim-treesitter/nvim-treesitter'
-on_event = 'BufEnter'
+depends = ['nvim-treesitter-textobjects', 'treesitter-unit']
+on_event = 'BufRead'
+hook_post_update = 'TSUpdate'
 hook_source= '''
 lua << EOF
 require'nvim-treesitter.configs'.setup {
+  ensure_installed = {"vim", "toml", "python", "go","hcl"},
+
   highlight = {
     enable = true,
     disable = {
@@ -243,7 +257,31 @@ require'nvim-treesitter.configs'.setup {
   },
   indent = {
     enable = true,
-  }
+  },
+  textobjects = {
+      select = {
+          enable = true,
+          lookahead = true,
+          keymaps = {
+              ["ib"] = "@block.inner",
+              ["ab"] = "@block.outer",
+              ["c"] = "@comment.outer",
+              ["if"] = "@function.inner",
+              ["af"] = "@function.outer",
+              ["il"] = "@loop.inner",
+              ["al"] = "@loop.outer",
+          },
+      },
+      swap = {
+          enable = true,
+          swap_next = {
+              ["<M-s>"] = "@parameter.inner",
+          },
+          swap_previous = {
+              ["<M-S-s>"] = "@parameter.inner",
+          },
+      },
+  },
 }
 EOF
 '''
@@ -266,3 +304,312 @@ let g:go_addtags_transform = 'camelcase'
 repo ='mattn/vim-goimports'
 on_ft = ['go']
 
+
+[[plugins]]
+repo = 'vim-jp/vimdoc-ja'
+on_event = 'BufEnter'
+hook_source = '''
+set helplang=ja " help日本語化
+'''
+
+[[plugins]]
+repo = 'lambdalisue/gina.vim'
+on_event = 'BufEnter'
+hook_source = '''
+let g:gina#command#blame#formatter#format ="%au%=on %ti %ma%in"
+
+
+nnoremap <silent> <Leader>aa :<C-u>Gina status<CR>
+nnoremap <silent> <Leader>aA :<C-u>Gina changes HEAD<CR>
+nnoremap <silent> <Leader>ac :<C-u>Gina commit<CR>
+nnoremap <silent> <Leader>aC :<C-u>Gina commit --amend<CR>
+nnoremap <silent> <Leader>ab :<C-u>Gina branch -av<CR>
+nnoremap <silent> <Leader>at :<C-u>Gina tag<CR>
+nnoremap <silent> <Leader>ag :<C-u>Gina grep<CR>
+nnoremap <silent> <Leader>aq :<C-u>Gina qrep<CR>
+nnoremap <silent> <Leader>ap :<C-u>Gina push<CR>
+nnoremap <silent> <Leader>ad :<C-u>Gina changes origin/HEAD...<CR>
+nnoremap <silent> <Leader>ah :<C-u>Gina log --graph<CR>
+nnoremap <silent> <Leader>aH :<C-u>Gina log --graph --all<CR>
+nnoremap <silent> <Leader>al :<C-u>Gina log<CR>
+nnoremap <silent> <Leader>aL :<C-u>Gina log :%<CR>
+nnoremap <silent> <Leader>af :<C-u>Gina ls<CR>
+nnoremap <silent> <Leader>ars :<C-u>Gina show <C-r><C-w><CR>
+nnoremap <silent> <Leader>arc :<C-u>Gina changes <C-r><C-w><CR>
+nnoremap <silent> <Leader>ao :Gina browse --extract :<CR>
+xnoremap <silent> <Leader>ao :Gina browse --extract :<CR>
+
+
+command! -nargs=? PR Gina browse --scheme=pr <args>
+nnoremap <leader>aw :PR<CR>
+
+call extend(g:gina#command#browse#translation_patterns['github\.com'][1],
+              \ {'pr':'https://\1/\2/\3/pull/new/%c0'}
+              \)
+call gina#custom#command#option(
+      \ 'commit', '-v|--verbose'
+      \)
+call gina#custom#command#option(
+      \ '/\%(status\|commit\)',
+      \ '-u|--untracked-files'
+      \)
+call gina#custom#command#option(
+      \ 'status',
+      \ '-b|--branch'
+      \)
+call gina#custom#command#option(
+      \ 'status',
+      \ '-s|--short'
+      \)
+call gina#custom#command#option(
+      \ '/\%(commit\|tag\)',
+      \ '--restore'
+      \)
+call gina#custom#mapping#nmap(
+      \ 'status', '<C-^>',
+      \ ':<C-u>Gina commit<CR>',
+      \ {'noremap': 1, 'silent': 1}
+      \)
+call gina#custom#mapping#nmap(
+      \ 'commit', '<C-^>',
+      \ ':<C-u>Gina status<CR>',
+      \ {'noremap': 1, 'silent': 1}
+      \)
+call gina#custom#mapping#nmap(
+      \ 'status', '<C-6>',
+      \ ':<C-u>Gina commit<CR>',
+      \ {'noremap': 1, 'silent': 1}
+      \)
+call gina#custom#mapping#nmap(
+      \ 'commit', '<C-6>',
+      \ ':<C-u>Gina status<CR>',
+      \ {'noremap': 1, 'silent': 1}
+      \)
+call gina#custom#action#alias(
+      \ '/\%(blame\|log\|reflog\)',
+      \ 'preview',
+      \ 'topleft show:commit:preview',
+      \)
+call gina#custom#mapping#nmap(
+      \ '/\%(blame\|log\|reflog\)',
+      \ 'p',
+      \ ':<C-u>call gina#action#call(''preview'')<CR>',
+      \ {'noremap': 1, 'silent': 1}
+      \)
+
+call gina#custom#action#alias(
+      \ '/\%(blame\|log\|reflog\)',
+      \ 'changes',
+      \ 'topleft changes:of:preview',
+      \)
+call gina#custom#mapping#nmap(
+      \ '/\%(blame\|log\|reflog\)',
+      \ 'c',
+      \ ':<C-u>call gina#action#call(''changes'')<CR>',
+      \ {'noremap': 1, 'silent': 1}
+      \)
+
+call gina#custom#execute(
+      \ '/\%(ls\|log\|reflog\|grep\)',
+      \ 'setlocal noautoread',
+      \)
+call gina#custom#execute(
+      \ '/\%(status\|branch\|ls\|log\|reflog\|grep\)',
+      \ 'setlocal cursorline',
+      \)
+
+call gina#custom#command#option(
+      \ '/\%(branch\|changes\|grep\|log\|show\)',
+      \ '--opener', 'vsplit'
+      \)
+call gina#custom#execute(
+      \ '/\%(status\|branch\|ls\|grep\|changes\|tag\)',
+      \ 'setlocal winfixheight',
+      \)
+
+call gina#custom#mapping#nmap(
+      \ 'branch',
+      \ 'dd',
+      \ '<Plug>(gina-branch-delete)',
+      \ {'mode': 'n', 'silent': 1}
+      \)
+call gina#custom#mapping#nmap(
+      \ 'branch',
+      \ 'n',
+      \ '<Plug>(gina-branch-new)',
+      \ {'nmap': 1, 'silent': 1}
+      \)
+'''
+
+[[plugins]]
+repo = 'yuki-yano/fuzzy-motion.vim'
+depends = 'denops.vim'
+on_cmd = 'FuzzyMotion'
+hook_add = '''
+nnoremap ss <Cmd>FuzzyMotion<CR>
+'''
+
+[[plugins]]
+repo = 'machakann/vim-sandwich'
+on_event = 'BufEnter'
+
+[[plugins]]
+repo = 'skanehira/translate.vim'
+on_event = 'BufEnter'
+
+[[plugins]]
+repo = 'kana/vim-textobj-user'
+on_event = 'BufEnter'
+
+[[plugins]]
+repo = 'junegunn/vim-easy-align'
+on_map = { nx = '<Plug>(EasyAlign)' }
+hook_add = '''
+nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
+'''
+
+[[plugins]]
+repo ='kana/vim-operator-replace'
+depends = 'vim-operator-user'
+on_map = { n = '<Plug>(operator-replace)' }
+hook_add = '''
+nmap r <Plug>(operator-replace)
+'''
+
+[[plugins]]
+repo ='kana/vim-operator-user'
+on_event = 'BufEnter'
+
+[[plugins]]
+repo = 'machakann/vim-textobj-delimited'
+on_event = 'BufEnter'
+
+[[plugins]]
+repo = 'sgur/vim-textobj-parameter'
+on_event = 'BufEnter'
+
+[[plugins]]
+repo ='mattn/vim-findroot'
+on_event = 'BufEnter'
+hook_source = '''
+let g:findroot_not_for_subdir = 0
+'''
+[[plugins]]
+repo ='t9md/vim-textmanip'
+
+[[plugins]]
+repo = 'cohama/lexima.vim'
+on_event = 'InsertEnter'
+
+[[plugins]]
+repo ='thinca/vim-qfreplace'
+on_event = 'BufEnter'
+[[plugins]]
+repo ='thinca/vim-qfhl'
+on_event = 'BufEnter'
+[[plugins]]
+repo ='tpope/vim-repeat'
+on_map = ['.']
+[[plugins]]
+repo ='yssl/QFEnter'
+on_event = 'BufEnter'
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+on_event = 'BufEnter'
+
+[[plugins]]
+repo = 'hrsh7th/vim-eft'
+on_map = { nxo = '<Plug>(eft-' }
+hook_add = '''
+" f/t/F/T を単語境界のみにマッチさせる機能を持ったプラグイン
+nmap f <Plug>(eft-f-repeatable)
+xmap f <Plug>(eft-f-repeatable)
+omap f <Plug>(eft-f-repeatable)
+nmap F <Plug>(eft-F-repeatable)
+xmap F <Plug>(eft-F-repeatable)
+omap F <Plug>(eft-F-repeatable)
+
+nmap t <Plug>(eft-t-repeatable)
+xmap t <Plug>(eft-t-repeatable)
+omap t <Plug>(eft-t-repeatable)
+nmap T <Plug>(eft-T-repeatable)
+xmap T <Plug>(eft-T-repeatable)
+omap T <Plug>(eft-T-repeatable)
+'''
+
+
+[[plugins]]
+repo = 'junegunn/fzf.vim'
+on_map  = [
+'<Leader>f',
+'<Leader>gf',
+'<Leader>gF',
+'<Leader>b ',
+'<Leader>l ',
+'<Leader>h ',
+'<Leader>m ',
+'<Leader>R ',
+]
+on_cmd = [
+    'Files',
+    'GFiles',
+    'Buffers',
+    'BLines',
+    'History',
+    'Mark',
+    'Rg',
+    'HelpRg',
+]
+depends = 'fzf'
+hook_source= '''
+let $FZF_DEFAULT_OPTS="--layout=reverse"
+let $FZF_DEFAULT_COMMAND="rg --line-number --no-heading --files --hidden --glob '!.git/**'"
+
+let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'border': 'sharp' } }
+nnoremap <silent> <Leader>f :Files<CR>
+nnoremap <silent> <Leader>gf :GFiles<CR>
+nnoremap <silent> <Leader>gF :GFiles?<CR>
+nnoremap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <Leader>l :BLines<CR>
+nnoremap <silent> <Leader>h :History<CR>
+nnoremap <silent> <Leader>m :Mark<CR>
+nnoremap <silent> <Leader>R :Rg<CR>
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+autocmd FileType fzf tnoremap <silent> <buffer> <Esc> <C-g>
+
+let g:fzf_action = {
+                \'ctrl-t':'tab split',
+                \'ctrl-s':'split',
+                \'ctrl-e':'edit',
+                \'enter':'vsplit'
+                \}
+
+
+let &grepprg = 'rg --json $* \| jq -r ''select(.type=="match")\|.data as $data\|$data.submatches[]\|"\($data.path.text):\($data.line_number):\(.start+1):\(.end+1):\($data.lines.text//""\|sub("\n$";""))"'
+
+command! -bang -nargs=* Rg
+      \ call fzf#vim#grep(
+      \   'rg --line-number --no-heading '.shellescape(<q-args>), 0,
+      \   fzf#vim#with_preview({'options': '--exact --reverse --delimiter : --nth 3..'}, 'right:50%:wrap'))
+
+inoremap <expr> <c-f><c-i> fzf#vim#complete('gopkgs -format "{{.ImportPath}}"')
+
+let g:helppaths = uniq(sort(split(globpath(&runtimepath, 'doc/**', 1), '\n')))
+command! -bang -nargs=* HelpRg
+      \ call fzf#vim#grep(
+      \   'rg --line-number --no-heading -g "*" "" '. join(g:helppaths).shellescape(<q-args>), 1,
+      \   fzf#vim#with_preview({'options': '--exact --reverse --delimiter : --nth 3..'}, 'right:90%'), <bang>0)
+
+'''
+
+[[plugins]]
+repo ='vim-airline/vim-airline'
+on_event = 'BufRead'
+
+[[plugins]]
+repo ='vim-airline/vim-airline-themes'
+depends = 'vim-airline'
+on_source = 'vim-airline'
