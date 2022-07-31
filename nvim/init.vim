@@ -157,7 +157,6 @@ set showmatch      " 対応する括弧を強調表示
 set helpheight=999 " ヘルプを画面いっぱいに開く
 set list           " 不可視文字を表示
 set breakindent    " インデントされた行の折り返しを綺麗に
-set number " 行番号表示
 set cursorline  " カーソル行を強調
 " 不可視文字の表示記号指定
 set listchars=tab:\|-,trail:-,nbsp:%,eol:↲,extends:❯,precedes:❮

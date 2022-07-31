@@ -123,8 +123,10 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
   buf_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
   buf_set_keymap("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
-  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  buf_set_keymap('n', '==', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
   buf_set_option( 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -136,6 +138,8 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
     'additionalTextEdits'
   }
 }
+
+
 
 local nvim_lsp = require('lspconfig')
 local mason_lspconfig = require('mason-lspconfig')
@@ -203,6 +207,7 @@ on_source = 'nvim-lspconfig'
 
 [[plugins]]
 repo = 'matsui54/denops-signature_help'
+depends = 'denops.vim'
 on_source = 'ddc.vim'
 hook_source = '''
 let g:signature_help_config = {
@@ -214,6 +219,7 @@ let g:lsp_signature_help_enabled = 0
 
 [[plugins]]
 repo = 'matsui54/denops-popup-preview.vim'
+depends = 'denops.vim'
 on_source = 'ddc.vim'
 hook_source = '''
 call popup_preview#enable()
@@ -259,3 +265,4 @@ let g:go_addtags_transform = 'camelcase'
 [[plugins]]
 repo ='mattn/vim-goimports'
 on_ft = ['go']
+

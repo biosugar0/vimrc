@@ -1,5 +1,8 @@
 [[plugins]]
 repo = 'Shougo/dein.vim'
+hook_source = '''
+let g:dein#install_message_type = "echo"
+'''
 [[plugins]]
 repo = 'vim-denops/denops.vim'
 [[plugins]]
@@ -157,7 +160,9 @@ repo = 'junegunn/fzf'
 build = '''
 ./install -all
 '''
-merged = '0'
+
+[[plugins]]
+repo = 'machakann/vim-sandwich'
 
 [[plugins]]
 repo = 'junegunn/fzf.vim'
@@ -226,8 +231,13 @@ repo = 'machakann/vim-textobj-delimited'
 repo = 'sgur/vim-textobj-parameter'
 [[plugins]]
 repo ='mattn/vim-findroot'
+hook_source = '''
+let g:findroot_not_for_subdir = 0
+'''
 [[plugins]]
 repo ='t9md/vim-textmanip'
+[[plugins]]
+repo = 'cohama/lexima.vim'
 [[plugins]]
 repo ='thinca/vim-qfreplace'
 [[plugins]]
@@ -242,8 +252,11 @@ repo ='vim-airline/vim-airline-themes'
 repo ='yssl/QFEnter'
 
 [[plugins]]
+repo = 'airblade/vim-gitgutter'
+
+[[plugins]]
 repo = 'hrsh7th/vim-eft'
-hook_add = '''
+hook_source = '''
 " f/t/F/T を単語境界のみにマッチさせる機能を持ったプラグイン
 nmap f <Plug>(eft-f-repeatable)
 xmap f <Plug>(eft-f-repeatable)
@@ -259,3 +272,6 @@ nmap T <Plug>(eft-T-repeatable)
 xmap T <Plug>(eft-T-repeatable)
 omap T <Plug>(eft-T-repeatable)
 '''
+[[plugins]]
+repo = 'lambdalisue/guise.vim'
+depends = 'denops.vim'
