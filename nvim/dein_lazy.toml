@@ -34,6 +34,25 @@ hook_source = '''
   imap <silent><expr> <CR>  pum#visible() ? '<Cmd>call pum#map#confirm()<CR>' : '<CR>'
 '''
 
+[[plugins]]
+repo = 'mopp/vim-operator-convert-case'
+on_map = '<Plug>(operator-convert-case-'
+hook_add = '''
+nmap clc <Plug>(operator-convert-case-lower-camel)iw
+nmap cuc <Plug>(operator-convert-case-upper-camel)iw
+nmap cls <Plug>(operator-convert-case-lower-snake)iw
+nmap cus <Plug>(operator-convert-case-upper-snake)iw
+nmap ctt <Plug>(operator-convert-case-toggle-upper-lower)iw
+nmap cll <Plug>(operator-convert-case-loop)iw
+nmap ccc <Plug>(operator-convert-case-convert)iw
+vmap clc <Plug>(operator-convert-case-lower-camel)gv
+vmap cuc <Plug>(operator-convert-case-upper-camel)gv
+vmap cls <Plug>(operator-convert-case-lower-snake)gv
+vmap cus <Plug>(operator-convert-case-upper-snake)gv
+vmap ctt <Plug>(operator-convert-case-toggle-upper-lower)gv
+vmap cll <Plug>(operator-convert-case-loop)gv
+vmap ccc <Plug>(operator-convert-case-convert)gv
+'''
 
 [[plugins]]
 repo = 'Shougo/ddc-nvim-lsp'
@@ -42,6 +61,14 @@ on_source = 'ddc.vim'
 [[plugins]]
 repo = 'Shougo/ddc-converter_remove_overlap'
 on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'lambdalisue/guise.vim'
+on_ft = 'terminal'
+depends = 'denops.vim'
+hook_add = '''
+  let g:guise_edit_opener='vsplit'
+'''
 
 [[plugins]]
 repo = 'tani/ddc-fuzzy'
@@ -137,8 +164,6 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   }
 }
 
-
-
 local nvim_lsp = require('lspconfig')
 local mason_lspconfig = require('mason-lspconfig')
 
@@ -225,6 +250,7 @@ call popup_preview#enable()
 
 [[plugins]]
 repo = 'j-hui/fidget.nvim'
+on_source = 'nvim-lspconfig'
 hook_source = '''
 lua require("fidget").setup({})
 '''
@@ -307,14 +333,14 @@ on_ft = ['go']
 
 [[plugins]]
 repo = 'vim-jp/vimdoc-ja'
-on_event = 'BufEnter'
-hook_source = '''
+on_cmd = ['h', 'help']
+hook_add  = '''
 set helplang=ja " help日本語化
 '''
 
 [[plugins]]
 repo = 'lambdalisue/gina.vim'
-on_event = 'BufEnter'
+on_cmd = 'Gina'
 hook_source = '''
 let g:gina#command#blame#formatter#format ="%au%=on %ti %ma%in"
 
@@ -451,7 +477,7 @@ nnoremap ss <Cmd>FuzzyMotion<CR>
 
 [[plugins]]
 repo = 'machakann/vim-sandwich'
-on_event = 'BufEnter'
+on_map = { xon = '<Plug>(sandwich-'}
 
 [[plugins]]
 repo = 'skanehira/translate.vim'
@@ -504,10 +530,7 @@ on_event = 'InsertEnter'
 
 [[plugins]]
 repo ='thinca/vim-qfreplace'
-on_event = 'BufEnter'
-[[plugins]]
-repo ='thinca/vim-qfhl'
-on_event = 'BufEnter'
+on_cmd = 'Qfreplace'
 [[plugins]]
 repo ='tpope/vim-repeat'
 on_map = ['.']
@@ -516,7 +539,7 @@ repo ='yssl/QFEnter'
 on_event = 'BufEnter'
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
-on_event = 'BufEnter'
+on_event = 'BufRead'
 
 [[plugins]]
 repo = 'hrsh7th/vim-eft'
@@ -538,6 +561,10 @@ xmap T <Plug>(eft-T-repeatable)
 omap T <Plug>(eft-T-repeatable)
 '''
 
+[[plugins]]
+repo = 'junegunn/fzf'
+hook_post_update = './install --all'
+merged = 0
 
 [[plugins]]
 repo = 'junegunn/fzf.vim'
@@ -608,8 +635,34 @@ command! -bang -nargs=* HelpRg
 [[plugins]]
 repo ='vim-airline/vim-airline'
 on_event = 'BufRead'
+hook_add = '''
+"" ステータス
+let g:airline_theme = 'badwolf'
+" virtulenvを認識しているか確認用に、現在activateされているvirtualenvを表示(vim-virtualenvの拡張)
+let g:airline#extensions#virtualenv#enabled = 1
+" gitのHEADから変更した行の+-を非表示(vim-gitgutterの拡張)
+let g:airline#extensions#hunks#enabled = 0
+'''
 
 [[plugins]]
 repo ='vim-airline/vim-airline-themes'
 depends = 'vim-airline'
 on_source = 'vim-airline'
+
+[[plugins]]
+repo = 'christoomey/vim-tmux-navigator'
+on_cmd  = [
+    'TmuxNavigateLeft',
+    'TmuxNavigateDown',
+    'TmuxNavigateUp',
+    'TmuxNavigateRight',
+    'TmuxNavigatePrevious',
+]
+hook_add = '''
+" <C-w> 系を Vim Tmux Navigator に移譲する
+nnoremap <silent> <C-w>h :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-w>j :TmuxNavigateDown<cr>
+nnoremap <silent> <C-w>k :TmuxNavigateUp<cr>
+nnoremap <silent> <C-w>l :TmuxNavigateRight<cr>
+nnoremap <silent> <C-w>\\ :TmuxNavigatePrevious<cr>
+'''

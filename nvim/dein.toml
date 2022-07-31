@@ -16,22 +16,3 @@ hook_add = '''
     au BufEnter,ColorScheme * highlight Normal ctermbg=232 guibg=#000000
   augroup END
 '''
-[[plugins]]
-repo = 'christoomey/vim-tmux-navigator'
-hook_add = '''
-" <C-w> 系を Vim Tmux Navigator に移譲する
-nnoremap <silent> <C-w>h :TmuxNavigateLeft<cr>
-nnoremap <silent> <C-w>j :TmuxNavigateDown<cr>
-nnoremap <silent> <C-w>k :TmuxNavigateUp<cr>
-nnoremap <silent> <C-w>l :TmuxNavigateRight<cr>
-nnoremap <silent> <C-w>\\ :TmuxNavigatePrevious<cr>
-'''
-[[plugins]]
-repo = 'junegunn/fzf'
-build = '''
-./install -all
-'''
-
-[[plugins]]
-repo = 'lambdalisue/guise.vim'
-depends = 'denops.vim'
