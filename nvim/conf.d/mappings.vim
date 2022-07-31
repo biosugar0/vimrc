@@ -4,9 +4,6 @@ tnoremap <silent> <ESC> <C-\><C-n>
 cnoremap <expr> j
       \ getcmdline()[getcmdpos()-2] ==# 'j' ? '<BS><C-c>' : 'j'
 
-" create a new empty buffer with current register
-nnoremap <silent> <Space>ap <Cmd>tabnew<Cr>]p:call deletebufline('%', 1, 1)<Cr>
-
 inoremap /c <C-R>=expand('%:p')<CR>
 
 " change window size
