@@ -341,9 +341,9 @@ set helplang=ja " help日本語化
 [[plugins]]
 repo = 'lambdalisue/gina.vim'
 on_cmd = 'Gina'
-hook_source = '''
+on_func = 'gina#'
+hook_add = '''
 let g:gina#command#blame#formatter#format ="%au%=on %ti %ma%in"
-
 
 nnoremap <silent> <Leader>aa :<C-u>Gina status<CR>
 nnoremap <silent> <Leader>aA :<C-u>Gina changes HEAD<CR>
@@ -368,7 +368,8 @@ xnoremap <silent> <Leader>ao :Gina browse --extract :<CR>
 
 command! -nargs=? PR Gina browse --scheme=pr <args>
 nnoremap <leader>aw :PR<CR>
-
+'''
+hook_source = '''
 call extend(g:gina#command#browse#translation_patterns['github\.com'][1],
               \ {'pr':'https://\1/\2/\3/pull/new/%c0'}
               \)
@@ -480,14 +481,6 @@ repo = 'machakann/vim-sandwich'
 on_map = { xon = '<Plug>(sandwich-'}
 
 [[plugins]]
-repo = 'skanehira/translate.vim'
-on_event = 'BufEnter'
-
-[[plugins]]
-repo = 'kana/vim-textobj-user'
-on_event = 'BufEnter'
-
-[[plugins]]
 repo = 'junegunn/vim-easy-align'
 on_map = { nx = '<Plug>(EasyAlign)' }
 hook_add = '''
@@ -504,24 +497,6 @@ nmap r <Plug>(operator-replace)
 '''
 
 [[plugins]]
-repo ='kana/vim-operator-user'
-on_event = 'BufEnter'
-
-[[plugins]]
-repo = 'machakann/vim-textobj-delimited'
-on_event = 'BufEnter'
-
-[[plugins]]
-repo = 'sgur/vim-textobj-parameter'
-on_event = 'BufEnter'
-
-[[plugins]]
-repo ='mattn/vim-findroot'
-on_event = 'BufEnter'
-hook_source = '''
-let g:findroot_not_for_subdir = 0
-'''
-[[plugins]]
 repo ='t9md/vim-textmanip'
 
 [[plugins]]
@@ -536,7 +511,7 @@ repo ='tpope/vim-repeat'
 on_map = ['.']
 [[plugins]]
 repo ='yssl/QFEnter'
-on_event = 'BufEnter'
+on_ft = ['qf']
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
 on_event = 'BufRead'
@@ -665,4 +640,40 @@ nnoremap <silent> <C-w>j :TmuxNavigateDown<cr>
 nnoremap <silent> <C-w>k :TmuxNavigateUp<cr>
 nnoremap <silent> <C-w>l :TmuxNavigateRight<cr>
 nnoremap <silent> <C-w>\\ :TmuxNavigatePrevious<cr>
+'''
+
+[[plugins]]
+repo = 'skanehira/translate.vim'
+on_map = { xn = ['<Plug>(Translate)','<Plug>(VTranslate)']}
+hook_add = '''
+let g:translate_source = "en"
+let g:translate_target = "ja"
+let g:translate_winsize = 10
+nmap tr <Plug>(Translate)
+vmap tr <Plug>(VTranslate)
+'''
+
+[[plugins]]
+repo = 'kana/vim-textobj-user'
+on_map = {nox = '<Plug>'}
+
+[[plugins]]
+repo ='kana/vim-operator-user'
+on_map = {nox = '<Plug>'}
+
+[[plugins]]
+repo = 'machakann/vim-textobj-delimited'
+depends = 'vim-textobj-user'
+on_map = ['vid', 'viD', 'vad', 'vaD']
+
+[[plugins]]
+repo = 'sgur/vim-textobj-parameter'
+depends = 'vim-textobj-user'
+on_map = {xo = '<Plug>(textobj-parameter'}
+
+[[plugins]]
+repo ='mattn/vim-findroot'
+on_event = 'BufRead'
+hook_source = '''
+let g:findroot_not_for_subdir = 0
 '''
