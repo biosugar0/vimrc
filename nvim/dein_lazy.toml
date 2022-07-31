@@ -125,7 +125,7 @@ EOF
 
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
-on_event = 'BufEnter'
+on_event = 'BufRead'
 depends = ['pum.vim','mason-lspconfig.nvim','fidget.nvim','denops-signature_help']
 hook_source= '''
 lua << EOF
@@ -150,7 +150,7 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '[d', vim.lsp.diagnostic.goto_prev, bufopts)
   vim.keymap.set('n', ']d', vim.lsp.diagnostic.goto_next, bufopts)
   vim.keymap.set('n', '<space>q', vim.lsp.diagnostic.set_loclist, bufopts)
-  vim.keymap.set('n', '==', vim.lsp.buf.formatting, bufopts)
+  vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
   buf_set_option( 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
@@ -233,11 +233,11 @@ repo = 'matsui54/denops-signature_help'
 depends = 'denops.vim'
 on_source = 'ddc.vim'
 hook_source = '''
+let g:lsp_signature_help_enabled = 0
 let g:signature_help_config = {
     \ 'style': "currentLabelOnly",
     \ }
 call signature_help#enable()
-let g:lsp_signature_help_enabled = 0
 '''
 
 [[plugins]]
@@ -341,7 +341,6 @@ set helplang=ja " help日本語化
 [[plugins]]
 repo = 'lambdalisue/gina.vim'
 on_cmd = 'Gina'
-on_func = 'gina#'
 hook_add = '''
 let g:gina#command#blame#formatter#format ="%au%=on %ti %ma%in"
 
@@ -364,7 +363,6 @@ nnoremap <silent> <Leader>ars :<C-u>Gina show <C-r><C-w><CR>
 nnoremap <silent> <Leader>arc :<C-u>Gina changes <C-r><C-w><CR>
 nnoremap <silent> <Leader>ao :Gina browse --extract :<CR>
 xnoremap <silent> <Leader>ao :Gina browse --extract :<CR>
-
 
 command! -nargs=? PR Gina browse --scheme=pr <args>
 nnoremap <leader>aw :PR<CR>

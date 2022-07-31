@@ -1,9 +1,6 @@
 set nrformats= "すべての数を10進数として扱う
 set nrformats+=unsigned " 数字の増加減少でマイナスを扱わない
 set virtualedit=all " allow virtual editing in all modes
-"オートコメントアウト無効
-au FileType * setlocal formatoptions-=ro
-
 set clipboard=unnamed,unnamedplus " OSのクリップボードをレジスタ指定無しで Yank, Put 出来るようにする
 
 " 移動設定
@@ -52,7 +49,6 @@ set breakindent    " インデントされた行の折り返しを綺麗に
 set cursorline  " カーソル行を強調
 " 不可視文字の表示記号指定
 set listchars=tab:\|-,trail:-,nbsp:%,eol:↲,extends:❯,precedes:❮
-set foldmethod=marker
 set ttyfast
 
 "タブ、インデント設定
