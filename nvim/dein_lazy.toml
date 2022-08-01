@@ -57,22 +57,17 @@ hook_source = '''
 
 [[plugins]]
 repo = 'mopp/vim-operator-convert-case'
-on_map = '<Plug>(operator-convert-case-'
+depends = 'vim-operator-user'
+on_cmd = [
+    'ConvertCase',
+    'ConvertCaseLoop',
+]
 hook_add = '''
-nmap clc <Plug>(operator-convert-case-lower-camel)iw
-nmap cuc <Plug>(operator-convert-case-upper-camel)iw
-nmap cls <Plug>(operator-convert-case-lower-snake)iw
-nmap cus <Plug>(operator-convert-case-upper-snake)iw
-nmap ctt <Plug>(operator-convert-case-toggle-upper-lower)iw
-nmap cll <Plug>(operator-convert-case-loop)iw
-nmap ccc <Plug>(operator-convert-case-convert)iw
-vmap clc <Plug>(operator-convert-case-lower-camel)gv
-vmap cuc <Plug>(operator-convert-case-upper-camel)gv
-vmap cls <Plug>(operator-convert-case-lower-snake)gv
-vmap cus <Plug>(operator-convert-case-upper-snake)gv
-vmap ctt <Plug>(operator-convert-case-toggle-upper-lower)gv
-vmap cll <Plug>(operator-convert-case-loop)gv
-vmap ccc <Plug>(operator-convert-case-convert)gv
+nmap <silent> crc <Cmd>ConvertCase lowerCamelCase<CR>
+nmap <silent> crm <Cmd>ConvertCase UpperCamelCase<CR>
+nmap <silent> crs <Cmd>ConvertCase lower_snake_case<CR>
+nmap <silent> cre <Cmd>ConvertCase UPPER_SNAKE_CASE<CR>
+nmap <silent> crl <Cmd>ConvertCaseLoop<CR>
 '''
 
 [[plugins]]
