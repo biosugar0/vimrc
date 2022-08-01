@@ -166,7 +166,7 @@ hook_source = '''
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
 on_source = 'ddc.vim'
-on_event = 'CursorHold'
+on_event = 'BufRead'
 depends = ['pum.vim','mason-lspconfig.nvim','fidget.nvim','denops-signature_help']
 hook_source= '''
 lua << EOF
@@ -241,9 +241,28 @@ local settings = {
     },
 }
 
+vim.cmd [[autocmd! ColorScheme * highlight NormalFloat guibg=#1f2335]]
+vim.cmd [[autocmd! ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335]]
+
+local border = {
+      {"╭", "FloatBorder"},
+      {"─", "FloatBorder"},
+      {"╮", "FloatBorder"},
+      {"│", "FloatBorder"},
+      {"╯", "FloatBorder"},
+      {"─", "FloatBorder"},
+      {"╰", "FloatBorder"},
+      {"│", "FloatBorder"},
+}
+local handlers =  {
+  ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = border}),
+  ["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = border }),
+}
 
 mason_lspconfig.setup_handlers({ function(server_name)
-  local opts = {}
+  local opts = {
+    handlers=handlers, 
+  }
   opts.on_attach = on_attach
   opts.capabilities = capabilities
   opts.settings = settings[target],
@@ -870,68 +889,13 @@ xmap <C-h> <Plug>(textmanip-move-left)
 xmap <C-l> <Plug>(textmanip-move-right)
 '''
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+[[plugins]]
+repo = 'AndrewRadev/linediff.vim'
+hook_add = '''
+let g:linediff_first_buffer_command  = 'leftabove new'
+let g:linediff_second_buffer_command = 'rightbelow vertical new'
+augroup LineDiff
+  au!
+  autocmd User LinediffBufferReady nnoremap <buffer> <silent> q :<C-u>LinediffReset<CR>
+augroup END
+'''
