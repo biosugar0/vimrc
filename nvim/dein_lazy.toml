@@ -1,11 +1,11 @@
 [[plugins]]
 repo = 'Shougo/ddc.vim'
-on_event = 'InsertEnter'
-depends = ['denops.vim']
+on_event = ['InsertEnter', 'CursorHold']
+depends = ['denops.vim', 'pum.vim']
 hook_source = '''
   set completeopt=menuone,noinsert,noselect
   setlocal signcolumn=yes
-  call ddc#custom#patch_global('sources', ['nvim-lsp', 'vsnip',  'around', 'file'])
+  call ddc#custom#patch_global('sources', ['nvim-lsp', 'vsnip',  'around','dictionary', 'file'])
   call ddc#custom#patch_global('completionMenu', 'pum.vim')
   call ddc#custom#patch_global('sourceParams', {
       \ 'around': {'maxSize': 500},
@@ -22,16 +22,37 @@ hook_source = '''
         \   'mark': 'lsp',
         \   'matchers': ['matcher_head'],
         \   'forceCompletionPattern': '\.|:|->|"\w+/*' },
+        \ 'dictionary': {
+        \   'matchers': ['matcher_fuzzy'],
+        \   'sorters': ['sorter_fuzzy'],
+        \   'converters': ['converter_fuzzy'],
+        \   'maxCandidates': 16,
+        \   'mark': 'D',
+        \   'minAutoCompleteLength': 3,
+        \ },
         \ 'file': {
         \   'mark': 'file',
         \   'isVolatile': v:true,
         \   'forceCompletionPattern': '\S/\S*' },
         \ 'vsnip': {'dup': v:true, 'mark': 'snip'},
         \ })
+
+   " Change source params
+  call ddc#custom#patch_global('sourceParams', {
+    \ 'nvim-lsp': {
+    \   'maxSize': 100,
+    \ },
+    \ 'around': {
+    \   'maxSize': 100,
+    \ },
+    \ 'dictionary': {
+    \   'dictPaths': ['/usr/share/dict/words'],
+    \   'smartCase': v:true,
+    \   'showMenu': v:false
+    \ },
+    \ })
+
   call ddc#enable()
-  inoremap <C-n>   <Cmd>call pum#map#insert_relative(+1)<CR>
-  inoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
-  imap <silent><expr> <CR>  pum#visible() ? '<Cmd>call pum#map#confirm()<CR>' : '<CR>'
 '''
 
 [[plugins]]
@@ -83,6 +104,10 @@ repo = 'Shougo/ddc-around'
 on_source = 'ddc.vim'
 
 [[plugins]]
+repo = 'matsui54/ddc-dictionary'
+on_source = 'ddc.vim'
+
+[[plugins]]
 repo = 'Shougo/ddc-matcher_head'
 on_source = 'ddc.vim'
 
@@ -92,26 +117,43 @@ on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'Shougo/pum.vim'
-on_source = 'ddc.vim'
+on_event= ['InsertEnter', 'CmdlineEnter','CursorHold']
+hook_add = '''
+  inoremap <C-n>   <Cmd>call pum#map#insert_relative(+1)<CR>
+  inoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
+  inoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
+'''
+hook_source = '''
+  hi NoneBg guibg=none
+  call pum#set_option('max_width', 80)
+  call pum#set_option('border', '')
+  call pum#set_option('padding', v:true)
+  call pum#set_option('highlight_normal_menu', "NoneBg")
+'''
 
 [[plugins]]
 repo = 'hrsh7th/vim-vsnip'
 on_source = 'ddc.vim'
-depends = ['vim-vsnip-integ']
+depends = ['vim-vsnip-integ','pum.vim']
 hook_add = '''
-imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+function s:trigger_completedone()
+  let info = pum#complete_info()
+  let complete_item = info.items[info.selected]
+  call vsnip_integ#on_complete_done(complete_item)
+  if vsnip#available(1)
+    return "\<Plug>(vsnip-expand-or-jump)"
+  else
+    return "\<Tab>"
+endfunction
+
+imap <expr> <Tab> <SID>trigger_completedone()
+smap <expr> <Tab> <SID>trigger_completedone()
 imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
 smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
 imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
 smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
 imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
 smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-nmap        s   <Plug>(vsnip-select-text)
-xmap        s   <Plug>(vsnip-select-text)
-nmap        S   <Plug>(vsnip-cut-text)
-xmap        S   <Plug>(vsnip-cut-text)
-
 '''
 [[plugins]]
 repo = 'hrsh7th/vim-vsnip-integ'
@@ -119,13 +161,12 @@ on_source = 'ddc.vim'
 depends = 'pum.vim'
 hook_source = '''
   autocmd User PumCompleteDone call vsnip_integ#on_complete_done(g:pum#completed_item)
-  lua << EOF
-EOF
 '''
 
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
-on_event = 'BufRead'
+on_source = 'ddc.vim'
+on_event = 'CursorHold'
 depends = ['pum.vim','mason-lspconfig.nvim','fidget.nvim','denops-signature_help']
 hook_source= '''
 lua << EOF
@@ -209,7 +250,6 @@ mason_lspconfig.setup_handlers({ function(server_name)
   nvim_lsp[server_name].setup(opts)
 end })
 
-
 EOF
 '''
 
@@ -245,6 +285,11 @@ repo = 'matsui54/denops-popup-preview.vim'
 depends = 'denops.vim'
 on_source = 'ddc.vim'
 hook_source = '''
+let g:popup_preview_config = {
+        \ 'delay': 10,
+        \ 'maxWidth': 100,
+        \ 'winblend': 0,
+        \ }
 call popup_preview#enable()
 '''
 
@@ -467,6 +512,34 @@ call gina#custom#mapping#nmap(
 '''
 
 [[plugins]]
+repo =  'tpope/vim-dispatch'
+on_event = 'CursorHold'
+hook_add = '''
+let g:dispatch_no_tmux_make = 1
+'''
+
+
+[[plugins]]
+repo = 'vim-test/vim-test'
+on_cmd = [
+   'Test'
+]
+hook_add = '''
+nmap <silent> t<C-n> :TestNearest<CR>
+nmap <silent> t<C-f> :TestFile<CR>
+nmap <silent> t<C-s> :TestSuite<CR>
+nmap <silent> t<C-l> :TestLast<CR>
+nmap <silent> t<C-g> :TestVisit<CR>
+let test#go#gotest#options = {
+  \ 'nearest': '-v -count=1',
+  \ 'file':    '-v -count=1',
+  \ 'suite':   '-v -count=1',
+\}
+
+let test#strategy = 'dispatch'
+'''
+
+[[plugins]]
 repo = 'yuki-yano/fuzzy-motion.vim'
 depends = 'denops.vim'
 on_cmd = 'FuzzyMotion'
@@ -476,7 +549,34 @@ nnoremap ss <Cmd>FuzzyMotion<CR>
 
 [[plugins]]
 repo = 'machakann/vim-sandwich'
-on_map = { xon = '<Plug>(sandwich-'}
+on_map = { vonx = ['<Plug>(operator-sandwich-','<Plug>(sandwich-'] }
+hook_add = '''
+" add
+let g:sandwich_no_default_key_mappings = 1
+nmap sa <Plug>(sandwich-add)
+xmap sa <Plug>(sandwich-add)
+omap sa <Plug>(sandwich-add)
+
+" delete
+nmap sd <Plug>(sandwich-delete)
+xmap sd <Plug>(sandwich-delete)
+nmap sdb <Plug>(sandwich-delete-auto)
+
+" replace
+nmap sr <Plug>(sandwich-replace)
+xmap sr <Plug>(sandwich-replace)
+nmap srb <Plug>(sandwich-replace-auto)
+
+omap ib <Plug>(textobj-sandwich-auto-i)
+xmap ib <Plug>(textobj-sandwich-auto-i)
+omap ab <Plug>(textobj-sandwich-auto-a)
+xmap ab <Plug>(textobj-sandwich-auto-a)
+
+omap is <Plug>(textobj-sandwich-query-i)
+xmap is <Plug>(textobj-sandwich-query-i)
+omap as <Plug>(textobj-sandwich-query-a)
+xmap as <Plug>(textobj-sandwich-query-a)
+'''
 
 [[plugins]]
 repo = 'junegunn/vim-easy-align'
@@ -491,25 +591,50 @@ repo ='kana/vim-operator-replace'
 depends = 'vim-operator-user'
 on_map = { n = '<Plug>(operator-replace)' }
 hook_add = '''
-nmap r <Plug>(operator-replace)
+nmap <leader>r <Plug>(operator-replace)
 '''
 
 [[plugins]]
 repo ='t9md/vim-textmanip'
 
 [[plugins]]
-repo = 'cohama/lexima.vim'
-on_event = 'InsertEnter'
-
-[[plugins]]
 repo ='thinca/vim-qfreplace'
 on_cmd = 'Qfreplace'
+
 [[plugins]]
 repo ='tpope/vim-repeat'
 on_map = ['.']
+
 [[plugins]]
 repo ='yssl/QFEnter'
 on_ft = ['qf']
+
+[[plugins]]
+repo = 'kana/vim-altr'
+on_ft = ['go']
+on_event = 'CursorHold'
+hook_source = '''
+function! s:makegotest() abort
+  let src=expand("%:p:r")
+  let filex=expand("%:p:e")
+  if filex != "go"
+      return
+  endif
+  if expand("%:p:r") !~ "test$"
+      let src.="_test"
+  endif
+  let src.=".go"
+  let chk=getftype(src)
+  if chk == "file"
+      return
+  endif
+  call writefile(["package"],src)
+endfunction
+
+nnoremap <SID>(makegotest) <Cmd>call <SID>makegotest()<CR>
+nmap <leader>t <SID>(makegotest)<Plug>(altr-forward)
+'''
+
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
 on_event = 'BufRead'
@@ -660,6 +785,44 @@ repo ='kana/vim-operator-user'
 on_map = {nox = '<Plug>'}
 
 [[plugins]]
+repo = 'kevinhwang91/nvim-hlslens'
+on_event = 'BufRead'
+depends = ['vim-asterisk']
+hook_add = '''
+lua << EOF
+local kopts = {noremap = true, silent = true}
+
+vim.api.nvim_set_keymap('n', 'n',
+    [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
+    kopts)
+vim.api.nvim_set_keymap('n', 'N',
+    [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
+    kopts)
+vim.api.nvim_set_keymap('n', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], {})
+vim.api.nvim_set_keymap('n', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], {})
+vim.api.nvim_set_keymap('n', 'g*', [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]], {})
+vim.api.nvim_set_keymap('n', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], {})
+
+vim.api.nvim_set_keymap('x', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], {})
+vim.api.nvim_set_keymap('x', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], {})
+vim.api.nvim_set_keymap('x', 'g*', [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]], {})
+vim.api.nvim_set_keymap('x', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], {})
+
+vim.api.nvim_set_keymap('n', '<Leader>l', ':noh<CR>', kopts)
+EOF
+'''
+
+[[plugins]]
+repo = 'haya14busa/vim-asterisk'
+on_map = ['<Plug>(asterisk-']
+hook_add = '''
+map *  <Plug>(asterisk-z*)
+map #  <Plug>(asterisk-z#)
+map g* <Plug>(asterisk-gz*)
+map g# <Plug>(asterisk-gz#)
+'''
+
+[[plugins]]
 repo = 'machakann/vim-textobj-delimited'
 depends = 'vim-textobj-user'
 on_map = ['vid', 'viD', 'vad', 'vaD']
@@ -674,4 +837,22 @@ repo ='mattn/vim-findroot'
 on_event = 'BufRead'
 hook_source = '''
 let g:findroot_not_for_subdir = 0
+'''
+
+[[plugins]]
+repo = 'chentoast/marks.nvim'
+on_source = 'vim-gitgutter'
+hook_source = '''
+lua << EOF
+require'marks'.setup {
+  default_mappings = true,
+}
+EOF
+'''
+
+[[plugins]]
+repo = 'cohama/lexima.vim'
+on_event = 'InsertEnter'
+hook_source = '''
+let g:lexima_ctrlh_as_backspace = 1
 '''
