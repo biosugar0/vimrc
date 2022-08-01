@@ -56,18 +56,44 @@ hook_source = '''
 '''
 
 [[plugins]]
-repo = 'mopp/vim-operator-convert-case'
-depends = 'vim-operator-user'
-on_cmd = [
-    'ConvertCase',
-    'ConvertCaseLoop',
-]
+repo = 'monaqa/dial.nvim'
+on_map = ['<Plug>(dial-']
 hook_add = '''
-nmap <silent> crc <Cmd>ConvertCase lowerCamelCase<CR>
-nmap <silent> crm <Cmd>ConvertCase UpperCamelCase<CR>
-nmap <silent> crs <Cmd>ConvertCase lower_snake_case<CR>
-nmap <silent> cre <Cmd>ConvertCase UPPER_SNAKE_CASE<CR>
-nmap <silent> crl <Cmd>ConvertCaseLoop<CR>
+  nmap  <c-a>  <Plug>(dial-increment)
+  nmap  <c-x>  <Plug>(dial-decrement)
+  vmap  <c-a>  <Plug>(dial-increment)
+  vmap  <c-x>  <Plug>(dial-decrement)
+  vmap g<c-a> g<Plug>(dial-increment)
+  vmap g<c-x> g<Plug>(dial-decrement)
+'''
+hook_post_source = '''
+lua << EOF
+local augend = require("dial.augend")
+require("dial.config").augends:register_group({
+	-- default augends used when no group name is specified
+	default = {
+		augend.integer.alias.decimal, -- nonnegative decimal number (0, 1, 2, 3, ...)
+		augend.integer.alias.hex, -- nonnegative hex number  (0x01, 0x1a1f, etc.)
+        augend.date.alias["%Y/%m/%d"], -- date (2022/02/19, etc.)
+        augend.date.alias["%Y-%m-%d"], -- date (2022-02-19, etc.)
+        augend.date.alias["%m/%d"], -- date (02/19, etc.)
+        augend.date.alias["%H:%M"], -- hour (01:30, etc.)
+		augend.constant.alias.bool, -- boolean value (true <-> false)
+        augend.semver.alias.semver,
+        augend.constant.alias.ja_weekday_full,
+		augend.case.new({
+			types = { "camelCase", "snake_case", "PascalCase", "SCREAMING_SNAKE_CASE" },
+			cyclic = true,
+		}),
+	},
+	case = {
+		augend.case.new({
+			types = { "camelCase", "snake_case", "PascalCase", "SCREAMING_SNAKE_CASE" },
+			cyclic = true,
+		}),
+	},
+})
+EOF
 '''
 
 [[plugins]]
