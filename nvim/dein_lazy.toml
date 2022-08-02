@@ -1,58 +1,14 @@
 [[plugins]]
-repo = 'Shougo/ddc.vim'
-on_event = ['InsertEnter', 'CursorHold']
-depends = ['denops.vim', 'pum.vim']
+repo = 'vim-denops/denops.vim'
+on_event = 'BufRead'
+
+
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
 hook_source = '''
-  set completeopt=menuone,noinsert,noselect
-  setlocal signcolumn=yes
-  call ddc#custom#patch_global('sources', ['nvim-lsp', 'vsnip',  'around','dictionary', 'file'])
-  call ddc#custom#patch_global('completionMenu', 'pum.vim')
-  call ddc#custom#patch_global('sourceParams', {
-      \ 'around': {'maxSize': 500},
-      \ })
-  call ddc#custom#patch_global('sourceOptions', {
-        \ '_': {
-        \   'ignoreCase': v:true,
-        \   'matchers': ['matcher_fuzzy'],
-        \   'sorters': ['sorter_fuzzy'],
-        \   'converters': ['converter_remove_overlap']},
-        \ 'around': {
-        \   'mark': 'around' },
-        \ 'nvim-lsp': {
-        \   'mark': 'lsp',
-        \   'matchers': ['matcher_head'],
-        \   'forceCompletionPattern': '\.|:|->|"\w+/*' },
-        \ 'dictionary': {
-        \   'matchers': ['matcher_fuzzy'],
-        \   'sorters': ['sorter_fuzzy'],
-        \   'converters': ['converter_fuzzy'],
-        \   'maxCandidates': 16,
-        \   'mark': 'D',
-        \   'minAutoCompleteLength': 3,
-        \ },
-        \ 'file': {
-        \   'mark': 'file',
-        \   'isVolatile': v:true,
-        \   'forceCompletionPattern': '\S/\S*' },
-        \ 'vsnip': {'dup': v:true, 'mark': 'snip'},
-        \ })
-
-   " Change source params
-  call ddc#custom#patch_global('sourceParams', {
-    \ 'nvim-lsp': {
-    \   'maxSize': 100,
-    \ },
-    \ 'around': {
-    \   'maxSize': 100,
-    \ },
-    \ 'dictionary': {
-    \   'dictPaths': ['/usr/share/dict/words'],
-    \   'smartCase': v:true,
-    \   'showMenu': v:false
-    \ },
-    \ })
-
-  call ddc#enable()
+let g:context_filetype#ignore_patterns = {
+    \ 'toml': ['^\s*#\s*'],
+    \ }
 '''
 
 [[plugins]]
@@ -97,14 +53,6 @@ EOF
 '''
 
 [[plugins]]
-repo = 'Shougo/ddc-nvim-lsp'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'Shougo/ddc-converter_remove_overlap'
-on_source = 'ddc.vim'
-
-[[plugins]]
 repo = 'lambdalisue/guise.vim'
 on_ft = 'terminal'
 depends = 'denops.vim'
@@ -113,82 +61,9 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = 'tani/ddc-fuzzy'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'LumaKernel/ddc-file'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'Shougo/ddc-around'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'matsui54/ddc-dictionary'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'Shougo/ddc-matcher_head'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'Shougo/ddc-sorter_rank'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'Shougo/pum.vim'
-on_event= ['InsertEnter', 'CmdlineEnter','CursorHold']
-hook_add = '''
-  inoremap <C-n>   <Cmd>call pum#map#insert_relative(+1)<CR>
-  inoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
-  inoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
-'''
-hook_source = '''
-  hi NoneBg guibg=none
-  call pum#set_option('max_width', 80)
-  call pum#set_option('border', '')
-  call pum#set_option('padding', v:true)
-  call pum#set_option('highlight_normal_menu', "NoneBg")
-'''
-
-[[plugins]]
-repo = 'hrsh7th/vim-vsnip'
-on_source = 'ddc.vim'
-depends = ['vim-vsnip-integ','pum.vim']
-hook_add = '''
-function s:trigger_completedone()
-  let info = pum#complete_info()
-  let complete_item = info.items[info.selected]
-  call vsnip_integ#on_complete_done(complete_item)
-  if vsnip#available(1)
-    return "\<Plug>(vsnip-expand-or-jump)"
-  else
-    return "\<Tab>"
-endfunction
-
-imap <expr> <Tab> <SID>trigger_completedone()
-smap <expr> <Tab> <SID>trigger_completedone()
-imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
-smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
-imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-'''
-[[plugins]]
-repo = 'hrsh7th/vim-vsnip-integ'
-on_source = 'ddc.vim'
-depends = 'pum.vim'
-hook_source = '''
-  autocmd User PumCompleteDone call vsnip_integ#on_complete_done(g:pum#completed_item)
-'''
-
-[[plugins]]
 repo = 'neovim/nvim-lspconfig'
-on_source = 'ddc.vim'
 on_event = 'BufRead'
-depends = ['pum.vim','mason-lspconfig.nvim','fidget.nvim','denops-signature_help']
+depends = ['impatient.nvim','pum.vim','mason-lspconfig.nvim','fidget.nvim','denops-signature_help']
 hook_source= '''
 lua << EOF
 local on_attach = function(client, bufnr)
@@ -282,7 +157,7 @@ local handlers =  {
 
 mason_lspconfig.setup_handlers({ function(server_name)
   local opts = {
-    handlers=handlers, 
+    handlers=handlers,
   }
   opts.on_attach = on_attach
   opts.capabilities = capabilities
@@ -311,7 +186,7 @@ on_source = 'nvim-lspconfig'
 [[plugins]]
 repo = 'matsui54/denops-signature_help'
 depends = 'denops.vim'
-on_source = 'ddc.vim'
+on_source = 'denops'
 hook_source = '''
 let g:lsp_signature_help_enabled = 0
 let g:signature_help_config = {
@@ -323,10 +198,10 @@ call signature_help#enable()
 [[plugins]]
 repo = 'matsui54/denops-popup-preview.vim'
 depends = 'denops.vim'
-on_source = 'ddc.vim'
+on_source = 'denops'
 hook_source = '''
 let g:popup_preview_config = {
-        \ 'delay': 10,
+        \ 'delay': 1,
         \ 'maxWidth': 100,
         \ 'winblend': 0,
         \ }
@@ -354,14 +229,13 @@ hook_post_update = 'TSUpdate'
 hook_source= '''
 lua << EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = {"vim", "toml", "python", "go","hcl"},
+  ensure_installed = {"vim", "toml", "python", "go","hcl","yaml","bash","sql"},
 
   highlight = {
     enable = true,
     disable = {
       'lua',
       'ruby',
-      'toml',
       'c_sharp',
       'vue',
     }
@@ -403,6 +277,9 @@ on_ft = ['markdown']
 [[plugins]]
 repo = 'mattn/vim-maketable'
 on_ft = ['markdown']
+[[plugins]]
+repo = 'rhysd/vim-gfm-syntax'
+on_ft = 'markdown'
 
 [[plugins]]
 repo ='mattn/vim-goaddtags'
@@ -413,8 +290,10 @@ let g:go_addtags_transform = 'camelcase'
 
 [[plugins]]
 repo ='mattn/vim-goimports'
-on_ft = ['go']
-
+on_ft = 'go'
+hook_source = '''
+  let g:goimports_simplify = v:true
+'''
 
 [[plugins]]
 repo = 'vim-jp/vimdoc-ja'
@@ -637,7 +516,11 @@ nmap <leader>r <Plug>(operator-replace)
 
 [[plugins]]
 repo ='thinca/vim-qfreplace'
-on_cmd = 'Qfreplace'
+on_ft = ['qf']
+[plugins.ftplugin]
+qf = '''
+  nnoremap <buffer> r <Cmd>Qfreplace<CR>
+'''
 
 [[plugins]]
 repo ='tpope/vim-repeat'
@@ -675,13 +558,15 @@ nmap <leader>t <SID>(makegotest)<Plug>(altr-forward)
 
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
-on_event = 'BufRead'
+on_event = 'CursorHold'
 
 [[plugins]]
 repo = 'hrsh7th/vim-eft'
 on_map = { nxo = '<Plug>(eft-' }
+hook_source = '''
+let g:eft_ignorecase = v:true
+'''
 hook_add = '''
-" f/t/F/T を単語境界のみにマッチさせる機能を持ったプラグイン
 nmap f <Plug>(eft-f-repeatable)
 xmap f <Plug>(eft-f-repeatable)
 omap f <Plug>(eft-f-repeatable)
@@ -698,12 +583,37 @@ omap T <Plug>(eft-T-repeatable)
 '''
 
 [[plugins]]
+repo = 'joker1007/vim-markdown-quote-syntax'
+on_ft = 'markdown'
+
+[[plugins]]
+repo = 'Shougo/echodoc.vim'
+on_event = 'InsertEnter'
+hook_source = '''
+  call echodoc#enable()
+  let g:echodoc#type = has('nvim') ? 'floating' : 'popup'
+  let g:echodoc#events = ['PumCompleteDone', 'TextChangedP', 'PumCompleteChanged']
+'''
+
+[[plugins]]
+repo = 'tversteeg/registers.nvim'
+depends = 'denops.vim'
+if = 'has("nvim")'
+on_map = '"'
+hook_source = '''
+let g:registers_paste_in_normal_mode = 1
+let g:registers_hide_only_whitespace = 1
+let g:registers_show_empty_registers = 0
+'''
+
+[[plugins]]
 repo = 'junegunn/fzf'
 hook_post_update = './install --all'
 merged = 0
 
 [[plugins]]
 repo = 'junegunn/fzf.vim'
+depends = 'fzf'
 on_map  = [
 '<Leader>f',
 '<Leader>gf',
@@ -724,7 +634,6 @@ on_cmd = [
     'Rg',
     'HelpRg',
 ]
-depends = 'fzf'
 hook_source= '''
 let $FZF_DEFAULT_OPTS="--layout=reverse"
 let $FZF_DEFAULT_COMMAND="rg --line-number --no-heading --files --hidden --glob '!.git/**'"
@@ -912,50 +821,14 @@ xmap <C-l> <Plug>(textmanip-move-right)
 
 [[plugins]]
 repo = 'AndrewRadev/linediff.vim'
-hook_add = '''
+on_cmd = [
+ 'Linediff',
+]
+hook_source = '''
 let g:linediff_first_buffer_command  = 'leftabove new'
 let g:linediff_second_buffer_command = 'rightbelow vertical new'
 augroup LineDiff
   au!
   autocmd User LinediffBufferReady nnoremap <buffer> <silent> q :<C-u>LinediffReset<CR>
 augroup END
-'''
-
-[[plugins]]
-repo = 'rcarriga/nvim-notify'
-on_lua = 'notify'
-hook_source = '''
-lua <<EOF
-  vim.notify = require("notify")
-  local notify_opts = {
-    -- Animation style (see below for details)
-    stages = "fade_in_slide_out",
-    -- Function called when a new window is opened, use for changing win settings/config
-    on_open = nil,
-    -- Function caled when a window is closed
-    on_close = nil,
-    -- Render function for notifications. See notify-render()
-    render = "default",
-    -- Default timeout for notifications
-    timeout = 3000,
-    -- Max number of columns for messages
-    max_width = nil,
-    -- Max number of lines for a message
-    max_height = nil,
-    -- For stages that change opacity this is treated as the highlight behind the window
-    -- Set this to either a highlight group, an RGB hex value e.g. "#000000" or a function returning an RGB code for dynamic values
-    background_colour = "Normal",
-    -- Minimum width for notification windows
-    minimum_width = 50,
-    -- Icons for the different levels
-    icons = {
-      ERROR = "",
-      WARN = "",
-      INFO = "",
-      DEBUG = "",
-      TRACE = "✎",
-    },
-  }
-  vim.notify.setup(notify_opts)
-EOF
 '''

@@ -1,12 +1,3 @@
-augroup indentConf
-  au!
-  au FileType js   setlocal sw=2 sts=2 ts=2 et
-  au FileType vue  setlocal sw=2 sts=2 ts=2 et
-  au FileType vim  setlocal sw=2 sts=2 ts=2 et
-  au FileType yaml setlocal ts=2 sts=2 sw=2 et
-augroup END
-
-
 augroup vimrc-auto-createfile
   autocmd!
   autocmd BufRead,BufNewFile $MEMO_DIRECTORY* setlocal path+=$MEMO_DIRECTORY/**
@@ -57,12 +48,6 @@ augroup END
 augroup trim-space
     autocmd!
     autocmd FileType go,sql,python,vim,sh autocmd BufWritePre * :%s/\s\+$//ge
-augroup END
-
-"オートコメントアウト無効
-augroup disableCommentout
-  autocmd!
-  au FileType * setlocal formatoptions-=ro
 augroup END
 
 "ファイルをひらいたとき最後にカーソルがあった場所に移動

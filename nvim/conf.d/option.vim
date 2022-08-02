@@ -59,3 +59,20 @@ set softtabstop=4 " 連続した空白に対してタブキーやバックスペ
 set autoindent    " 改行時に前の行のインデントを継続する
 set smartindent   " 改行時に入力された行の末尾に合わせて次の行のインデントを増減する
 set mouse=""
+
+set history=200
+if has('nvim')
+  set shada='100,<20,s10,h
+else
+  set viminfo='100,<20,s10,h
+endif
+
+set splitbelow
+set splitright
+set noequalalways
+set previewheight=8
+set helpheight=12
+
+set cedit=
+
+set redrawtime=0

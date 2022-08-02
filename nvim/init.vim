@@ -4,6 +4,10 @@ if &compatible
   set nocompatible " Be iMproved
 endif
 
+augroup MyAutoCmd
+  autocmd!
+augroup END
+
 if has('vim_starting')
   set encoding=utf-8
   scriptencoding utf-8
@@ -76,15 +80,28 @@ if &runtimepath !~# '/dein.vim'
 endif
 
 " dein options
+let g:dein#auto_recache = !has('win32')
 let g:dein#lazy_rplugins = v:true
+let g:dein#install_progress_type = 'floating'
+let g:dein#install_check_diff = v:true
+let g:dein#enable_notification = v:true
+let g:dein#install_check_remote_threshold = 24 * 60 * 60
+let g:dein#auto_remote_plugins = v:false
+let g:dein#install_copy_vim = has('nvim')
 
 if dein#load_state(s:dein_dir)
   let g:dein#inline_vimrcs = glob('$VIMHOME/conf.d/*.vim', 1, 1, 1)
   map(g:dein#inline_vimrcs , {path ->  fnameescape(path)})
 
-  call dein#begin(s:dein_dir)
   let s:toml      = g:rc_dir . '/dein.toml'
   let s:lazy_toml = g:rc_dir . '/dein_lazy.toml'
+  let s:ddc_toml = g:rc_dir . '/ddc.toml'
+  let s:ft_toml = g:rc_dir . '/ft.toml'
+
+  "call dein#begin(s:dein_dir, [
+  "      \ expand('<sfile>'), s:toml, s:lazy_toml, s:ft_toml
+  "      \ ])
+  call dein#begin(s:dein_dir)
 
   if filereadable(expand(s:toml))
     call dein#load_toml(s:toml, {'lazy': 0})
@@ -92,6 +109,14 @@ if dein#load_state(s:dein_dir)
 
   if filereadable(expand(s:lazy_toml))
     call dein#load_toml(s:lazy_toml, {'lazy': 1})
+  endif
+
+  if filereadable(expand(s:ddc_toml))
+    call dein#load_toml(s:ddc_toml, {'lazy': 1})
+  endif
+
+  if filereadable(expand(s:ft_toml))
+    call dein#load_toml(s:ft_toml, {'lazy': 1})
   endif
 
   call dein#end()
@@ -114,4 +139,4 @@ endfunction
 
 command! DeinInstall call DeinInstall()
 command! DeinClean call DeinClean()
-command! DeinReCache call dein#recache_runtimepath()
+set secure
