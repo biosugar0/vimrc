@@ -3,8 +3,6 @@ repo = 'Shougo/dein.vim'
 hook_source = '''
 let g:dein#install_message_type = "echo"
 '''
-
-
 [[plugins]]
 repo = 'cocopon/iceberg.vim'
 hook_add = '''
@@ -14,8 +12,4 @@ hook_add = '''
     au BufEnter * nested colorscheme iceberg
   augroup END
 '''
-[[plugins]]
-repo = 'lewis6991/impatient.nvim'
-hook_add = '''
-lua require('impatient')
-'''
+

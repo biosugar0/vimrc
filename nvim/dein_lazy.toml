@@ -1,15 +1,7 @@
 [[plugins]]
 repo = 'vim-denops/denops.vim'
-on_event = 'BufRead'
+on_event = 'BufEnter'
 
-
-[[plugins]]
-repo = 'Shougo/context_filetype.vim'
-hook_source = '''
-let g:context_filetype#ignore_patterns = {
-    \ 'toml': ['^\s*#\s*'],
-    \ }
-'''
 
 [[plugins]]
 repo = 'monaqa/dial.nvim'
@@ -62,9 +54,9 @@ hook_add = '''
 
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
-on_event = 'BufRead'
-depends = ['impatient.nvim','pum.vim','mason-lspconfig.nvim','fidget.nvim','denops-signature_help']
-hook_source= '''
+on_source = 'ddc.vim'
+depends = ['impatient.nvim','denops.vim','pum.vim','mason-lspconfig.nvim','fidget.nvim','denops-signature_help']
+hook_source = '''
 lua << EOF
 local on_attach = function(client, bufnr)
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
@@ -87,7 +79,7 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '[d', vim.lsp.diagnostic.goto_prev, bufopts)
   vim.keymap.set('n', ']d', vim.lsp.diagnostic.goto_next, bufopts)
   vim.keymap.set('n', '<space>q', vim.lsp.diagnostic.set_loclist, bufopts)
-  vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
+  vim.keymap.set('n', ',f', vim.lsp.buf.formatting, bufopts)
   buf_set_option( 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
@@ -167,7 +159,10 @@ end })
 
 EOF
 '''
-
+hook_post_source = '''
+  call signature_help#enable()
+  call popup_preview#enable()
+'''
 
 [[plugins]]
 repo = 'williamboman/mason.nvim'
@@ -186,26 +181,24 @@ on_source = 'nvim-lspconfig'
 [[plugins]]
 repo = 'matsui54/denops-signature_help'
 depends = 'denops.vim'
-on_source = 'denops'
-hook_source = '''
+on_source = 'nvim-lspconfig'
+hook_add = '''
 let g:lsp_signature_help_enabled = 0
 let g:signature_help_config = {
     \ 'style': "currentLabelOnly",
     \ }
-call signature_help#enable()
 '''
 
 [[plugins]]
 repo = 'matsui54/denops-popup-preview.vim'
 depends = 'denops.vim'
-on_source = 'denops'
+on_source = 'nvim-lspconfig'
 hook_source = '''
 let g:popup_preview_config = {
         \ 'delay': 1,
         \ 'maxWidth': 100,
         \ 'winblend': 0,
         \ }
-call popup_preview#enable()
 '''
 
 [[plugins]]
@@ -217,16 +210,18 @@ lua require("fidget").setup({})
 
 [[plugins]]
 repo = 'nvim-treesitter/nvim-treesitter-textobjects'
+on_source = ['nvim-treesitter']
 
 [[plugins]]
 repo = 'David-Kunz/treesitter-unit'
+on_source = ['nvim-treesitter']
 
 [[plugins]]
 repo = 'nvim-treesitter/nvim-treesitter'
 depends = ['nvim-treesitter-textobjects', 'treesitter-unit']
 on_event = 'BufRead'
 hook_post_update = 'TSUpdate'
-hook_source= '''
+hook_post_source= '''
 lua << EOF
 require'nvim-treesitter.configs'.setup {
   ensure_installed = {"vim", "toml", "python", "go","hcl","yaml","bash","sql"},
@@ -280,6 +275,9 @@ on_ft = ['markdown']
 [[plugins]]
 repo = 'rhysd/vim-gfm-syntax'
 on_ft = 'markdown'
+[[plugins]]
+repo = 'joker1007/vim-markdown-quote-syntax'
+on_ft = 'markdown'
 
 [[plugins]]
 repo ='mattn/vim-goaddtags'
@@ -308,30 +306,28 @@ on_cmd = 'Gina'
 hook_add = '''
 let g:gina#command#blame#formatter#format ="%au%=on %ti %ma%in"
 
-nnoremap <silent> <Leader>aa :<C-u>Gina status<CR>
-nnoremap <silent> <Leader>aA :<C-u>Gina changes HEAD<CR>
-nnoremap <silent> <Leader>ac :<C-u>Gina commit<CR>
-nnoremap <silent> <Leader>aC :<C-u>Gina commit --amend<CR>
-nnoremap <silent> <Leader>ab :<C-u>Gina branch -av<CR>
-nnoremap <silent> <Leader>at :<C-u>Gina tag<CR>
-nnoremap <silent> <Leader>ag :<C-u>Gina grep<CR>
-nnoremap <silent> <Leader>aq :<C-u>Gina qrep<CR>
-nnoremap <silent> <Leader>ap :<C-u>Gina push<CR>
-nnoremap <silent> <Leader>ad :<C-u>Gina changes origin/HEAD...<CR>
-nnoremap <silent> <Leader>ah :<C-u>Gina log --graph<CR>
-nnoremap <silent> <Leader>aH :<C-u>Gina log --graph --all<CR>
-nnoremap <silent> <Leader>al :<C-u>Gina log<CR>
-nnoremap <silent> <Leader>aL :<C-u>Gina log :%<CR>
-nnoremap <silent> <Leader>af :<C-u>Gina ls<CR>
-nnoremap <silent> <Leader>ars :<C-u>Gina show <C-r><C-w><CR>
-nnoremap <silent> <Leader>arc :<C-u>Gina changes <C-r><C-w><CR>
-nnoremap <silent> <Leader>ao :Gina browse --extract :<CR>
-xnoremap <silent> <Leader>ao :Gina browse --extract :<CR>
+nnoremap <silent> <Leader>aa <Cmd>Gina status<CR>
+nnoremap <silent> <Leader>aA <Cmd>Gina changes HEAD<CR>
+nnoremap <silent> <Leader>ac <Cmd>Gina commit<CR>
+nnoremap <silent> <Leader>aC <Cmd>Gina commit --amend<CR>
+nnoremap <silent> <Leader>ab <Cmd>Gina branch -av<CR>
+nnoremap <silent> <Leader>at <Cmd>Gina tag<CR>
+nnoremap <silent> <Leader>ag <Cmd>Gina grep<CR>
+nnoremap <silent> <Leader>aq <Cmd>Gina qrep<CR>
+nnoremap <silent> <Leader>ap <Cmd>Gina push<CR>
+nnoremap <silent> <Leader>ad <Cmd>Gina changes origin/HEAD...<CR>
+nnoremap <silent> <Leader>ah <Cmd>Gina log --graph<CR>
+nnoremap <silent> <Leader>aH <Cmd>Gina log --graph --all<CR>
+nnoremap <silent> <Leader>al <Cmd>Gina log<CR>
+nnoremap <silent> <Leader>aL <Cmd>Gina log :%<CR>
+nnoremap <silent> <Leader>af <Cmd>Gina ls<CR>
+nnoremap <silent> <Leader>ars <Cmd>Gina show <C-r><C-w><CR>
+nnoremap <silent> <Leader>arc <Cmd>Gina changes <C-r><C-w><CR>
+nnoremap <silent> <Leader>ao <Cmd>Gina browse --extract :<CR>
+xnoremap <silent> <Leader>ao <Cmd>Gina browse --extract :<CR>
 
-command! -nargs=? PR Gina browse --scheme=pr <args>
-nnoremap <leader>aw :PR<CR>
 '''
-hook_source = '''
+hook_post_source = '''
 call extend(g:gina#command#browse#translation_patterns['github\.com'][1],
               \ {'pr':'https://\1/\2/\3/pull/new/%c0'}
               \)
@@ -428,6 +424,9 @@ call gina#custom#mapping#nmap(
       \ '<Plug>(gina-branch-new)',
       \ {'nmap': 1, 'silent': 1}
       \)
+
+command! -nargs=? PR Gina browse --scheme=pr <args>
+nnoremap <leader>aw <Cmd>PR<CR>
 '''
 
 [[plugins]]
@@ -582,17 +581,16 @@ xmap T <Plug>(eft-T-repeatable)
 omap T <Plug>(eft-T-repeatable)
 '''
 
-[[plugins]]
-repo = 'joker1007/vim-markdown-quote-syntax'
-on_ft = 'markdown'
 
 [[plugins]]
 repo = 'Shougo/echodoc.vim'
 on_event = 'InsertEnter'
 hook_source = '''
-  call echodoc#enable()
   let g:echodoc#type = has('nvim') ? 'floating' : 'popup'
   let g:echodoc#events = ['PumCompleteDone', 'TextChangedP', 'PumCompleteChanged']
+'''
+hook_post_source = '''
+  call echodoc#enable()
 '''
 
 [[plugins]]
@@ -733,7 +731,7 @@ on_map = {nox = '<Plug>'}
 
 [[plugins]]
 repo = 'kevinhwang91/nvim-hlslens'
-on_event = 'BufRead'
+on_event = 'CursorMoved'
 depends = ['vim-asterisk']
 hook_add = '''
 lua << EOF
@@ -762,6 +760,7 @@ EOF
 [[plugins]]
 repo = 'haya14busa/vim-asterisk'
 on_map = ['<Plug>(asterisk-']
+on_source = ['nvim-hlslens']
 hook_add = '''
 map *  <Plug>(asterisk-z*)
 map #  <Plug>(asterisk-z#)
@@ -781,7 +780,7 @@ on_map = {xo = '<Plug>(textobj-parameter'}
 
 [[plugins]]
 repo ='mattn/vim-findroot'
-on_event = 'BufRead'
+on_event = 'CursorMoved'
 hook_source = '''
 let g:findroot_not_for_subdir = 0
 '''
@@ -831,4 +830,11 @@ augroup LineDiff
   au!
   autocmd User LinediffBufferReady nnoremap <buffer> <silent> q :<C-u>LinediffReset<CR>
 augroup END
+'''
+
+[[plugins]]
+repo = 'lewis6991/impatient.nvim'
+on_source = ['nvim-lspconfig']
+hook_post_source = '''
+lua require('impatient')
 '''

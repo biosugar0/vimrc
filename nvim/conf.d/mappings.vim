@@ -1,3 +1,6 @@
+"強制全保存終了を無効化。
+nnoremap ZZ <Nop>
+nnoremap <C-d> <Nop>
 "jjをescに
 inoremap <silent> jj <ESC>
 tnoremap <silent> <ESC> <C-\><C-n>

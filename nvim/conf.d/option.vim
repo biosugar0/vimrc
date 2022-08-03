@@ -15,8 +15,11 @@ set nostartofline              " 移動時にx軸をそのままにする
 set undodir=~/.cache/nvim/undo
 call mkdir(&undodir, 'p')
 set undofile
-set dir=~/.cache/nvim/swp
-call mkdir(&dir, 'p')
+" Don't create backup.
+set nowritebackup
+set nobackup
+set noswapfile
+set backupdir-=.
 
 "ファイル処理関連
 set confirm  " 保存されていないファイルがあるときは終了前に保存確認
@@ -76,3 +79,7 @@ set helpheight=12
 set cedit=
 
 set redrawtime=0
+set updatetime=2000
+" Short messages
+set shortmess=aTIcFoOsSW
+set noshowmode

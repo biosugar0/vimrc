@@ -1,11 +1,12 @@
-let $VIMHOME = expand('<sfile>:p:h')
-
 if &compatible
   set nocompatible " Be iMproved
 endif
 
+" Set augroup.
 augroup MyAutoCmd
   autocmd!
+  autocmd FileType,Syntax,BufNewFile,BufNew,BufRead *?
+        \ call vimrc#on_filetype()
 augroup END
 
 if has('vim_starting')
@@ -63,11 +64,13 @@ if has('vim_starting')
   set ttimeoutlen=100
 endif
 
-"強制全保存終了を無効化。
-nnoremap ZZ <Nop>
-nnoremap <C-d> <Nop>
+let $CACHE = expand('~/.cache')
+if !isdirectory($CACHE)
+  call mkdir($CACHE, 'p')
+endif
 
-let s:dein_dir = expand('~/.cache/dein')
+let $VIMHOME = expand('<sfile>:p:h')
+let s:dein_dir = $CACHE . '/dein'
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 let g:rc_dir = $VIMHOME
 
@@ -79,6 +82,7 @@ if &runtimepath !~# '/dein.vim'
   execute 'set runtimepath^=' . s:dein_repo_dir
 endif
 
+"---------------------------------------------------------------------------
 " dein options
 let g:dein#auto_recache = !has('win32')
 let g:dein#lazy_rplugins = v:true
@@ -98,10 +102,9 @@ if dein#load_state(s:dein_dir)
   let s:ddc_toml = g:rc_dir . '/ddc.toml'
   let s:ft_toml = g:rc_dir . '/ft.toml'
 
-  "call dein#begin(s:dein_dir, [
-  "      \ expand('<sfile>'), s:toml, s:lazy_toml, s:ft_toml
-  "      \ ])
-  call dein#begin(s:dein_dir)
+  call dein#begin(s:dein_dir, [
+        \ expand('<sfile>'), s:toml, s:lazy_toml, s:ft_toml
+        \ ])
 
   if filereadable(expand(s:toml))
     call dein#load_toml(s:toml, {'lazy': 0})
