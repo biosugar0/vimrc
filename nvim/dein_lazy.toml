@@ -780,7 +780,7 @@ on_map = {xo = '<Plug>(textobj-parameter'}
 
 [[plugins]]
 repo ='mattn/vim-findroot'
-on_event = 'CursorMoved'
+on_event = 'BufRead'
 hook_source = '''
 let g:findroot_not_for_subdir = 0
 '''
