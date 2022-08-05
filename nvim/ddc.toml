@@ -2,7 +2,7 @@
 repo = 'Shougo/ddc.vim'
 depends = ['context_filetype.vim', 'denops.vim', 'pum.vim','vim-vsnip','vim-vsnip-integ']
 on_event = ['InsertEnter']
-hook_source = '''
+hook_post_source = '''
   set completeopt=menuone,preview
   call ddc#custom#patch_global('sources', ['around', 'file', 'rg', 'dictionary'] )
   call ddc#custom#patch_global('cmdlineSources', ['cmdline-history', 'input', 'file', 'around'] )
