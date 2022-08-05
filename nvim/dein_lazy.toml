@@ -309,7 +309,7 @@ set helplang=ja " help日本語化
 
 [[plugins]]
 repo = 'lambdalisue/gina.vim'
-on_cmd = '<Cmd>Gina'
+on_cmd = 'Gina'
 hook_add = '''
 let g:gina#command#blame#formatter#format ="%au%=on %ti %ma%in"
 
@@ -332,10 +332,9 @@ nnoremap <silent> <Leader>ars <Cmd>Gina show <C-r><C-w><CR>
 nnoremap <silent> <Leader>arc <Cmd>Gina changes <C-r><C-w><CR>
 nnoremap <silent> <Leader>ao <Cmd>Gina browse --extract :<CR>
 xnoremap <silent> <Leader>ao <Cmd>Gina browse --extract :<CR>
-nnoremap <leader>aw <Cmd>PR<CR>
-command! -nargs=? PR Gina browse --scheme=pr <args>
 '''
 hook_post_source = '''
+
 call extend(g:gina#command#browse#translation_patterns['github\.com'][1],
               \ {'pr':'https://\1/\2/\3/pull/new/%c0'}
               \)
@@ -432,6 +431,9 @@ call gina#custom#mapping#nmap(
       \ '<Plug>(gina-branch-new)',
       \ {'nmap': 1, 'silent': 1}
       \)
+
+command! -nargs=? PR Gina browse --scheme=pr <args>
+nnoremap <leader>aw <Cmd>PR<CR>
 '''
 
 [[plugins]]
@@ -467,7 +469,7 @@ repo = 'yuki-yano/fuzzy-motion.vim'
 depends = 'denops.vim'
 on_cmd = 'FuzzyMotion'
 hook_add = '''
-nnoremap ss <Cmd>FuzzyMotion<CR>
+nnoremap s <Cmd>FuzzyMotion<CR>
 '''
 
 [[plugins]]
@@ -561,8 +563,78 @@ nmap <leader>t <SID>(makegotest)<Plug>(altr-forward)
 '''
 
 [[plugins]]
-repo = 'airblade/vim-gitgutter'
-on_event = 'CursorHold'
+repo = 'nvim-lua/plenary.nvim'
+
+[[plugins]]
+repo = 'lewis6991/gitsigns.nvim'
+on_event = ['BufReadPre', 'BufNewFile']
+on_lua = 'gitsigns'
+hook_source = '''
+lua << EOF
+ require('gitsigns').setup {
+ signs = {
+   add          = {hl = 'GitSignsAdd'   , text = '+', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+   change       = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+   delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+   topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+   changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+ },
+ signcolumn = true,
+ numhl      = false,
+ linehl     = false,
+ word_diff  = false,
+ watch_gitdir = {
+   interval = 1000,
+   follow_files = true
+ },
+ attach_to_untracked = true,
+ current_line_blame = false,
+ current_line_blame_opts = {
+   virt_text = true,
+   virt_text_pos = 'eol',
+   delay = 1000,
+   ignore_whitespace = false,
+ },
+ current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
+ sign_priority = 6,
+ update_debounce = 100,
+ status_formatter = nil,
+ max_file_length = 40000,
+ preview_config = {
+   border = 'single',
+   style = 'minimal',
+   relative = 'cursor',
+   row = 0,
+   col = 1
+ },
+ yadm = {
+   enable = false
+  },
+  on_attach = function(bufnr)
+    local gs = package.loaded.gitsigns
+    local function map(mode, l, r, opts)
+      opts = opts or {}
+      opts.buffer = bufnr
+      vim.keymap.set(mode, l, r, opts)
+    end
+    map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", {expr=true})
+    map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", {expr=true})
+    map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
+    map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
+    map('n', '<leader>hS', gs.stage_buffer)
+    map('n', '<leader>hu', gs.undo_stage_hunk)
+    map('n', '<leader>hR', gs.reset_buffer)
+    map('n', '<leader>hp', gs.preview_hunk)
+    map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+    map('n', '<leader>tb', gs.toggle_current_line_blame)
+    map('n', '<leader>hd', gs.diffthis)
+    map('n', '<leader>hD', function() gs.diffthis('~') end)
+    map('n', '<leader>td', gs.toggle_deleted)
+    map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+  end
+  }
+EOF
+'''
 
 [[plugins]]
 repo = 'hrsh7th/vim-eft'
