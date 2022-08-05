@@ -334,7 +334,6 @@ nnoremap <silent> <Leader>ao <Cmd>Gina browse --extract :<CR>
 xnoremap <silent> <Leader>ao <Cmd>Gina browse --extract :<CR>
 '''
 hook_post_source = '''
-
 call extend(g:gina#command#browse#translation_patterns['github\.com'][1],
               \ {'pr':'https://\1/\2/\3/pull/new/%c0'}
               \)
@@ -472,7 +471,7 @@ repo = 'yuki-yano/fuzzy-motion.vim'
 depends = 'denops.vim'
 on_cmd = 'FuzzyMotion'
 hook_add = '''
-nnoremap s <Cmd>FuzzyMotion<CR>
+nnoremap <Leader>s <Cmd>FuzzyMotion<CR>
 '''
 
 [[plugins]]
