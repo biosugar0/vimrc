@@ -432,6 +432,9 @@ call gina#custom#mapping#nmap(
       \ {'nmap': 1, 'silent': 1}
       \)
 
+if dein#tap('ddc.vim')
+  call ddc#custom#patch_filetype('gina-commit', 'specialBufferCompletion', v:true)
+endif
 command! -nargs=? PR Gina browse --scheme=pr <args>
 nnoremap <leader>aw <Cmd>PR<CR>
 '''
