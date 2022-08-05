@@ -17,7 +17,7 @@ set.startofline = false  -- 移動時にx軸をそのままにする
 
 
 --保存時の設定
-local undodir =vim.env.CACHE..'/nvim/undo' 
+local undodir =vim.env.CACHE .. '/nvim/undo' 
 set.undodir:append(undodir)
 vim.fn.mkdir(undodir,'p')
 set.undofile= true

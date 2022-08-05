@@ -1,29 +1,26 @@
-vim.cmd('augroup MyAutoCmd')
-vim.cmd('autocmd!')
-vim.cmd('augroup END')
-local o = vim.o
+vim.cmd([[augroup MyAutoCmd]])
+vim.cmd([[autocmd!]])
+vim.cmd([[augroup END]])
+
+local set=vim.opt
 
 if vim.fn.has('vim_starting') == 1 then
-	-- Disable packpath
 	vim.o.packpath = ''
+	set.encoding = 'utf-8'
+	vim.g.mapleader = [[\<space>]]
+	vim.g.maplocalleader = [["\<space>"]]
 
-    -- True color support
-    vim.g.colorterm = os.getenv("COLORTERM")
-	if (vim.g.colorterm == "truecolor" or vim.g.colorterm == "24bit" or vim.g.colorterm == "" ) then
-		if vim.fn.exists("+termguicolors") then
-			o.t_8f = "<Esc>[38;2;%lu;%lu;%lum"
-			o.t_8b = "<Esc>[48;2;%lu;%lu;%lum"
-			o.termguicolors = true
-		end
+	vim.g.colorterm = os.getenv("COLORTERM")
+	if vim.fn.exists("+termguicolors") == 1 then
+		vim.o.termguicolors = true
 	end
-
-	-- Disable default plugins
+	-- 必要ないデフォルトプラグインを読み込まない
 	vim.g.did_install_default_menus = 1
-	vim.g.did_install_syntax_menu  = 1
-	vim.g.loaded_2html_plugin = 1
-	vim.g.loaded_getscript    = 1
-	vim.g.loaded_getscriptPlugin  = 1
-	vim.g.loaded_gzip = 1
+	vim.g.did_install_syntax_menu   = 1
+	vim.g.loaded_2html_plugin       = 1
+	vim.g.loaded_getscript          = 1
+	vim.g.loaded_getscriptPlugin    = 1
+	vim.g.loaded_gzip               = 1
 	vim.g.loaded_netrw              = 1
 	vim.g.loaded_netrwFileHandlers  = 1
 	vim.g.loaded_netrwPlugin        = 1
@@ -40,18 +37,22 @@ if vim.fn.has('vim_starting') == 1 then
 	vim.g.skip_loading_mswin        = 1
 	vim.g.loaded_man                = 1
 	vim.g.loaded_tutor_mode_plugin  = 1
-
-	o.errorbells = false
-	o.visualbell = false
-
-	if vim.fn.exists("&belloff") then
-		o.belloff = "all"
+	set.visualbell = false
+        vim.o.t_vb = ''
+	if vim.fn.exists('&belloff') then
+		set.belloff='all'
 	end
-
-	-- Timeout
-	o.timeout = true
-	o.ttimeout = true
-	o.timeoutlen = 500
-	o.ttimeoutlen = 10
-	o.updatetime = 2000
+	 set.timeout =true
+	 set.ttimeout = true
+	 set.ttimeoutlen=100
+	 set.updatetime = 2000 -- for CursolHold
+     vim.env.CACHE = vim.fn.expand('~/.cache')
 end
+
+require('option')
+require('mapping')
+require('dein')
+require('cmds')
+require('augroup')
+set.secure = true
+
