@@ -228,10 +228,19 @@ repo = 'nvim-treesitter/nvim-treesitter'
 depends = ['nvim-treesitter-textobjects', 'treesitter-unit']
 on_event = 'BufRead'
 hook_post_update = 'TSUpdate'
-hook_post_source= '''
+hook_source= '''
 lua << EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = {"vim", "toml", "python", "go","hcl","yaml","bash","sql"},
+  ensure_installed = {
+      "vim",
+      "toml",
+      "python",
+      "go",
+      "hcl",
+      "yaml",
+      "bash",
+      "sql",
+      },
 
   highlight = {
     enable = true,
