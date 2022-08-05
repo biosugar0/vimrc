@@ -1,7 +1,7 @@
 require("util")
 local MyAutoCmd = vim.api.nvim_create_augroup("MyAutoCmd", { clear = true })
 -- Note: filetype detect does not work on startup
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+vim.api.nvim_create_autocmd({ "FileType","Syntax","BufNewFile","BufNew","BufRead" }, {
 	group = MyAutoCmd,
 	pattern = "*",
 	command = [[  filetype detect ]],
