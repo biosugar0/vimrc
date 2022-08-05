@@ -2,13 +2,13 @@ vim.cmd([[augroup MyAutoCmd]])
 vim.cmd([[autocmd!]])
 vim.cmd([[augroup END]])
 
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 local set=vim.opt
 
 if vim.fn.has('vim_starting') == 1 then
 	vim.o.packpath = ''
 	set.encoding = 'utf-8'
-	vim.g.mapleader = [[\<space>]]
-	vim.g.maplocalleader = [["\<space>"]]
 
 	vim.g.colorterm = os.getenv("COLORTERM")
 	if vim.fn.exists("+termguicolors") == 1 then
@@ -38,7 +38,7 @@ if vim.fn.has('vim_starting') == 1 then
 	vim.g.loaded_man                = 1
 	vim.g.loaded_tutor_mode_plugin  = 1
 	set.visualbell = false
-        vim.o.t_vb = ''
+    vim.o.t_vb = ''
 	if vim.fn.exists('&belloff') then
 		set.belloff='all'
 	end
@@ -55,4 +55,3 @@ require('dein')
 require('cmds')
 require('augroup')
 set.secure = true
-
