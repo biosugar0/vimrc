@@ -1,6 +1,3 @@
-vim.cmd([[augroup MyAutoCmd]])
-vim.cmd([[autocmd!]])
-vim.cmd([[augroup END]])
 
 vim.env.VIMHOME = vim.fn.expand("<sfile>:p:h")
 vim.g.rc_dir = vim.env.VIMHOME
@@ -47,13 +44,13 @@ if vim.fn.has("vim_starting") == 1 then
 	set.timeout = true
 	set.ttimeout = true
 	set.ttimeoutlen = 100
-	set.updatetime = 1500 -- for CursolHold
+	set.updatetime = 1500
 	vim.env.CACHE = vim.fn.expand("~/.cache")
 end
 
+require("augroup")
 require("option")
 require("mapping")
 require("dein")
 require("cmds")
-require("augroup")
 set.secure = true

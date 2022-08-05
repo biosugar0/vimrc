@@ -1,9 +1,8 @@
 require("util")
-
+local MyAutoCmd = vim.api.nvim_create_augroup("MyAutoCmd", { clear = true })
 -- 保存時に存在しないディレクトリを作成
-local vimrc_auto_mkdir = vim.api.nvim_create_augroup("vimrc-auto-mkdir", { clear = true })
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-	group = vimrc_auto_mkdir,
+	group = MyAutoCmd,
 	pattern = "*",
 	callback = function()
 		local dir = vim.fn.expand("<afile>:p:h")
@@ -25,32 +24,30 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 })
 
 -- 末尾の空白削除
-local trim_space = vim.api.nvim_create_augroup("trim-space", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
-	group = trim_space,
+	group = MyAutoCmd,
 	pattern = { "go", "sql", "python", "vim", "sh", "lua" },
 	command = [[autocmd BufWritePre * :%s/\s\+$//ge]],
 })
 
 --ファイルをひらいたとき最後にカーソルがあった場所に移動
-local restore_cursor = vim.api.nvim_create_augroup("restore-cursor", { clear = true })
 vim.api.nvim_create_autocmd("BufReadPost", {
-	group = restore_cursor,
+	group = MyAutoCmd,
 	pattern = "*",
 	command = [[if line("'\"") >= 1 && line("'\"") <= line("$")  |   exe "normal! g`\""  | endif]],
 })
 
 vim.api.nvim_create_autocmd("BufWinEnter", {
-	group = restore_cursor,
+	group = MyAutoCmd,
 	pattern = "*",
 	command = [[if empty(&buftype) && line('.') > winheight(0) / 3 * 2 | execute 'normal! zz' .. repeat("\<C-y>", winheight(0) / 6) | endif]],
 })
 
-local vimrcAutoCreatefile = vim.api.nvim_create_augroup("vimrcAutoCreatefile", { clear = true })
+-- for onsidian markdown link
 local memodir = os.getenv("MEMO_DIRECTORY")
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 	pattern = memodir .. "*",
-	group = vimrcAutoCreatefile,
+	group = MyAutoCmd,
 	callback = function()
 		vim.opt_local.path:append(memodir .. "/**")
 		vim.opt.suffixesadd:append(".md")
