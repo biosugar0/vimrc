@@ -1,7 +1,7 @@
 [[plugins]]
 repo = 'Shougo/ddc.vim'
 depends = ['context_filetype.vim', 'denops.vim', 'pum.vim','vim-vsnip','vim-vsnip-integ']
-on_event = ['InsertEnter', 'CursorHold']
+on_event = ['InsertEnter']
 hook_post_source = '''
   set completeopt=menuone,preview
   call ddc#custom#patch_global('sources', ['around', 'file', 'rg', 'dictionary'] )
@@ -76,7 +76,7 @@ hook_post_source = '''
       \ ['input', 'around', 'rg']
       \ )
   call ddc#custom#patch_filetype(
-            \ ['typescript', 'go', 'python','hcl'], 'sources',
+            \ ['typescript', 'go', 'python','hcl','toml'], 'sources',
             \ ['input', 'nvim-lsp', 'around','vsnip','dictionary']
             \ )
   call ddc#custom#patch_filetype(['FineCmdlinePrompt'], {
@@ -122,7 +122,6 @@ hook_post_source = '''
   smap <expr> <C-j> vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>'
 
   autocmd User PumCompleteDone call vsnip_integ#on_complete_done(g:pum#completed_item)
-
 '''
 hook_add = '''
   nnoremap :       <Cmd>call CommandlinePre(':')<CR>:

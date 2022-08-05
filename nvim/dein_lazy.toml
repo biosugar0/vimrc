@@ -53,9 +53,16 @@ hook_add = '''
 '''
 
 [[plugins]]
+repo = 'lewis6991/impatient.nvim'
+on_source = ['nvim-lspconfig']
+hook_post_source = '''
+lua require('impatient')
+'''
+
+[[plugins]]
 repo = 'neovim/nvim-lspconfig'
 on_source = 'ddc.vim'
-depends = ['impatient.nvim','denops.vim','pum.vim','mason-lspconfig.nvim','fidget.nvim','denops-signature_help']
+depends = ['impatient.nvim','denops.vim','mason-lspconfig.nvim','fidget.nvim','denops-signature_help']
 hook_source = '''
 lua << EOF
 local on_attach = function(client, bufnr)
@@ -325,7 +332,6 @@ nnoremap <silent> <Leader>ars <Cmd>Gina show <C-r><C-w><CR>
 nnoremap <silent> <Leader>arc <Cmd>Gina changes <C-r><C-w><CR>
 nnoremap <silent> <Leader>ao <Cmd>Gina browse --extract :<CR>
 xnoremap <silent> <Leader>ao <Cmd>Gina browse --extract :<CR>
-
 '''
 hook_post_source = '''
 call extend(g:gina#command#browse#translation_patterns['github\.com'][1],
@@ -425,6 +431,9 @@ call gina#custom#mapping#nmap(
       \ {'nmap': 1, 'silent': 1}
       \)
 
+if dein#tap('ddc.vim')
+  call ddc#custom#patch_filetype('gina-commit', 'specialBufferCompletion', v:true)
+endif
 command! -nargs=? PR Gina browse --scheme=pr <args>
 nnoremap <leader>aw <Cmd>PR<CR>
 '''
@@ -462,7 +471,7 @@ repo = 'yuki-yano/fuzzy-motion.vim'
 depends = 'denops.vim'
 on_cmd = 'FuzzyMotion'
 hook_add = '''
-nnoremap ss <Cmd>FuzzyMotion<CR>
+nnoremap <Leader>s <Cmd>FuzzyMotion<CR>
 '''
 
 [[plugins]]
@@ -556,8 +565,78 @@ nmap <leader>t <SID>(makegotest)<Plug>(altr-forward)
 '''
 
 [[plugins]]
-repo = 'airblade/vim-gitgutter'
-on_event = 'CursorHold'
+repo = 'nvim-lua/plenary.nvim'
+
+[[plugins]]
+repo = 'lewis6991/gitsigns.nvim'
+on_event = ['BufReadPre', 'BufNewFile']
+on_lua = 'gitsigns'
+hook_source = '''
+lua << EOF
+ require('gitsigns').setup {
+ signs = {
+   add          = {hl = 'GitSignsAdd'   , text = '+', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+   change       = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+   delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+   topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+   changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+ },
+ signcolumn = true,
+ numhl      = false,
+ linehl     = false,
+ word_diff  = false,
+ watch_gitdir = {
+   interval = 1000,
+   follow_files = true
+ },
+ attach_to_untracked = true,
+ current_line_blame = false,
+ current_line_blame_opts = {
+   virt_text = true,
+   virt_text_pos = 'eol',
+   delay = 1000,
+   ignore_whitespace = false,
+ },
+ current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
+ sign_priority = 6,
+ update_debounce = 100,
+ status_formatter = nil,
+ max_file_length = 40000,
+ preview_config = {
+   border = 'single',
+   style = 'minimal',
+   relative = 'cursor',
+   row = 0,
+   col = 1
+ },
+ yadm = {
+   enable = false
+  },
+  on_attach = function(bufnr)
+    local gs = package.loaded.gitsigns
+    local function map(mode, l, r, opts)
+      opts = opts or {}
+      opts.buffer = bufnr
+      vim.keymap.set(mode, l, r, opts)
+    end
+    map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", {expr=true})
+    map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", {expr=true})
+    map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
+    map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
+    map('n', '<leader>hS', gs.stage_buffer)
+    map('n', '<leader>hu', gs.undo_stage_hunk)
+    map('n', '<leader>hR', gs.reset_buffer)
+    map('n', '<leader>hp', gs.preview_hunk)
+    map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+    map('n', '<leader>tb', gs.toggle_current_line_blame)
+    map('n', '<leader>hd', gs.diffthis)
+    map('n', '<leader>hD', function() gs.diffthis('~') end)
+    map('n', '<leader>td', gs.toggle_deleted)
+    map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+  end
+  }
+EOF
+'''
 
 [[plugins]]
 repo = 'hrsh7th/vim-eft'
@@ -674,23 +753,63 @@ command! -bang -nargs=* HelpRg
       \   fzf#vim#with_preview({'options': '--exact --reverse --delimiter : --nth 3..'}, 'right:90%'), <bang>0)
 
 '''
+[[plugins]]
+repo = 'kyazdani42/nvim-web-devicons'
+on_source = ['lualine.nvim']
 
 [[plugins]]
-repo ='vim-airline/vim-airline'
+repo = 'nvim-lualine/lualine.nvim'
 on_event = 'BufRead'
-hook_add = '''
-"" ステータス
-let g:airline_theme = 'badwolf'
-" virtulenvを認識しているか確認用に、現在activateされているvirtualenvを表示(vim-virtualenvの拡張)
-let g:airline#extensions#virtualenv#enabled = 1
-" gitのHEADから変更した行の+-を非表示(vim-gitgutterの拡張)
-let g:airline#extensions#hunks#enabled = 0
+hook_source = '''
+lua << EOF
+ require('lualine').setup {
+ options = {
+  icons_enabled = true,
+  theme = 'auto',
+  component_separators = { left = '|', right = '|'},
+  section_separators = { left = '', right = ''},
+  disabled_filetypes = {},
+  always_divide_middle = true,
+  colored = true,
+  },
+  sections = {
+   lualine_a = {'mode'},
+   lualine_b = {'branch', 'diff'},
+   lualine_c = {
+    {
+     'filename',
+     path = 1,
+     file_status = true,
+     shorting_target = 40,
+     symbols = {
+     modified = ' [+]',
+     readonly = ' [RO]',
+     unnamed = 'Untitled',
+     }
+    }
+   },
+   lualine_x = {'filetype', 'encoding'},
+   lualine_y = {
+    {
+     'diagnostics',
+     source = {'nvim-lsp'},
+      }
+     },
+   lualine_z = {'location'}
+ },
+  inactive_sections = {
+   lualine_a = {},
+   lualine_b = {},
+   lualine_c = {'filename'},
+   lualine_x = {'location'},
+   lualine_y = {},
+   lualine_z = {}
+ },
+  tabline = {},
+  extensions = {}
+ }
+EOF
 '''
-
-[[plugins]]
-repo ='vim-airline/vim-airline-themes'
-depends = 'vim-airline'
-on_source = 'vim-airline'
 
 [[plugins]]
 repo = 'christoomey/vim-tmux-navigator'
@@ -728,34 +847,6 @@ on_map = {nox = '<Plug>'}
 [[plugins]]
 repo ='kana/vim-operator-user'
 on_map = {nox = '<Plug>'}
-
-[[plugins]]
-repo = 'kevinhwang91/nvim-hlslens'
-on_event = 'CursorMoved'
-depends = ['vim-asterisk']
-hook_add = '''
-lua << EOF
-local kopts = {noremap = true, silent = true}
-
-vim.api.nvim_set_keymap('n', 'n',
-    [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
-    kopts)
-vim.api.nvim_set_keymap('n', 'N',
-    [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
-    kopts)
-vim.api.nvim_set_keymap('n', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], {})
-vim.api.nvim_set_keymap('n', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], {})
-vim.api.nvim_set_keymap('n', 'g*', [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]], {})
-vim.api.nvim_set_keymap('n', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], {})
-
-vim.api.nvim_set_keymap('x', '*', [[<Plug>(asterisk-z*)<Cmd>lua require('hlslens').start()<CR>]], {})
-vim.api.nvim_set_keymap('x', '#', [[<Plug>(asterisk-z#)<Cmd>lua require('hlslens').start()<CR>]], {})
-vim.api.nvim_set_keymap('x', 'g*', [[<Plug>(asterisk-gz*)<Cmd>lua require('hlslens').start()<CR>]], {})
-vim.api.nvim_set_keymap('x', 'g#', [[<Plug>(asterisk-gz#)<Cmd>lua require('hlslens').start()<CR>]], {})
-
-vim.api.nvim_set_keymap('n', '<Leader>l', ':noh<CR>', kopts)
-EOF
-'''
 
 [[plugins]]
 repo = 'haya14busa/vim-asterisk'
@@ -830,11 +921,4 @@ augroup LineDiff
   au!
   autocmd User LinediffBufferReady nnoremap <buffer> <silent> q :<C-u>LinediffReset<CR>
 augroup END
-'''
-
-[[plugins]]
-repo = 'lewis6991/impatient.nvim'
-on_source = ['nvim-lspconfig']
-hook_post_source = '''
-lua require('impatient')
 '''
