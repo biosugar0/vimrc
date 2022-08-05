@@ -1,4 +1,3 @@
-
 vim.env.VIMHOME = vim.fn.expand("<sfile>:p:h")
 vim.g.rc_dir = vim.env.VIMHOME
 vim.g.mapleader = " "
