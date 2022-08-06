@@ -15,6 +15,7 @@ set.sidescrolloff = 16 -- 左右スクロール時の視界を確保
 set.sidescroll = 1 -- 左右スクロールは一文字づつ行う
 set.startofline = false -- 移動時にx軸をそのままにする
 set.mouse = "" -- マウス無効
+set.virtualedit='all' -- allow virtual editing in all modes
 ----保存時の設定
 local undodir = vim.env.CACHE .. "/nvim/undo"
 set.undodir:append(undodir)
