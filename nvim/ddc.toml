@@ -1,6 +1,6 @@
 [[plugins]]
 repo = 'Shougo/ddc.vim'
-depends = ['context_filetype.vim', 'denops.vim', 'pum.vim','vim-vsnip','vim-vsnip-integ']
+depends = ['context_filetype.vim', 'denops.vim', 'pum.vim','vim-vsnip','vim-vsnip-integ','skkeleton']
 on_event = ['InsertEnter']
 hook_post_source = '''
   set completeopt=menuone,preview
@@ -69,7 +69,16 @@ hook_post_source = '''
         \ },
         \ 'vsnip': {
         \ 'dup': v:true,
-        \ 'mark': 'snip'},
+        \ 'mark': 'snip',
+        \ },
+        \ 'skkeleton' : {
+        \   'mark': 'skk',
+        \   'converters': [],
+        \   'matchers': ['skkeleton'],
+        \   'sorters': [],
+        \   'minAutoCompleteLength': 2,
+        \   'maxCandidates': 50,
+        \ },
         \ })
   call ddc#custom#patch_filetype(
       \ ['help', 'markdown', 'gitcommit'], 'sources',
@@ -101,6 +110,7 @@ hook_post_source = '''
     \   'showMenu': v:false
     \ },
     \ })
+
   call ddc#enable()
 
   imap <silent><expr> <Tab> vsnip#jumpable(1) ? '<Plug>(vsnip-expand-or-jump)' : ddc#map#pum_visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : ddc#can_complete() ? ddc#manual_complete() : '<Tab>'
@@ -118,10 +128,48 @@ hook_post_source = '''
   cnoremap <C-c>   <Cmd>call pum#map#cancel()<CR>
   cnoremap <C-o>   <Cmd>call pum#map#confirm()<CR>
 
-  imap <expr> <C-j> vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>'
-  smap <expr> <C-j> vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>'
+  imap <expr> <C-k> vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-k>'
+  smap <expr> <C-k> vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-k>'
 
   autocmd User PumCompleteDone call vsnip_integ#on_complete_done(g:pum#completed_item)
+
+  " For skkeleton
+  function! s:skkeleton_init() abort
+    call skkeleton#config({
+    \   'eggLikeNewline': v:true,
+    \   'registerConvertResult': v:true,
+    \   'showCandidatesCount': 1,
+    \   'globalJisyo': g:globalJisyo,
+    \   'userJisyo': g:skk_dir .. '/SKK-JISYO.user',
+    \ })
+    " from shougo-s-github
+    call skkeleton#register_kanatable('rom', {
+      \ 'jj': 'escape',
+      \ '~':         ['〜',     ''],
+      \ '...':       ['…',     ''],
+      \ ",\<Space>": ['、',     ''],
+      \ "z\<Space>": ["\u3000", ''],
+      \ ".\<Space>": ['。',     ''],
+      \ "(\<Space>": ['（',     ''],
+      \ ")\<Space>": ['）',     ''],
+      \ "/\<Space>": ['・',     ''],
+    \ })
+  endfunction
+  function! s:skkeleton_pre() abort
+    " Save current sources
+    let b:skkeleton_ddc_sources_backup = get(ddc#custom#get_current(), 'sources', [])
+    let sources = get(b:, 'skkeleton_ddc_sources', ['skkeleton'])
+    call ddc#custom#patch_buffer('sources', sources)
+    " call pum#set_option('setline_insert', v:true)
+  endfunction
+  autocmd User skkeleton-disable-pre call s:skkeleton_post()
+  function! s:skkeleton_post() abort
+    " Restore current sources
+    call ddc#custom#patch_buffer('sources', b:skkeleton_ddc_sources_backup)
+    call pum#set_option('setline_insert', v:false)
+  endfunction
+  autocmd User skkeleton-initialize-pre call s:skkeleton_init()
+  autocmd User skkeleton-enable-pre call s:skkeleton_pre()
 '''
 hook_add = '''
   nnoremap :       <Cmd>call CommandlinePre(':')<CR>:
@@ -258,3 +306,22 @@ on_source = 'vim-vsnip-integ'
 repo = 'hrsh7th/vim-vsnip-integ'
 on_source = 'ddc.vim'
 depends = ['vim-vsnip']
+
+[[plugins]]
+repo = 'vim-skk/skkeleton'
+on_source= 'ddc.vim'
+hook_add = '''
+imap <C-j> <Plug>(skkeleton-toggle)
+cmap <C-j> <Plug>(skkeleton-toggle)
+'''
+hook_source = '''
+let g:skk_dir = expand('~/.local/share/skk')
+let g:globalJisyo = g:skk_dir .. '/SKK-JISYO.L'
+if !filereadable(g:globalJisyo)
+  echomsg 'Installing skk global jisyo ...'
+  let s:gzipfile = g:globalJisyo .. '.gz'
+  call system('curl -fLo ' .. s:gzipfile .. ' --create-dirs '
+        \ .. 'https://skk-dev.github.io/dict/SKK-JISYO.L.gz')
+  call system('gzip -d ' .. s:gzipfile)
+endif
+'''

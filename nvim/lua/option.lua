@@ -50,7 +50,7 @@ set.history = 1000 -- コマンドラインの履歴を1000件保存する
 -- 表示設定
 set.diffopt = "vertical"
 set.laststatus = 2 -- ステータス行を常に表示
-set.cmdheight = 2 -- メッセージ表示欄を2行確保
+set.cmdheight = 1 -- メッセージ表示欄を1行確保
 set.showmatch = true -- 対応する括弧を強調表示
 set.helpheight = 999 -- ヘルプを画面いっぱいに開く
 set.list = true -- 不可視文字を表示
