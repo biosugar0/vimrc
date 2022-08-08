@@ -898,13 +898,6 @@ EOF
 '''
 
 [[plugins]]
-repo = 'cohama/lexima.vim'
-on_event = 'InsertEnter'
-hook_source = '''
-let g:lexima_ctrlh_as_backspace = 1
-'''
-
-[[plugins]]
 repo ='t9md/vim-textmanip'
 on_map = '<Plug>(textmanip-'
 hook_add = '''

@@ -1,9 +1,8 @@
 [[plugins]]
 repo = 'Shougo/ddc.vim'
-depends = ['context_filetype.vim', 'denops.vim', 'pum.vim','vim-vsnip','vim-vsnip-integ','skkeleton']
+depends = ['context_filetype.vim', 'denops.vim', 'pum.vim','vim-vsnip','vim-vsnip-integ','skkeleton','lexima.vim']
 on_event = ['InsertEnter']
 hook_post_source = '''
-  set completeopt=menuone,preview
   call ddc#custom#patch_global('sources', ['around', 'file', 'rg', 'dictionary'] )
   call ddc#custom#patch_global('cmdlineSources', ['cmdline-history', 'input', 'file', 'around'] )
 
@@ -119,10 +118,10 @@ hook_post_source = '''
   imap <silent><expr> <S-TAB> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : pum#visible() ? '<Cmd>call pum#map#insert_relative(-1)<CR>' : '<S-TAB>'
   smap <silent><expr> <S-TAB> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : pum#visible() ? '<Cmd>call pum#map#insert_relative(-1)<CR>' : '<S-TAB>'
   imap <silent><expr> <C-p> pum#visible() ? '<Cmd>call pum#map#select_relative(-1)<CR>' : '<Cmd>call ddc#map#manual_complete()<CR><Cmd>call pum#map#select_relative(-1)<CR>'
-  inoremap <silent><expr> <CR> pum#visible() ? '<Cmd>call pum#map#confirm()<CR>' : ddc#map#pum_visible() ? '<Cmd>call pum#map#confirm()<CR>' : '<CR>'
   imap <silent><expr> <Esc> pum#visible() ? '<Cmd>call pum#map#cancel()<CR>' : '<Esc>'
   smap <silent><expr> <C-n>  vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' :  '<C-n>'
   imap <silent><expr> <C-n>  ddc#map#pum_visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' :  '<Cmd>normal! gj<CR>'
+  imap <silent><expr> <CR>  pum#visible() ? '<Cmd>call pum#map#confirm()<CR>' : lexima#expand('<LT>CR>', 'i')
 
   " For command line mode completion
   cnoremap <expr> <Tab> pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : exists('b:ddc_cmdline_completion') ? ddc#manual_complete() : nr2char(&wildcharm)
@@ -326,4 +325,15 @@ if !filereadable(g:globalJisyo)
         \ .. 'https://skk-dev.github.io/dict/SKK-JISYO.L.gz')
   call system('gzip -d ' .. s:gzipfile)
 endif
+'''
+
+[[plugins]]
+repo = 'cohama/lexima.vim'
+on_source = 'ddc.vim'
+hook_add = '''
+let g:lexima_ctrlh_as_backspace = 1
+let g:lexima_no_default_rules = v:true
+'''
+hook_source = '''
+call lexima#set_default_rules()
 '''

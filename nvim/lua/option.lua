@@ -6,6 +6,7 @@ set.nrformats:append("unsigned") --数字の増加減少でマイナスを扱わ
 
 set.virtualedit = all -- allow virtual editing in all modes
 set.clipboard = "unnamed,unnamedplus" -- OSのクリップボードをレジスタ指定無しで Yank, Put 出来るようにする
+let.completeopt = 'menuone,noselect,noinsert'
 
 ---- 移動設定
 set.backspace = "indent,eol,start" -- Backspaceキーの影響範囲に制限を設けない
