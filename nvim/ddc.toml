@@ -113,14 +113,16 @@ hook_post_source = '''
 
   call ddc#enable()
 
-  imap <silent><expr> <Tab> vsnip#jumpable(1) ? '<Plug>(vsnip-expand-or-jump)' : ddc#map#pum_visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : ddc#can_complete() ? ddc#manual_complete() : '<Tab>'
-  smap <silent><expr> <TAB> vsnip#jumpable(1) ? '<Plug>(vsnip-expand-or-jump)' : ddc#map#pum_visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : ddc#can_complete() ? ddc#manual_complete() : '<TAB>'
+  imap <silent><expr> <Tab> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : ddc#map#pum_visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : ddc#can_complete() ? ddc#manual_complete() : '<Tab>'
+  smap <silent><expr> <TAB> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : ddc#map#pum_visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : ddc#can_complete() ? ddc#manual_complete() : '<TAB>'
   imap <silent><expr> <C-n> pum#visible() ? '<Cmd>call pum#map#select_relative(+1)<CR>' : '<Cmd>call ddc#map#manual_complete()<CR><Cmd>call pum#map#select_relative(+1)<CR>'
   imap <silent><expr> <S-TAB> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : pum#visible() ? '<Cmd>call pum#map#insert_relative(-1)<CR>' : '<S-TAB>'
   smap <silent><expr> <S-TAB> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : pum#visible() ? '<Cmd>call pum#map#insert_relative(-1)<CR>' : '<S-TAB>'
   imap <silent><expr> <C-p> pum#visible() ? '<Cmd>call pum#map#select_relative(-1)<CR>' : '<Cmd>call ddc#map#manual_complete()<CR><Cmd>call pum#map#select_relative(-1)<CR>'
   inoremap <silent><expr> <CR> pum#visible() ? '<Cmd>call pum#map#confirm()<CR>' : ddc#map#pum_visible() ? '<Cmd>call pum#map#confirm()<CR>' : '<CR>'
   imap <silent><expr> <Esc> pum#visible() ? '<Cmd>call pum#map#cancel()<CR>' : '<Esc>'
+  smap <silent><expr> <C-n>  vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' :  '<C-n>'
+  imap <silent><expr> <C-n>  ddc#map#pum_visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' :  '<Cmd>normal! gj<CR>'
 
   " For command line mode completion
   cnoremap <expr> <Tab> pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : exists('b:ddc_cmdline_completion') ? ddc#manual_complete() : nr2char(&wildcharm)
