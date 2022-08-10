@@ -318,9 +318,6 @@ set helplang=ja " help日本語化
 '''
 
 [plugins.ftplugin]
-gin-diff = '''
-  nnoremap <buffer> <Leader>ac <cmd>Gin commit<CR>
-'''
 gin-status = '''
   nnoremap <buffer> <Leader>ac <cmd>Gin commit<CR>
   nnoremap <buffer> <Leader>ap :Gin push<CR>
