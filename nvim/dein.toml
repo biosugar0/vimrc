@@ -28,3 +28,8 @@ hook_add = '''
     au BufEnter * nested colorscheme iceberg
   augroup END
 '''
+[[plugins]]
+repo = 'lewis6991/impatient.nvim'
+hook_add = '''
+lua require('impatient')
+'''

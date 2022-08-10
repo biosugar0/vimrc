@@ -53,13 +53,6 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = 'lewis6991/impatient.nvim'
-on_source = ['nvim-lspconfig']
-hook_post_source = '''
-lua require('impatient')
-'''
-
-[[plugins]]
 repo = 'neovim/nvim-lspconfig'
 on_source = 'ddc.vim'
 depends = ['impatient.nvim','denops.vim','mason-lspconfig.nvim','fidget.nvim','denops-signature_help']
@@ -132,6 +125,15 @@ local settings = {
             analyses = {
                 nonewvars = true,
                 unusedparams = true,
+            },
+            hints = {
+              comstantValues = true,
+              patameterNames = true,
+              rangeVariableTypes = true,
+              assignVariableTypes = true,
+              compositeLiteralTypes = true,
+              compositeLiteralFields = true,
+              functionTypeParameters = true,
             },
         },
     },
