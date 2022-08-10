@@ -7,9 +7,15 @@ if vim.fn.executable("rg") then
 end
 
 local autoQuickfix = vim.api.nvim_create_augroup("AutoQuickfix", { clear = true })
-vim.api.nvim_create_autocmd("QuickFixCmdPost", {
-	command = "*grep* cwindow",
-	group = AutoQuickfix,
+vim.api.nvim_create_autocmd({ 'QuickFixCmdPost' }, {
+  group = 'AutoQuickfix',
+  pattern = '[^l]*',
+  command = [[cwindow]],
+})
+vim.api.nvim_create_autocmd({ 'QuickFixCmdPost' }, {
+  group = 'AutoQuickfix',
+  pattern = 'l*',
+  command = [[lwindow]],
 })
 
 local function get_syn_id(transparent)
