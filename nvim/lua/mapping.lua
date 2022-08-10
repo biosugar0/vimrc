@@ -29,7 +29,7 @@ vim.keymap.set("n", "<Esc><Esc>", "<Cmd>nohlsearch<CR>", { noremap = true, silen
 vim.keymap.set("n", "<C-l><C-l>", "<Cmd>nohlsearch<CR>", { noremap = true, silent = true })
 
 -- tab operation
-vim.keymap.set("n", "qt", "<Cmd>tabclose<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "qq", "<Cmd>tabclose<CR>", { noremap = true, silent = true })
 
 -- smart zero
 vim.keymap.set("n", "0", [[getline('.')[0 : col('.') - 2] =~# '^\s\+$' ? '0' : '^']], { noremap = true, expr = true })
