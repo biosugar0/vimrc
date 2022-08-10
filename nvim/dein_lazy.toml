@@ -317,17 +317,45 @@ hook_add  = '''
 set helplang=ja " help日本語化
 '''
 
+[plugins.ftplugin]
+gin-diff = '''
+  nnoremap <buffer> <Leader>ac <cmd>Gin commit<CR>
+'''
+gin-status = '''
+  nnoremap <buffer> <Leader>ac <cmd>Gin commit<CR>
+  nnoremap <buffer> <Leader>ap :Gin push<CR>
+'''
+gin-branch = '''
+  nmap <buffer> n <Plug>(gin-action-new)
+  nmap <buffer> dd <Plug>(gin-action-delete)
+'''
+gitcommit = '''
+  setlocal spell
+'''
+
+[[plugins]]
+repo = 'lambdalisue/gin.vim'
+on_cmd = 'Gin'
+hook_add = '''
+nnoremap <silent> <Leader>aa <Cmd>GinStatus<CR>
+nnoremap <silent> <Leader>ab <Cmd>GinBranch --all<CR>
+let g:loaded_gin_status_supplement = 1
+let g:loaded_gin_branch_supplement = 1
+let g:loaded_gin_gitcommit_supplement = 1
+let g:loaded_gin_gitrebase_supplement = 1
+'''
+
 [[plugins]]
 repo = 'lambdalisue/gina.vim'
 on_cmd = 'Gina'
 hook_add = '''
 let g:gina#command#blame#formatter#format ="%au%=on %ti %ma%in"
 
-nnoremap <silent> <Leader>aa <Cmd>Gina status<CR>
+"nnoremap <silent> <Leader>aa <Cmd>Gina status<CR>
+"nnoremap <silent> <Leader>ab <Cmd>Gina branch -av<CR>
 nnoremap <silent> <Leader>aA <Cmd>Gina changes HEAD<CR>
-nnoremap <silent> <Leader>ac <Cmd>Gina commit<CR>
-nnoremap <silent> <Leader>aC <Cmd>Gina commit --amend<CR>
-nnoremap <silent> <Leader>ab <Cmd>Gina branch -av<CR>
+""nnoremap <silent> <Leader>ac <Cmd>Gina commit<CR>
+""nnoremap <silent> <Leader>aC <Cmd>Gina commit --amend<CR>
 nnoremap <silent> <Leader>at <Cmd>Gina tag<CR>
 nnoremap <silent> <Leader>ag <Cmd>Gina grep<CR>
 nnoremap <silent> <Leader>aq <Cmd>Gina qrep<CR>
@@ -443,6 +471,7 @@ call gina#custom#mapping#nmap(
 
 if dein#tap('ddc.vim')
   call ddc#custom#patch_filetype('gina-commit', 'specialBufferCompletion', v:true)
+  call ddc#custom#patch_filetype('gin-commit', 'specialBufferCompletion', v:true)
 endif
 command! -nargs=? PR Gina browse --scheme=pr <args>
 nnoremap <leader>aw <Cmd>PR<CR>
