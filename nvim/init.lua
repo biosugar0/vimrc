@@ -47,9 +47,9 @@ if vim.fn.has("vim_starting") == 1 then
 	vim.env.CACHE = vim.fn.expand("~/.cache")
 end
 
-require("augroup")
-require("option")
-require("mapping")
-require("dein")
-require("cmds")
+require("biosugar0.augroup")
+require("biosugar0.option")
+require("biosugar0.mapping")
+require("biosugar0.dein")
+require("biosugar0.cmds")
 set.secure = true

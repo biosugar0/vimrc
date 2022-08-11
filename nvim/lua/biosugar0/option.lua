@@ -61,6 +61,7 @@ set.breakindent = true -- インデントされた行の折り返しを綺麗に
 set.cursorline = true -- カーソル行を強調
 set.signcolumn = "yes"
 set.redrawtime = 300
+set.ambiwidth='single'
 -- 不可視文字の表示記号指定
 set.listchars = [[tab:|-,trail:-,nbsp:%,eol:↲,extends:❯,precedes:❮]]
 set.ttyfast = true
