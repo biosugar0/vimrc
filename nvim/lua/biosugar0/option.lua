@@ -1,14 +1,14 @@
 local set = vim.opt
 local let = vim.o
 
-set.shell='bash'
+set.shell = "bash"
 
 set.nrformats:append("octal") -- 10進数のみ
 set.nrformats:append("unsigned") --数字の増加減少でマイナスを扱わない
 
 set.virtualedit = all -- allow virtual editing in all modes
 set.clipboard = "unnamed,unnamedplus" -- OSのクリップボードをレジスタ指定無しで Yank, Put 出来るようにする
-let.completeopt = 'menuone,noselect,noinsert'
+let.completeopt = "menuone,noselect,noinsert"
 
 ---- 移動設定
 set.backspace = "indent,eol,start" -- Backspaceキーの影響範囲に制限を設けない
@@ -18,7 +18,7 @@ set.sidescrolloff = 16 -- 左右スクロール時の視界を確保
 set.sidescroll = 1 -- 左右スクロールは一文字づつ行う
 set.startofline = false -- 移動時にx軸をそのままにする
 set.mouse = "" -- マウス無効
-set.virtualedit='all' -- allow virtual editing in all modes
+set.virtualedit = "all" -- allow virtual editing in all modes
 ----保存時の設定
 local undodir = vim.env.CACHE .. "/nvim/undo"
 set.undodir:append(undodir)
@@ -61,7 +61,7 @@ set.breakindent = true -- インデントされた行の折り返しを綺麗に
 set.cursorline = true -- カーソル行を強調
 set.signcolumn = "yes"
 set.redrawtime = 300
-set.ambiwidth='single'
+set.ambiwidth = "single"
 -- 不可視文字の表示記号指定
 set.listchars = [[tab:|-,trail:-,nbsp:%,eol:↲,extends:❯,precedes:❮]]
 set.ttyfast = true
