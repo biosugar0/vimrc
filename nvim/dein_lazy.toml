@@ -149,6 +149,7 @@ let g:gina#command#blame#formatter#format ="%au%=on %ti %ma%in"
 
 nnoremap <silent> <Leader>aa <Cmd>Gina status<CR>
 nnoremap <silent> <Leader>ab <Cmd>Gina branch -av<CR>
+nnoremap <silent> <Leader>ap <Cmd>Gina push<CR>
 nnoremap <silent> <Leader>aA <Cmd>Gina changes HEAD<CR>
 nnoremap <silent> <Leader>ac <Cmd>Gina commit<CR>
 nnoremap <silent> <Leader>aC <Cmd>Gina commit --amend<CR>
