@@ -219,7 +219,6 @@ function CommandlinePost()
 end
 
 local function CommandlinePre(mode)
-	print("CommandlinePre---")
 	-- Note: It disables default command line completion!
 	vim.opt.wildchar = ("<C-t>"):byte()
 	vim.opt.wildcharm = vim.fn.char2nr(util.replace_termcodes("<C-t>"))
@@ -259,7 +258,6 @@ local function CommandlinePre(mode)
 	})
 
 	vim.fn["ddc#enable_cmdline_completion"]()
-	print("end--CommandlinePre---")
 	return mode
 end
 
