@@ -1,5 +1,13 @@
-vim.fn["ddc#custom#patch_global"]("sources", { "around", "file", "rg", "dictionary" })
-vim.fn["ddc#custom#patch_global"]("cmdlineSources", { "cmdline-history", "input", "file", "around" })
+local util = require("biosugar0.util")
+local ddc = {
+	patch_global = vim.fn["ddc#custom#patch_global"],
+	patch_buffer = vim.fn["ddc#custom#patch_buffer"],
+	patch_filetype = vim.fn["ddc#custom#patch_filetype"],
+	set_buffer = vim.fn["ddc#custom#set_buffer"],
+	set_context = vim.fn["ddc#custom#set_context"],
+}
+ddc.patch_global("sources", { "around", "file", "rg", "dictionary" })
+ddc.patch_global("cmdlineSources", { "cmdline-history", "input", "file", "around" })
 
 local sopts = {}
 sopts["_"] = {
@@ -72,36 +80,36 @@ sopts["skkeleton"] = {
 	maxCandidates = 50,
 }
 
-vim.fn["ddc#custom#patch_global"]("sourceOptions", sopts)
+ddc.patch_global("sourceOptions", sopts)
 
-vim.fn["ddc#custom#patch_filetype"]({ "help", "markdown", "gitcommit" }, "sources", { "input", "around", "rg" })
-vim.fn["ddc#custom#patch_filetype"](
+ddc.patch_filetype({ "help", "markdown", "gitcommit" }, "sources", { "input", "around", "rg" })
+ddc.patch_filetype(
 	{ "typescript", "go", "python", "hcl", "toml" },
 	"sources",
 	{ "input", "nvim-lsp", "around", "vsnip", "dictionary" }
 )
-vim.fn["ddc#custom#patch_filetype"]({ "FineCmdlinePrompt" }, {
+ddc.patch_filetype({ "FineCmdlinePrompt" }, {
 	keywordPattern = [[[0-9a-zA-Z_:#]*]],
 	sources = { "cmdline-history", "cmdline", "around" },
 	specialBufferCompletion = true,
 })
 
-vim.fn["ddc#custom#patch_global"]("autoCompleteEvents", {
+ddc.patch_global("autoCompleteEvents", {
 	"InsertEnter",
 	"TextChangedI",
 	"TextChangedP",
 	"CmdlineEnter",
 	"CmdlineChanged",
 })
-vim.fn["ddc#custom#patch_global"]("completionMenu", "pum.vim")
-vim.fn["ddc#custom#set_context"]("go", function()
+ddc.patch_global("completionMenu", "pum.vim")
+ddc.set_context("go", function()
 	local syntaxIn = vim.fn["ddc#syntax#in"]("TSComment")
 	if syntaxIn == 1 then
 		return { sources = { "around" } }
 	end
 	return {}
 end)
-vim.fn["ddc#custom#patch_global"]("sourceParams", {
+ddc.patch_global("sourceParams", {
 	dictionary = {
 		dictPaths = { "/usr/share/dict/words" },
 		smartCase = true,
@@ -165,17 +173,6 @@ vim.keymap.set(
 	{ noremap = false, expr = true }
 )
 
--- For command line mode completion
-vim.keymap.set(
-	"c",
-	[[<Tab>]],
-	[[pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : exists('b:ddc_cmdline_completion') ? ddc#manual_complete() : nr2char(&wildcharm)]],
-	{ noremap = true, expr = true }
-)
-vim.keymap.set("c", [[<S-Tab>]], [[<Cmd>call pum#map#insert_relative(-1)<CR>]], { noremap = true, expr = false })
-vim.keymap.set("c", [[<C-c>]], [[<Cmd>call pum#map#cancel()<CR>]], { noremap = true, expr = false })
-vim.keymap.set("c", [[<C-o>]], [[<Cmd>call pum#map#confirm()<CR>]], { noremap = true, expr = false })
-
 vim.keymap.set(
 	"i",
 	[[<C-k>]],
@@ -195,6 +192,86 @@ vim.api.nvim_create_autocmd("User", {
 		vim.fn["vsnip_integ#on_complete_done"](vim.g["pum#completed_item"])
 	end,
 })
+
+-- For command line mode completion
+vim.keymap.set(
+	"c",
+	"<Tab>",
+	[[pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : exists('b:ddc_cmdline_completion') ? ddc#manual_complete() : nr2char(&wildcharm)]],
+	{ noremap = true, expr = true }
+)
+vim.keymap.set("c", "<S-Tab>", [[<Cmd>call pum#map#insert_relative(-1)<CR>]], { noremap = true, expr = false })
+vim.keymap.set("c", "<C-c>", [[<Cmd>call pum#map#cancel()<CR>]], { noremap = true, expr = false })
+vim.keymap.set("c", "<C-o>", [[<Cmd>call pum#map#confirm()<CR>]], { noremap = true, expr = false })
+
+local prev_buffer_config
+
+function CommandlinePost()
+	pcall(vim.keymap.del, "c", "<Tab>", { silent = true, buffer = 0 })
+	-- Restore sources
+	if prev_buffer_config ~= nil then
+		ddc.set_buffer(prev_buffer_config)
+		prev_buffer_config = nil
+	else
+		ddc.set_buffer(vim.empty_dict())
+	end
+	vim.opt.wildcharm = vim.fn.char2nr(util.replace_termcodes("<Tab>"))
+end
+
+local function CommandlinePre(mode)
+	print("CommandlinePre---")
+	-- Note: It disables default command line completion!
+	vim.opt.wildchar = ("<C-t>"):byte()
+	vim.opt.wildcharm = vim.fn.char2nr(util.replace_termcodes("<C-t>"))
+
+	vim.keymap.set(
+		"c",
+		"<Tab>",
+		[[pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : exists('b:ddc_cmdline_completion') ? ddc#manual_complete() : "\<C-t>"]],
+		{ noremap = true, expr = true, buffer = 0 }
+	)
+	-- Overwrite sources
+	if prev_buffer_config == nil then
+		prev_buffer_config = vim.fn["ddc#custom#get_buffer"]()
+	end
+	if mode == ":" then
+		ddc.patch_buffer("cmdlineSources", { "cmdline-history", "cmdline", "around" })
+		ddc.patch_buffer("keywordPattern", [[[0-9a-zA-Z_:#]*]])
+	else
+		ddc.patch_buffer("cmdlineSources", { "around", "line" })
+	end
+	vim.api.nvim_create_autocmd("User", {
+		group = "MyAutoCmd",
+		pattern = "DDCCmdlineLeave",
+		callback = function()
+			CommandlinePost()
+		end,
+		once = true,
+	})
+
+	vim.api.nvim_create_autocmd("InsertEnter", {
+		group = "MyAutoCmd",
+		buffer = 0,
+		callback = function()
+			CommandlinePost()
+		end,
+		once = true,
+	})
+
+	vim.fn["ddc#enable_cmdline_completion"]()
+	print("end--CommandlinePre---")
+	return mode
+end
+
+vim.keymap.set("n", ":", function()
+	return CommandlinePre(":")
+end, { expr = true })
+vim.keymap.set("n", "/", function()
+	return CommandlinePre("/")
+end, { expr = true })
+vim.keymap.set("n", "?", function()
+	return CommandlinePre("?")
+end, { expr = true })
 
 -- skkeleton
 local function skkeleton_init()
