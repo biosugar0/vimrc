@@ -669,17 +669,6 @@ let g:findroot_not_for_subdir = 0
 '''
 
 [[plugins]]
-repo = 'chentoast/marks.nvim'
-on_source = 'vim-gitgutter'
-hook_source = '''
-lua << EOF
-require'marks'.setup {
-  default_mappings = true,
-}
-EOF
-'''
-
-[[plugins]]
 repo ='t9md/vim-textmanip'
 on_map = '<Plug>(textmanip-'
 hook_add = '''
