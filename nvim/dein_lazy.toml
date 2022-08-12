@@ -130,6 +130,7 @@ set helplang=ja " help日本語化
 [plugins.ftplugin]
 gin-status = '''
   nnoremap <buffer> <Leader>ac <Cmd>Gin commit<CR>
+  nnoremap <buffer> <Leader>aC <Cmd>Gin commit --amend<CR>
   nnoremap <buffer> <Leader>ap <Cmd>Gin push origin<CR>
 '''
 gin-branch = '''
@@ -158,11 +159,7 @@ on_cmd = 'Gina'
 hook_add = '''
 let g:gina#command#blame#formatter#format ="%au%=on %ti %ma%in"
 
-"nnoremap <silent> <Leader>aa <Cmd>Gina status<CR>
-"nnoremap <silent> <Leader>ab <Cmd>Gina branch -av<CR>
 nnoremap <silent> <Leader>aA <Cmd>Gina changes HEAD<CR>
-""nnoremap <silent> <Leader>ac <Cmd>Gina commit<CR>
-""nnoremap <silent> <Leader>aC <Cmd>Gina commit --amend<CR>
 nnoremap <silent> <Leader>at <Cmd>Gina tag<CR>
 nnoremap <silent> <Leader>ag <Cmd>Gina grep<CR>
 nnoremap <silent> <Leader>aq <Cmd>Gina qrep<CR>
@@ -177,6 +174,7 @@ nnoremap <silent> <Leader>ars <Cmd>Gina show <C-r><C-w><CR>
 nnoremap <silent> <Leader>arc <Cmd>Gina changes <C-r><C-w><CR>
 nnoremap <silent> <Leader>ao <Cmd>Gina browse --extract :<CR>
 xnoremap <silent> <Leader>ao <Cmd>Gina browse --extract :<CR>
+nnoremap <silent> <leader>aw <Cmd>Gina browse --scheme=pr<CR>
 '''
 hook_post_source = '''
 call extend(g:gina#command#browse#translation_patterns['github\.com'][1],
@@ -280,8 +278,6 @@ if dein#tap('ddc.vim')
   call ddc#custom#patch_filetype('gina-commit', 'specialBufferCompletion', v:true)
   call ddc#custom#patch_filetype('gin-commit', 'specialBufferCompletion', v:true)
 endif
-command! -nargs=? PR Gina browse --scheme=pr <args>
-nnoremap <leader>aw <Cmd>PR<CR>
 '''
 
 [[plugins]]
