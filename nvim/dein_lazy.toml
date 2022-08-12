@@ -163,7 +163,6 @@ nnoremap <silent> <Leader>aA <Cmd>Gina changes HEAD<CR>
 nnoremap <silent> <Leader>at <Cmd>Gina tag<CR>
 nnoremap <silent> <Leader>ag <Cmd>Gina grep<CR>
 nnoremap <silent> <Leader>aq <Cmd>Gina qrep<CR>
-nnoremap <silent> <Leader>ap <Cmd>Gina push<CR>
 nnoremap <silent> <Leader>ad <Cmd>Gina changes origin/HEAD...<CR>
 nnoremap <silent> <Leader>ah <Cmd>Gina log --graph<CR>
 nnoremap <silent> <Leader>aH <Cmd>Gina log --graph --all<CR>
