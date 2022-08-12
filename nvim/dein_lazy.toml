@@ -14,35 +14,7 @@ hook_add = '''
   vmap g<c-a> g<Plug>(dial-increment)
   vmap g<c-x> g<Plug>(dial-decrement)
 '''
-hook_post_source = '''
-lua << EOF
-local augend = require("dial.augend")
-require("dial.config").augends:register_group({
-	-- default augends used when no group name is specified
-	default = {
-		augend.integer.alias.decimal, -- nonnegative decimal number (0, 1, 2, 3, ...)
-		augend.integer.alias.hex, -- nonnegative hex number  (0x01, 0x1a1f, etc.)
-        augend.date.alias["%Y/%m/%d"], -- date (2022/02/19, etc.)
-        augend.date.alias["%Y-%m-%d"], -- date (2022-02-19, etc.)
-        augend.date.alias["%m/%d"], -- date (02/19, etc.)
-        augend.date.alias["%H:%M"], -- hour (01:30, etc.)
-		augend.constant.alias.bool, -- boolean value (true <-> false)
-        augend.semver.alias.semver,
-        augend.constant.alias.ja_weekday_full,
-		augend.case.new({
-			types = { "camelCase", "snake_case", "PascalCase", "SCREAMING_SNAKE_CASE" },
-			cyclic = true,
-		}),
-	},
-	case = {
-		augend.case.new({
-			types = { "camelCase", "snake_case", "PascalCase", "SCREAMING_SNAKE_CASE" },
-			cyclic = true,
-		}),
-	},
-})
-EOF
-'''
+hook_post_source = 'biosuagr0.plugins.dial'
 
 [[plugins]]
 repo = 'lambdalisue/guise.vim'
@@ -56,119 +28,7 @@ hook_add = '''
 repo = 'neovim/nvim-lspconfig'
 on_source = 'ddc.vim'
 depends = ['impatient.nvim','denops.vim','mason-lspconfig.nvim','fidget.nvim','denops-signature_help']
-hook_source = '''
-lua << EOF
-local on_attach = function(client, bufnr)
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  local bufopts = { noremap=true, silent=true, buffer=bufnr }
-  vim.keymap.set('n', 'gD', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-  vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-  vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-  vim.keymap.set('n', '<space>wl', function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, bufopts)
-  vim.keymap.set('n', 'gT', vim.lsp.buf.type_definition, bufopts)
-  vim.keymap.set('n', 'gr', vim.lsp.buf.rename, bufopts)
-  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-  vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, bufopts)
-  vim.keymap.set('n', '[d', vim.lsp.diagnostic.goto_prev, bufopts)
-  vim.keymap.set('n', ']d', vim.lsp.diagnostic.goto_next, bufopts)
-  vim.keymap.set('n', '<space>q', vim.lsp.diagnostic.set_loclist, bufopts)
-  vim.keymap.set('n', ',f', vim.lsp.buf.formatting, bufopts)
-  buf_set_option( 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-  vim.diagnostic.config({virtual_text = false, float = true})
-end
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits'
-  }
-}
-
-local nvim_lsp = require('lspconfig')
-local mason_lspconfig = require('mason-lspconfig')
-
-local settings = {
-    sumneko_lua = {
-        Lua = {
-            runtime = {
-                version = 'LuaJIT',
-            },
-            diagnostics = {
-                globals = { 'vim' },
-            },
-            workspace = {
-                library = vim.api.nvim_get_runtime_file("", true),
-            },
-            telemetry = {
-                enable = false,
-            },
-            completion = {
-                callSnippet = 'Replace',
-            },
-        },
-    },
-    gopls = {
-        gopls = {
-            usePlaceholders = true,
-            completeUnimported = true,
-            staticcheck = true,
-            analyses = {
-                nonewvars = true,
-                unusedparams = true,
-            },
-            hints = {
-              comstantValues = true,
-              patameterNames = true,
-              rangeVariableTypes = true,
-              assignVariableTypes = true,
-              compositeLiteralTypes = true,
-              compositeLiteralFields = true,
-              functionTypeParameters = true,
-            },
-        },
-    },
-}
-
-vim.cmd [[autocmd! ColorScheme * highlight NormalFloat guibg=#1f2335]]
-vim.cmd [[autocmd! ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335]]
-
-local border = {
-      {"╭", "FloatBorder"},
-      {"─", "FloatBorder"},
-      {"╮", "FloatBorder"},
-      {"│", "FloatBorder"},
-      {"╯", "FloatBorder"},
-      {"─", "FloatBorder"},
-      {"╰", "FloatBorder"},
-      {"│", "FloatBorder"},
-}
-local handlers =  {
-  ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = border}),
-  ["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = border }),
-}
-
-mason_lspconfig.setup_handlers({ function(server_name)
-  local opts = {
-    handlers=handlers,
-  }
-  opts.on_attach = on_attach
-  opts.capabilities = capabilities
-  opts.settings = settings[target],
-  nvim_lsp[server_name].setup(opts)
-end })
-
-EOF
-'''
+hook_source = 'lua require("biosugar0.plugins.lsp")'
 hook_post_source = '''
   call signature_help#enable()
   call popup_preview#enable()
@@ -231,59 +91,7 @@ repo = 'nvim-treesitter/nvim-treesitter'
 depends = ['nvim-treesitter-textobjects', 'treesitter-unit']
 on_event = 'BufRead'
 hook_post_update = 'TSUpdate'
-hook_source= '''
-lua << EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = {
-      "vim",
-      "toml",
-      "python",
-      "go",
-      "hcl",
-      "yaml",
-      "bash",
-      "sql",
-      },
-
-  highlight = {
-    enable = true,
-    disable = {
-      'lua',
-      'ruby',
-      'c_sharp',
-      'vue',
-    }
-  },
-  indent = {
-    enable = true,
-  },
-  textobjects = {
-      select = {
-          enable = true,
-          lookahead = true,
-          keymaps = {
-              ["ib"] = "@block.inner",
-              ["ab"] = "@block.outer",
-              ["c"] = "@comment.outer",
-              ["if"] = "@function.inner",
-              ["af"] = "@function.outer",
-              ["il"] = "@loop.inner",
-              ["al"] = "@loop.outer",
-          },
-      },
-      swap = {
-          enable = true,
-          swap_next = {
-              ["<M-s>"] = "@parameter.inner",
-          },
-          swap_previous = {
-              ["<M-S-s>"] = "@parameter.inner",
-          },
-      },
-  },
-}
-EOF
-'''
+hook_source= 'lua require("biosugar0.plugins.nvim-treesitter")'
 
 [[plugins]]
 repo = 'previm/previm'
@@ -322,7 +130,7 @@ set helplang=ja " help日本語化
 [plugins.ftplugin]
 gin-status = '''
   nnoremap <buffer> <Leader>ac <Cmd>Gin commit<CR>
-  nnoremap <buffer> <Leader>ap <Cmd>Gin push<CR>
+  nnoremap <buffer> <Leader>ap <Cmd>Gin push origin<CR>
 '''
 gin-branch = '''
   nmap <buffer> n <Plug>(gin-action-new)
@@ -798,56 +606,7 @@ on_source = ['lualine.nvim']
 [[plugins]]
 repo = 'nvim-lualine/lualine.nvim'
 on_event = 'BufRead'
-hook_source = '''
-lua << EOF
- require('lualine').setup {
- options = {
-  icons_enabled = true,
-  theme = 'nightfly',
-  component_separators = { left = '|', right = '|'},
-  section_separators = { left = '', right = ''},
-  disabled_filetypes = {},
-  always_divide_middle = true,
-  colored = true,
-  },
-  sections = {
-   lualine_a = {'mode'},
-   lualine_b = {'branch', 'diff'},
-   lualine_c = {
-    {
-     'filename',
-     path = 1,
-     file_status = true,
-     shorting_target = 40,
-     symbols = {
-     modified = ' [+]',
-     readonly = ' [RO]',
-     unnamed = 'Untitled',
-     }
-    }
-   },
-   lualine_x = {'filetype', 'encoding'},
-   lualine_y = {
-    {
-     'diagnostics',
-     source = {'nvim-lsp'},
-      }
-     },
-   lualine_z = {'location'}
- },
-  inactive_sections = {
-   lualine_a = {},
-   lualine_b = {},
-   lualine_c = {'filename'},
-   lualine_x = {'location'},
-   lualine_y = {},
-   lualine_z = {}
- },
-  tabline = {},
-  extensions = {}
- }
-EOF
-'''
+hook_source = 'lua require("biosugar0.plugins.lualine")'
 
 [[plugins]]
 repo = 'christoomey/vim-tmux-navigator'
