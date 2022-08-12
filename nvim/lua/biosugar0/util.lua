@@ -11,7 +11,7 @@ end
 
 local M = {}
 function M.replace_termcodes(str)
-    return api.nvim_replace_termcodes(str, true, true, true)
+	return api.nvim_replace_termcodes(str, true, true, true)
 end
 
 return M
