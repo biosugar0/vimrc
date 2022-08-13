@@ -49,6 +49,20 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 	command = [[if empty(&buftype) && line('.') > winheight(0) / 3 * 2 | execute 'normal! zz' .. repeat("\<C-y>", winheight(0) / 6) | endif]],
 })
 
+-- フォーカスが当たったら英数入力にする。
+if vim.fn.executable("osascript") == 1 then
+	local force_alphanumeric_input_command = [[
+    osascript -e 'tell application "System Events" to key code 102' &
+    ]]
+	vim.api.nvim_create_autocmd("FocusGained", {
+		group = MyAutoCmd,
+		pattern = "*",
+		callback = function()
+			vim.fn.system(force_alphanumeric_input_command)
+		end,
+	})
+end
+
 -- for onsidian markdown link
 local memodir = os.getenv("MEMO_DIRECTORY")
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {

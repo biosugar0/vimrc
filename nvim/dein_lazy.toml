@@ -689,3 +689,18 @@ augroup LineDiff
   autocmd User LinediffBufferReady nnoremap <buffer> <silent> q :<C-u>LinediffReset<CR>
 augroup END
 '''
+[[plugins]]
+repo = 'glidenote/memolist.vim'
+on_cmd= [
+    'MemoNew',
+    'MemoList',
+    'MemoGrep',
+]
+hook_add = '''
+let g:memolist_path = $HOME."/memo"
+let g:memolist_fzf = 1
+let g:memolist_memo_suffix = "md"
+nmap mn <Cmd>MemoNew<CR>
+nmap ml <Cmd>MemoList<CR>
+nmap mg <Cmd>MemoGrep<CR>
+'''
