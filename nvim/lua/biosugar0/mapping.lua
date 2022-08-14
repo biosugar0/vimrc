@@ -33,11 +33,3 @@ vim.keymap.set("n", "qq", "<Cmd>tabclose<CR>", { noremap = true, silent = true }
 
 -- smart zero
 vim.keymap.set("n", "0", [[getline('.')[0 : col('.') - 2] =~# '^\s\+$' ? '0' : '^']], { noremap = true, expr = true })
-
--- activate Google Chrome
-if vim.fn.executable("osascript") == 1 then
-	local toChrome = [[osascript -e 'tell application "Chrome" to activate']]
-	vim.keymap.set("n", "<Leader>g", function()
-		vim.fn.system(toChrome)
-	end, { noremap = true, silent = true })
-end
