@@ -62,6 +62,7 @@ set.cursorline = true -- カーソル行を強調
 set.signcolumn = "yes"
 set.redrawtime = 300
 set.ambiwidth = "single"
+set.fillchars='eob: ,vert: ' -- 必要ない表示を消す
 -- 不可視文字の表示記号指定
 set.listchars = [[tab:|-,trail:-,nbsp:%,eol:↲,extends:❯,precedes:❮]]
 set.ttyfast = true
@@ -72,4 +73,3 @@ set.shiftwidth = 4 -- 自動インデントでずれる幅
 set.softtabstop = 4 -- 連続した空白に対してタブキーやバックスペースキーでカーソルが動く幅
 set.autoindent = true -- 改行時に前の行のインデントを継続する
 set.smartindent = true -- 改行時に入力された行の末尾に合わせて次の行のインデントを増減する
---
