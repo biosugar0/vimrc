@@ -62,7 +62,7 @@ set.cursorline = true -- カーソル行を強調
 set.signcolumn = "yes"
 set.redrawtime = 300
 set.ambiwidth = "single"
-set.fillchars='eob: ,vert: ' -- 必要ない表示を消す
+set.fillchars= { eob = ' ', vert = ' ' } -- 必要ない表示を消す
 -- 不可視文字の表示記号指定
 set.listchars = [[tab:|-,trail:-,nbsp:%,eol:↲,extends:❯,precedes:❮]]
 set.ttyfast = true
