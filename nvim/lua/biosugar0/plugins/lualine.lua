@@ -7,6 +7,7 @@ M.options = {
 	disabled_filetypes = {},
 	always_divide_middle = true,
 	colored = true,
+    globalstatus = true,
 }
 M.sections = {
 	lualine_a = { "mode" },

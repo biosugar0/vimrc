@@ -52,17 +52,26 @@ set.wildmode = "list:longest,full" -- コマンドラインモードでTABキー
 set.history = 1000 -- コマンドラインの履歴を1000件保存する
 -- 表示設定
 set.diffopt = "vertical"
-set.laststatus = 2 -- ステータス行を常に表示
+set.laststatus = 3 -- ステータス行を常に表示
 set.cmdheight = 1 -- メッセージ表示欄を1行確保
 set.showmatch = true -- 対応する括弧を強調表示
 set.helpheight = 999 -- ヘルプを画面いっぱいに開く
 set.list = true -- 不可視文字を表示
 set.breakindent = true -- インデントされた行の折り返しを綺麗に
 set.cursorline = true -- カーソル行を強調
-set.signcolumn = "yes"
+set.signcolumn = "auto"
 set.redrawtime = 300
 set.ambiwidth = "single"
-set.fillchars= { eob = ' ', vert = ' ' } -- 必要ない表示を消す
+set.fillchars = {
+  eob = ' ',
+  horiz = '━',
+  horizup = '┻',
+  horizdown = '┳',
+  vert = '┃',
+  vertleft  = '┫',
+  vertright = '┣',
+  verthoriz = '╋',
+}
 -- 不可視文字の表示記号指定
 set.listchars = [[tab:|-,trail:-,nbsp:%,eol:↲,extends:❯,precedes:❮]]
 set.ttyfast = true

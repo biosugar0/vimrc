@@ -172,6 +172,12 @@ vim.keymap.set(
 	[[pum#visible() ? '<Cmd>call pum#map#confirm()<CR>' : lexima#expand('<LT>CR>', 'i')]],
 	{ noremap = false, expr = true }
 )
+vim.keymap.set(
+	"i",
+	[[<C-e>]],
+	[[pum#visible() ? '<Cmd>call pum#map#cancel()<CR>' : '<C-e>']],
+	{ noremap = true, expr = true }
+)
 
 vim.keymap.set(
 	"i",
