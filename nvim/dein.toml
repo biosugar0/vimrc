@@ -33,6 +33,7 @@ hook_add = '''
     au ColorScheme * hi NormalFloat guibg=#1f2335
     au ColorScheme * hi FloatBorder guifg=white guibg=#1f2335 blend=20
     au ColorScheme * hi Pmenu ctermfg=251 ctermbg=236 guifg=#c6c8d1 guibg=#1f2335 blend=20
+    au ColorScheme * hi VertSplit cterm=NONE ctermbg=233 ctermfg=233 gui=NONE guibg=#000000 guifg=#253f4d
   augroup END
 
   colorscheme iceberg
