@@ -8,7 +8,7 @@ set.nrformats:append("unsigned") --数字の増加減少でマイナスを扱わ
 
 set.virtualedit = all -- allow virtual editing in all modes
 set.clipboard = "unnamed,unnamedplus" -- OSのクリップボードをレジスタ指定無しで Yank, Put 出来るようにする
-let.completeopt = "menuone,noselect,noinsert"
+let.completeopt = "menuone"
 
 ---- 移動設定
 set.backspace = "indent,eol,start" -- Backspaceキーの影響範囲に制限を設けない
@@ -75,6 +75,7 @@ set.fillchars = {
 -- 不可視文字の表示記号指定
 set.listchars = [[tab:|-,trail:-,nbsp:%,eol:↲,extends:❯,precedes:❮]]
 set.ttyfast = true
+vim.o.pumblend=20 -- ポップアップメニューを半透明に
 -- タブ、インデント設定
 set.expandtab = true -- タブ入力を複数の空白入力に置き換える
 set.tabstop = 4 -- 画面上でタブ文字が占める幅

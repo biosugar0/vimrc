@@ -24,9 +24,18 @@ repo = 'cocopon/iceberg.vim'
 hook_add = '''
   augroup MyColor
     autocmd!
-    au ColorScheme * hi Normal ctermbg=black guibg=#000000
-    au BufEnter * nested colorscheme iceberg
+    au ColorScheme * hi Normal guibg=#000000
+    au ColorScheme * hi SignColumn guibg=#000000
+    au ColorScheme * hi GitGutterAdd ctermfg=150 ctermbg=235 guifg=#b4be82 guibg=#000000
+    au ColorScheme * hi GitGutterChange ctermfg=109 ctermbg=235 guifg=#89b8c2 guibg=#000000
+    au ColorScheme * hi GitGutterChangeDelete ctermfg=109 ctermbg=235 guifg=#89b8c2 guibg=#000000
+    au ColorScheme * hi GitGutterDelete ctermfg=203 ctermbg=235 guifg=#e27878 guibg=#000000
+    au ColorScheme * hi NormalFloat guibg=#1f2335
+    au ColorScheme * hi FloatBorder guifg=white guibg=#1f2335 blend=20
+    au ColorScheme * hi Pmenu ctermfg=251 ctermbg=236 guifg=#c6c8d1 guibg=#1f2335 blend=20
   augroup END
+
+  colorscheme iceberg
 '''
 [[plugins]]
 repo = 'lewis6991/impatient.nvim'

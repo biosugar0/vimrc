@@ -17,12 +17,6 @@ let g:context_filetype#ignore_patterns = {
 [[plugins]]
 repo = 'Shougo/pum.vim'
 on_source = 'ddc.vim'
-hook_post_source = '''
-  hi NoneBg guibg=#000000
-  call pum#set_option('max_width', 80)
-  call pum#set_option('border', '')
-  call pum#set_option('padding', v:true)
-'''
 
 [[plugins]]
 repo = 'Shougo/ddc-around'
