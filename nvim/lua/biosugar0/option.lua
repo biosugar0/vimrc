@@ -63,19 +63,19 @@ set.signcolumn = "auto"
 set.redrawtime = 300
 set.ambiwidth = "single"
 set.fillchars = {
-  eob = ' ',
-  horiz = '━',
-  horizup = '┻',
-  horizdown = '┳',
-  vert = '┃',
-  vertleft  = '┫',
-  vertright = '┣',
-  verthoriz = '╋',
+	eob = " ",
+	horiz = "━",
+	horizup = "┻",
+	horizdown = "┳",
+	vert = "┃",
+	vertleft = "┫",
+	vertright = "┣",
+	verthoriz = "╋",
 }
 -- 不可視文字の表示記号指定
 set.listchars = [[tab:|-,trail:-,nbsp:%,eol:↲,extends:❯,precedes:❮]]
 set.ttyfast = true
-vim.o.pumblend=20 -- ポップアップメニューを半透明に
+vim.o.pumblend = 20 -- ポップアップメニューを半透明に
 -- タブ、インデント設定
 set.expandtab = true -- タブ入力を複数の空白入力に置き換える
 set.tabstop = 4 -- 画面上でタブ文字が占める幅

@@ -102,9 +102,9 @@ ddc.patch_global("autoCompleteEvents", {
 	"CmdlineChanged",
 })
 ddc.patch_global("completionMenu", "pum.vim")
-vim.fn['pum#set_option']('border', 'rounded')
-vim.fn['pum#set_option']('max_width', 80)
-vim.fn['pum#set_option']('padding', true)
+vim.fn["pum#set_option"]("border", "rounded")
+vim.fn["pum#set_option"]("max_width", 80)
+vim.fn["pum#set_option"]("padding", true)
 
 ddc.set_context("go", function()
 	local syntaxIn = vim.fn["ddc#syntax#in"]("TSComment")

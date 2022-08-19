@@ -62,7 +62,6 @@ local settings = {
 	},
 }
 
-
 local border = {
 	{ "╭", "FloatBorder" },
 	{ "─", "FloatBorder" },
