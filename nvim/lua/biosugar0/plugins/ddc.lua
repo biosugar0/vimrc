@@ -78,6 +78,7 @@ sopts["skkeleton"] = {
 	sorters = {},
 	minAutoCompleteLength = 2,
 	maxCandidates = 50,
+    isVolatile: true,
 }
 
 ddc.patch_global("sourceOptions", sopts)

@@ -1,7 +1,7 @@
 local set = vim.opt
 local let = vim.o
 
-set.shell = "bash"
+set.shell = "zsh"
 
 set.nrformats:append("octal") -- 10進数のみ
 set.nrformats:append("unsigned") --数字の増加減少でマイナスを扱わない
