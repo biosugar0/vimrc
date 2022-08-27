@@ -126,25 +126,25 @@ vim.fn["ddc#enable"]()
 vim.keymap.set(
 	"i",
 	[[<Tab>]],
-	[[vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : ddc#map#pum_visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : ddc#can_complete() ? ddc#manual_complete() : '<Tab>']],
+	[[ddc#map#pum_visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : ddc#can_complete() ? ddc#manual_complete() : '<Tab>']],
 	{ noremap = false, expr = true }
 )
 vim.keymap.set(
 	"s",
 	[[<Tab>]],
-	[[vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : ddc#map#pum_visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : ddc#can_complete() ? ddc#manual_complete() : '<Tab>']],
+	[[ddc#map#pum_visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : ddc#can_complete() ? ddc#manual_complete() : '<Tab>']],
 	{ noremap = false, expr = true }
 )
 vim.keymap.set(
 	"i",
 	[[<S-Tab>]],
-	[[vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : pum#visible() ? '<Cmd>call pum#map#insert_relative(-1)<CR>' : '<S-Tab>']],
+	[[pum#visible() ? '<Cmd>call pum#map#insert_relative(-1)<CR>' : vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' :  '<S-Tab>']],
 	{ noremap = false, expr = true }
 )
 vim.keymap.set(
 	"s",
 	[[<S-Tab>]],
-	[[vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : pum#visible() ? '<Cmd>call pum#map#insert_relative(-1)<CR>' : '<S-Tab>']],
+	[[pum#visible() ? '<Cmd>call pum#map#insert_relative(-1)<CR>' : vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' :  '<S-Tab>']],
 	{ noremap = false, expr = true }
 )
 vim.keymap.set(
