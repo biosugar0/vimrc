@@ -83,11 +83,8 @@ repo = 'nvim-treesitter/nvim-treesitter-textobjects'
 on_source = ['nvim-treesitter']
 
 [[plugins]]
-repo = 'David-Kunz/treesitter-unit'
-on_source = ['nvim-treesitter']
-
-[[plugins]]
 repo = 'nvim-treesitter/nvim-treesitter'
+merged = false
 depends = ['nvim-treesitter-textobjects', 'treesitter-unit']
 on_event = 'BufRead'
 hook_post_update = 'TSUpdate'
@@ -365,10 +362,6 @@ qf = '''
 '''
 
 [[plugins]]
-repo ='tpope/vim-repeat'
-on_map = ['.']
-
-[[plugins]]
 repo ='yssl/QFEnter'
 on_ft = ['qf']
 
@@ -626,14 +619,6 @@ vmap tr <Plug>(VTranslate)
 '''
 
 [[plugins]]
-repo = 'kana/vim-textobj-user'
-on_map = {nox = '<Plug>'}
-
-[[plugins]]
-repo ='kana/vim-operator-user'
-on_map = {nox = '<Plug>'}
-
-[[plugins]]
 repo = 'haya14busa/vim-asterisk'
 on_map = ['<Plug>(asterisk-']
 on_source = ['nvim-hlslens']
@@ -652,7 +637,7 @@ on_map = ['vid', 'viD', 'vad', 'vaD']
 [[plugins]]
 repo = 'sgur/vim-textobj-parameter'
 depends = 'vim-textobj-user'
-on_map = {xo = '<Plug>(textobj-parameter'}
+on_map = ['i,','a,' ]
 
 [[plugins]]
 repo ='mattn/vim-findroot'

@@ -43,3 +43,16 @@ repo = 'lewis6991/impatient.nvim'
 hook_add = '''
 lua require('impatient')
 '''
+
+[[plugins]]
+repo = 'David-Kunz/treesitter-unit'
+
+[[plugins]]
+repo = 'kana/vim-textobj-user'
+
+
+[[plugins]]
+repo ='tpope/vim-repeat'
+
+[[plugins]]
+repo ='kana/vim-operator-user'
