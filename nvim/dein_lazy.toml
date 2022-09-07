@@ -79,13 +79,8 @@ lua require("fidget").setup({})
 '''
 
 [[plugins]]
-repo = 'nvim-treesitter/nvim-treesitter-textobjects'
-on_source = ['nvim-treesitter']
-
-[[plugins]]
 repo = 'nvim-treesitter/nvim-treesitter'
 merged = false
-depends = ['nvim-treesitter-textobjects', 'treesitter-unit']
 on_event = 'BufRead'
 hook_post_update = 'TSUpdate'
 hook_source= 'lua require("biosugar0.plugins.nvim-treesitter")'
