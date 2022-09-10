@@ -14,7 +14,7 @@ hook_add = '''
   vmap g<c-a> g<Plug>(dial-increment)
   vmap g<c-x> g<Plug>(dial-decrement)
 '''
-hook_post_source = 'biosuagr0.plugins.dial'
+hook_source = 'lua require("biosugar0.plugins.dial")'
 
 [[plugins]]
 repo = 'lambdalisue/guise.vim'
