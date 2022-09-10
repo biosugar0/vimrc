@@ -684,3 +684,12 @@ nmap mn <Cmd>MemoNew<CR>
 nmap ml <Cmd>MemoList<CR>
 nmap mg <Cmd>MemoGrep<CR>
 '''
+
+[[plugins]]
+repo = 'github/copilot.vim'
+on_cmd = 'Copilot'
+hook_add = '''
+nnoremap <silent> <Leader>p <Cmd>Copilot enable<CR>
+nnoremap <silent> <Leader>pp <Cmd>Copilot disable<CR>
+'''
+hook_source = 'lua require("biosugar0.plugins.copilot")'
