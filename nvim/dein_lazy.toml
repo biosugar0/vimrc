@@ -693,3 +693,21 @@ nnoremap <silent> <Leader>p <Cmd>Copilot enable<CR>
 nnoremap <silent> <Leader>pp <Cmd>Copilot disable<CR>
 '''
 hook_source = 'lua require("biosugar0.plugins.copilot")'
+
+[[plugins]]
+repo = 'skanehira/denops-silicon.vim'
+on_cmd = 'Silicon'
+depends = "denops.vim"
+hook_source = '''
+let g:silicon_options = {
+      \  'font': 'Hack Nerd Font Mono',
+      \  'no_line_number': v:true,
+      \  'no_round_corner': v:true,
+      \  'no_window_controls': v:true,
+      \  'background_color': '#000000',
+      \  'pad_horiz': 0,
+      \  'pad_vert': 0,
+      \  'tab_width': 4,
+      \  'theme': 'Coldark-Dark',
+      \ }
+'''
