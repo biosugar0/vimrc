@@ -37,11 +37,9 @@ hook_post_source = '''
 [[plugins]]
 repo = 'williamboman/mason.nvim'
 on_source = 'nvim-lspconfig'
-hook_source = '''
-lua << EOF
+lua_source = '''
 local mason = require('mason')
 mason.setup({ ui = { icons = { package_installed = "✓", package_pending = "➜", package_uninstalled = "✗" } } })
-EOF
 '''
 
 [[plugins]]
@@ -393,71 +391,69 @@ repo = 'nvim-lua/plenary.nvim'
 repo = 'lewis6991/gitsigns.nvim'
 on_event = ['BufReadPre', 'BufNewFile']
 on_lua = 'gitsigns'
-hook_source = '''
-lua << EOF
- require('gitsigns').setup {
- signs = {
-   add          = {hl = 'GitSignsAdd'   , text = '+', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
-   change       = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-   delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-   topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-   changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+lua_source = '''
+require('gitsigns').setup {
+signs = {
+  add          = {hl = 'GitSignsAdd'   , text = '+', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+  change       = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+  delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+  topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+  changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+},
+signcolumn = true,
+numhl      = false,
+linehl     = false,
+word_diff  = false,
+watch_gitdir = {
+  interval = 1000,
+  follow_files = true
+},
+attach_to_untracked = true,
+current_line_blame = false,
+current_line_blame_opts = {
+  virt_text = true,
+  virt_text_pos = 'eol',
+  delay = 1000,
+  ignore_whitespace = false,
+},
+current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
+sign_priority = 6,
+update_debounce = 100,
+status_formatter = nil,
+max_file_length = 40000,
+preview_config = {
+  border = 'single',
+  style = 'minimal',
+  relative = 'cursor',
+  row = 0,
+  col = 1
+},
+yadm = {
+  enable = false
  },
- signcolumn = true,
- numhl      = false,
- linehl     = false,
- word_diff  = false,
- watch_gitdir = {
-   interval = 1000,
-   follow_files = true
- },
- attach_to_untracked = true,
- current_line_blame = false,
- current_line_blame_opts = {
-   virt_text = true,
-   virt_text_pos = 'eol',
-   delay = 1000,
-   ignore_whitespace = false,
- },
- current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
- sign_priority = 6,
- update_debounce = 100,
- status_formatter = nil,
- max_file_length = 40000,
- preview_config = {
-   border = 'single',
-   style = 'minimal',
-   relative = 'cursor',
-   row = 0,
-   col = 1
- },
- yadm = {
-   enable = false
-  },
-  on_attach = function(bufnr)
-    local gs = package.loaded.gitsigns
-    local function map(mode, l, r, opts)
-      opts = opts or {}
-      opts.buffer = bufnr
-      vim.keymap.set(mode, l, r, opts)
-    end
-    map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", {expr=true})
-    map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", {expr=true})
-    map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
-    map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
-    map('n', '<leader>hS', gs.stage_buffer)
-    map('n', '<leader>hu', gs.undo_stage_hunk)
-    map('n', '<leader>hR', gs.reset_buffer)
-    map('n', '<leader>hp', gs.preview_hunk)
-    map('n', '<leader>hb', function() gs.blame_line{full=true} end)
-    map('n', '<leader>tb', gs.toggle_current_line_blame)
-    map('n', '<leader>hd', gs.diffthis)
-    map('n', '<leader>hD', function() gs.diffthis('~') end)
-    map('n', '<leader>td', gs.toggle_deleted)
-    map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
-  end
-  }
-EOF
+ on_attach = function(bufnr)
+   local gs = package.loaded.gitsigns
+   local function map(mode, l, r, opts)
+     opts = opts or {}
+     opts.buffer = bufnr
+     vim.keymap.set(mode, l, r, opts)
+   end
+   map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", {expr=true})
+   map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", {expr=true})
+   map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
+   map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
+   map('n', '<leader>hS', gs.stage_buffer)
+   map('n', '<leader>hu', gs.undo_stage_hunk)
+   map('n', '<leader>hR', gs.reset_buffer)
+   map('n', '<leader>hp', gs.preview_hunk)
+   map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+   map('n', '<leader>tb', gs.toggle_current_line_blame)
+   map('n', '<leader>hd', gs.diffthis)
+   map('n', '<leader>hD', function() gs.diffthis('~') end)
+   map('n', '<leader>td', gs.toggle_deleted)
+   map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+ end
+ }
 '''
 
 [[plugins]]
@@ -692,7 +688,7 @@ hook_add = '''
 nnoremap <silent> <Leader>p <Cmd>Copilot enable<CR>
 nnoremap <silent> <Leader>pp <Cmd>Copilot disable<CR>
 '''
-hook_source = 'lua require("biosugar0.plugins.copilot")'
+lua_source = 'require("biosugar0.plugins.copilot")'
 
 [[plugins]]
 repo = 'skanehira/denops-silicon.vim'
@@ -710,4 +706,37 @@ let g:silicon_options = {
       \  'tab_width': 4,
       \  'theme': 'Coldark-Dark',
       \ }
+'''
+
+[[plugins]]
+repo = 'gen740/SmoothCursor.nvim' 
+on_event = 'CursorHold'
+lua_source = '''
+default = {
+    autostart = true,
+    cursor = "",             -- cursor shape (need nerd font)
+    intervals = 35,           -- tick interval
+    linehl = nil,             -- highlight sub-cursor line like 'cursorline', "CursorLine" recommended
+    type = "default",         -- define cursor movement calculate function, "default" or "exp" (exponential).
+    fancy = {
+        enable = true,       -- enable fancy mode
+        head = { cursor = "▷", texthl = "SmoothCursorAqua", linehl = nil },
+        body = {
+            { cursor = "", texthl = "SmoothCursorAqua" },
+            { cursor = "●", texthl = "SmoothCursorAqua" },
+            { cursor = "•", texthl = "SmoothCursorAqua" },
+            { cursor = "•", texthl = "SmoothCursorAqua" },
+            { cursor = ".", texthl = "SmoothCursorAqua" },
+            { cursor = ".", texthl = "SmoothCursorAqua" },
+        },
+        tail = { cursor = nil, texthl = "SmoothCursorAqua" }
+    },
+    priority = 10,            -- set marker priority
+    speed = 40,               -- max is 100 to stick to your current position
+    texthl = "SmoothCursor",  -- highlight group, default is { bg = nil, fg = "#FFD400" }
+    threshold = 3,
+    timeout = 3000,
+}
+
+require('smoothcursor').setup(default)
 '''

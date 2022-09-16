@@ -58,7 +58,6 @@ set.showmatch = true -- 対応する括弧を強調表示
 set.helpheight = 999 -- ヘルプを画面いっぱいに開く
 set.list = true -- 不可視文字を表示
 set.breakindent = true -- インデントされた行の折り返しを綺麗に
-set.cursorline = true -- カーソル行を強調
 set.signcolumn = "auto"
 set.redrawtime = 300
 set.ambiwidth = "single"

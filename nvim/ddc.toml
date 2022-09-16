@@ -1,7 +1,7 @@
 [[plugins]]
 repo = 'Shougo/ddc.vim'
 depends = ['context_filetype.vim', 'denops.vim', 'pum.vim','vim-vsnip','vim-vsnip-integ','skkeleton','lexima.vim']
-on_event = ['InsertEnter']
+on_event = ['InsertEnter','CursorHold']
 on_map = [':','/','?']
 hook_post_source = "lua require('biosugar0.plugins.ddc')"
 
