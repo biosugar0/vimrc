@@ -43,7 +43,7 @@ if vim.fn.has("vim_starting") == 1 then
 	set.timeout = true
 	set.ttimeout = true
 	set.ttimeoutlen = 100
-	set.updatetime = 1200
+	set.updatetime = 800
 	vim.env.CACHE = vim.fn.expand("~/.cache")
 end
 
