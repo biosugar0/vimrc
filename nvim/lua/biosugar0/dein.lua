@@ -29,7 +29,6 @@ vim.g["dein#install_copy_vim"] = true
 if vim.fn["dein#load_state"](dein_dir) == 1 then
 	local toml = vim.g.rc_dir .. "/dein.toml"
 	local lazy_toml = vim.g.rc_dir .. "/dein_lazy.toml"
-	local ddc_toml = vim.g.rc_dir .. "/ddc.toml"
 	local ft_toml = vim.g.rc_dir .. "/ft.toml"
 
 	vim.fn["dein#begin"](dein_dir, { vim.fn.expand("<sfile>"), toml, lazy_toml, ft_toml })
@@ -40,10 +39,6 @@ if vim.fn["dein#load_state"](dein_dir) == 1 then
 
 	if vim.fn.filereadable(vim.fn.expand(lazy_toml)) == 1 then
 		vim.fn["dein#load_toml"](lazy_toml, { lazy = 1 })
-	end
-
-	if vim.fn.filereadable(vim.fn.expand(ddc_toml)) == 1 then
-		vim.fn["dein#load_toml"](ddc_toml, { lazy = 1 })
 	end
 
 	if vim.fn.filereadable(vim.fn.expand(ft_toml)) == 1 then

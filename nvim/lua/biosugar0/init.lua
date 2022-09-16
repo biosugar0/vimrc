@@ -1,0 +1,5 @@
+require("biosugar0.augroup")
+require("biosugar0.option")
+require("biosugar0.mapping")
+require("biosugar0.dein")
+require("biosugar0.cmds")

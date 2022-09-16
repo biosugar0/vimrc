@@ -1,7 +1,131 @@
+# denops plugins {{{
 [[plugins]]
 repo = 'vim-denops/denops.vim'
-on_event = 'BufEnter'
 
+[[plugins]]
+repo = 'lambdalisue/guise.vim'
+on_ft = 'terminal'
+depends = ['denops.vim']
+hook_add = '''
+  let g:guise_edit_opener='vsplit'
+'''
+[[plugins]]
+repo = 'neovim/nvim-lspconfig'
+depends = ['impatient.nvim','denops.vim','mason.nvim','mason-lspconfig.nvim','fidget.nvim','denops-popup-preview.vim']
+hook_source = 'lua require("biosugar0.plugins.lsp")'
+
+[[plugins]]
+repo = 'matsui54/denops-popup-preview.vim'
+on_source = 'ddc.vim'
+hook_add = '''
+let g:popup_preview_config = {
+        \ 'delay': 1,
+        \ 'maxWidth': 100,
+        \ 'winblend': 0,
+        \ }
+'''
+lua_source = '''
+vim.fn['popup_preview#enable']()
+'''
+
+[[plugins]]
+repo = 'matsui54/denops-signature_help'
+on_source = 'ddc.vim'
+hook_add = '''
+let g:lsp_signature_help_enabled = 0
+let g:signature_help_config = {
+    \ 'style': "currentLabelOnly",
+    \ }
+'''
+lua_source = '''
+vim.fn['signature_help#enable']()
+'''
+
+[[plugins]]
+repo = 'yuki-yano/fuzzy-motion.vim'
+depends =['denops.vim']
+on_cmd = 'FuzzyMotion'
+hook_add = '''
+nnoremap <Leader>s <Cmd>FuzzyMotion<CR>
+'''
+
+[[plugins]]
+repo = 'tversteeg/registers.nvim'
+depends =['denops.vim']
+if = 'has("nvim")'
+on_map = '"'
+hook_source = '''
+let g:registers_paste_in_normal_mode = 1
+let g:registers_hide_only_whitespace = 1
+let g:registers_show_empty_registers = 0
+'''
+
+[[plugins]]
+repo = 'skanehira/denops-silicon.vim'
+on_cmd = 'Silicon'
+depends = ['denops.vim']
+hook_source = '''
+let g:silicon_options = {
+      \  'font': 'Hack Nerd Font Mono',
+      \  'no_line_number': v:true,
+      \  'no_round_corner': v:true,
+      \  'no_window_controls': v:true,
+      \  'background_color': '#000000',
+      \  'pad_horiz': 0,
+      \  'pad_vert': 0,
+      \  'tab_width': 4,
+      \  'theme': 'Coldark-Dark',
+      \ }
+'''
+
+[[plugins]]
+repo = 'Shougo/ddc.vim'
+depends = [
+    'denops.vim',
+    'context_filetype.vim',
+    'pum.vim',
+    'vim-vsnip',
+    'nvim-lspconfig',
+    'vim-vsnip-integ',
+    'skkeleton',
+    'lexima.vim',
+    'denops-signature_help',
+    'denops-popup-preview.vim',
+]
+on_event = ['InsertEnter','CursorHold','CmdlineEnter']
+hook_post_source = "lua require('biosugar0.plugins.ddc')"
+
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+on_source = 'ddc.vim'
+hook_source = '''
+let g:context_filetype#ignore_patterns = {
+    \ 'toml': ['^\s*#\s*'],
+    \ }
+'''
+
+[[plugins]]
+repo = 'vim-skk/skkeleton'
+depends = ['denops.vim']
+on_source = 'ddc.vim'
+on_cmd= '<Plug>(skkeleton-'
+hook_add = '''
+imap <C-j> <Plug>(skkeleton-toggle)
+cmap <C-j> <Plug>(skkeleton-toggle)
+'''
+hook_source = '''
+let g:skk_dir = expand('~/.local/share/skk')
+let g:globalJisyo = g:skk_dir .. '/SKK-JISYO.L'
+if !filereadable(g:globalJisyo)
+  echomsg 'Installing skk global jisyo ...'
+  let s:gzipfile = g:globalJisyo .. '.gz'
+  call system('curl -fLo ' .. s:gzipfile .. ' --create-dirs '
+        \ .. 'https://skk-dev.github.io/dict/SKK-JISYO.L.gz')
+  call system('gzip -d ' .. s:gzipfile)
+endif
+'''
+
+# }}}
 
 [[plugins]]
 repo = 'monaqa/dial.nvim'
@@ -16,27 +140,10 @@ hook_add = '''
 '''
 hook_source = 'lua require("biosugar0.plugins.dial")'
 
-[[plugins]]
-repo = 'lambdalisue/guise.vim'
-on_ft = 'terminal'
-depends = 'denops.vim'
-hook_add = '''
-  let g:guise_edit_opener='vsplit'
-'''
 
-[[plugins]]
-repo = 'neovim/nvim-lspconfig'
-on_source = 'ddc.vim'
-depends = ['impatient.nvim','denops.vim','mason-lspconfig.nvim','fidget.nvim','denops-signature_help']
-hook_source = 'lua require("biosugar0.plugins.lsp")'
-hook_post_source = '''
-  call signature_help#enable()
-  call popup_preview#enable()
-'''
 
 [[plugins]]
 repo = 'williamboman/mason.nvim'
-on_source = 'nvim-lspconfig'
 lua_source = '''
 local mason = require('mason')
 mason.setup({ ui = { icons = { package_installed = "✓", package_pending = "➜", package_uninstalled = "✗" } } })
@@ -44,30 +151,6 @@ mason.setup({ ui = { icons = { package_installed = "✓", package_pending = "➜
 
 [[plugins]]
 repo = 'williamboman/mason-lspconfig.nvim'
-on_source = 'nvim-lspconfig'
-
-[[plugins]]
-repo = 'matsui54/denops-signature_help'
-depends = 'denops.vim'
-on_source = 'nvim-lspconfig'
-hook_add = '''
-let g:lsp_signature_help_enabled = 0
-let g:signature_help_config = {
-    \ 'style': "currentLabelOnly",
-    \ }
-'''
-
-[[plugins]]
-repo = 'matsui54/denops-popup-preview.vim'
-depends = 'denops.vim'
-on_source = 'nvim-lspconfig'
-hook_source = '''
-let g:popup_preview_config = {
-        \ 'delay': 1,
-        \ 'maxWidth': 100,
-        \ 'winblend': 0,
-        \ }
-'''
 
 [[plugins]]
 repo = 'j-hui/fidget.nvim'
@@ -115,20 +198,6 @@ repo = 'vim-jp/vimdoc-ja'
 on_cmd = ['h', 'help']
 hook_add  = '''
 set helplang=ja " help日本語化
-'''
-
-[plugins.ftplugin]
-gin-status = '''
-  nnoremap <buffer> <Leader>ac <Cmd>Gin commit<CR>
-  nnoremap <buffer> <Leader>aC <Cmd>Gin commit --amend<CR>
-  nnoremap <buffer> <Leader>ap <Cmd>Gin push origin<CR>
-'''
-gin-branch = '''
-  nmap <buffer> n <Plug>(gin-action-new)
-  nmap <buffer> dd <Plug>(gin-action-delete)
-'''
-gitcommit = '''
-  setlocal spell
 '''
 
 [[plugins]]
@@ -269,7 +338,6 @@ hook_add = '''
 let g:dispatch_no_tmux_make = 1
 '''
 
-
 [[plugins]]
 repo = 'vim-test/vim-test'
 on_cmd = [
@@ -290,13 +358,6 @@ let test#go#gotest#options = {
 let test#strategy = 'dispatch'
 '''
 
-[[plugins]]
-repo = 'yuki-yano/fuzzy-motion.vim'
-depends = 'denops.vim'
-on_cmd = 'FuzzyMotion'
-hook_add = '''
-nnoremap <Leader>s <Cmd>FuzzyMotion<CR>
-'''
 
 [[plugins]]
 repo = 'machakann/vim-sandwich'
@@ -491,19 +552,8 @@ hook_post_source = '''
 '''
 
 [[plugins]]
-repo = 'tversteeg/registers.nvim'
-depends = 'denops.vim'
-if = 'has("nvim")'
-on_map = '"'
-hook_source = '''
-let g:registers_paste_in_normal_mode = 1
-let g:registers_hide_only_whitespace = 1
-let g:registers_show_empty_registers = 0
-'''
-
-[[plugins]]
 repo = 'junegunn/fzf'
-hook_post_update = './install --all'
+build = './install --all'
 merged = 0
 
 [[plugins]]
@@ -577,7 +627,7 @@ on_source = ['lualine.nvim']
 
 [[plugins]]
 repo = 'nvim-lualine/lualine.nvim'
-on_event = 'BufRead'
+on_event = 'CursorHold'
 hook_source = 'lua require("biosugar0.plugins.lualine")'
 
 [[plugins]]
@@ -622,12 +672,12 @@ map g# <Plug>(asterisk-gz#)
 
 [[plugins]]
 repo = 'machakann/vim-textobj-delimited'
-depends = 'vim-textobj-user'
+depends = ['vim-textobj-user']
 on_map = ['vid', 'viD', 'vad', 'vaD']
 
 [[plugins]]
 repo = 'sgur/vim-textobj-parameter'
-depends = 'vim-textobj-user'
+depends = ['vim-textobj-user']
 on_map = ['i,','a,' ]
 
 [[plugins]]
@@ -690,26 +740,9 @@ nnoremap <silent> <Leader>pp <Cmd>Copilot disable<CR>
 '''
 lua_source = 'require("biosugar0.plugins.copilot")'
 
-[[plugins]]
-repo = 'skanehira/denops-silicon.vim'
-on_cmd = 'Silicon'
-depends = "denops.vim"
-hook_source = '''
-let g:silicon_options = {
-      \  'font': 'Hack Nerd Font Mono',
-      \  'no_line_number': v:true,
-      \  'no_round_corner': v:true,
-      \  'no_window_controls': v:true,
-      \  'background_color': '#000000',
-      \  'pad_horiz': 0,
-      \  'pad_vert': 0,
-      \  'tab_width': 4,
-      \  'theme': 'Coldark-Dark',
-      \ }
-'''
 
 [[plugins]]
-repo = 'gen740/SmoothCursor.nvim' 
+repo = 'gen740/SmoothCursor.nvim'
 on_event = 'CursorHold'
 lua_source = '''
 default = {
@@ -739,4 +772,97 @@ default = {
 }
 
 require('smoothcursor').setup(default)
+'''
+
+[[plugins]]
+repo = 'Shougo/pum.vim'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-around'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-zsh'
+on_source = 'ddc.vim'
+depends = 'ddc.vim'
+
+[[plugins]]
+repo = 'tani/ddc-fuzzy'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-cmdline'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-input'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-rg'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-line'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-nvim-lsp'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-matcher_head'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-matcher_length'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-sorter_rank'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-cmdline-history'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-converter_remove_overlap'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-converter_truncate_abbr'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'LumaKernel/ddc-file'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-omni'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'matsui54/ddc-dictionary'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip'
+on_source = 'vim-vsnip-integ'
+
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip-integ'
+on_source = 'ddc.vim'
+depends = ['vim-vsnip']
+
+[[plugins]]
+repo = 'cohama/lexima.vim'
+on_source = 'ddc.vim'
+hook_add = '''
+let g:lexima_ctrlh_as_backspace = 1
+let g:lexima_no_default_rules = v:true
+'''
+hook_source = '''
+call lexima#set_default_rules()
 '''

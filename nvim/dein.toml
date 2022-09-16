@@ -38,6 +38,10 @@ hook_add = '''
 
   colorscheme iceberg
 '''
+
+[[plugins]]
+repo = 'nathom/filetype.nvim'
+
 [[plugins]]
 repo = 'lewis6991/impatient.nvim'
 hook_add = '''
