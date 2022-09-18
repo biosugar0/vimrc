@@ -46,7 +46,3 @@ setlocal sw=2 sts=2 ts=2 et
 yaml = '''
 setlocal ts=2 sts=2 sw=2 et
 '''
-
-tf = '''
-autocmd BufNewFile,BufRead *.tf set filetype=hcl
-'''

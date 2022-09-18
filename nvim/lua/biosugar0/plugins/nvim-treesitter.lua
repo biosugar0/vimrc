@@ -1,4 +1,7 @@
-require("nvim-treesitter.configs").setup({
+local ft_to_parser = require"nvim-treesitter.parsers".filetype_to_parsername
+ft_to_parser.tf = "hcl"
+
+local conf = {
 	ensure_installed = {
 		"vim",
 		"toml",
@@ -22,4 +25,5 @@ require("nvim-treesitter.configs").setup({
 	indent = {
 		enable = true,
 	},
-})
+}
+require("nvim-treesitter.configs").setup(conf)
