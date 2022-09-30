@@ -65,11 +65,11 @@ end
 
 -- for onsidian markdown link
 local memodir = os.getenv("MEMO_DIRECTORY")
-local obsidian_suffix = ".md"
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 	pattern = memodir .. "*",
 	group = MyAutoCmd,
 	callback = function()
+		local obsidian_suffix = ".md"
 		vim.opt_local.path:append(memodir .. "/**")
 		vim.opt.suffixesadd:append(obsidian_suffix)
 		local function open_file_or_create_new()
@@ -83,16 +83,15 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 				end,
 				catch = function(error)
 					print("New File.")
-					new_path = vim.fn.fnamemodify(vim.fn.expand("%:p:h").. "/" .. path, ":p")
+					new_path = vim.fn.fnamemodify(vim.fn.expand("%:p:h") .. "/" .. path, ":p")
 					if not (vim.fn.empty(vim.fn.fnamemodify(new_path, ":e"))) then
 						return vim.fn.execute("edit " .. new_path)
 					end
 				end,
 			})
-            if vim.fn.filereadable(new_path.suffix) then
-                return vim.fn.execute("edit " .. new_path .. obsidian_suffix)
-            end
-
+			if vim.fn.filereadable(new_path.suffix) then
+				return vim.fn.execute("edit " .. new_path .. obsidian_suffix)
+			end
 			return vim.fn.execute("edit " .. new_path .. obsidian_suffix)
 		end
 		vim.keymap.set("n", "gf", open_file_or_create_new, { noremap = true })

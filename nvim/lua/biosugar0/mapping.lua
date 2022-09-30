@@ -35,4 +35,4 @@ vim.keymap.set("n", "qq", "<Cmd>tabclose<CR>", { noremap = true, silent = true }
 vim.keymap.set("n", "0", [[getline('.')[0 : col('.') - 2] =~# '^\s\+$' ? '0' : '^']], { noremap = true, expr = true })
 
 -- macro playback
-vim.keymap.set("n","Q","@a")
+vim.keymap.set("n", "Q", "@a")
