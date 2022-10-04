@@ -1,9 +1,5 @@
 local on_attach = function(client, bufnr)
-	local function buf_set_option(...)
-		vim.api.nvim_buf_set_option(bufnr, ...)
-	end
-
-	local bufopts = { noremap = true, silent = true, buffer = bufnr }
+	local bufopts = { replace_keycodes = false, noremap = true, silent = true, buffer = bufnr }
 	vim.keymap.set("n", "gD", vim.lsp.buf.references, bufopts)
 	vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
@@ -18,11 +14,9 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set("n", "gr", vim.lsp.buf.rename, bufopts)
 	vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, bufopts)
 	vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, bufopts)
-	vim.keymap.set("n", "[d", vim.lsp.diagnostic.goto_prev, bufopts)
-	vim.keymap.set("n", "]d", vim.lsp.diagnostic.goto_next, bufopts)
-	vim.keymap.set("n", "<space>q", vim.lsp.diagnostic.set_loclist, bufopts)
-	vim.keymap.set("n", ",f", vim.lsp.buf.formatting, bufopts)
-	buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
+	vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, bufopts)
+	vim.keymap.set("n", "]d", vim.diagnostic.goto_next, bufopts)
+	vim.keymap.set("n", ",f", vim.lsp.buf.format, bufopts)
 	vim.diagnostic.config({ virtual_text = false, float = true })
 end
 

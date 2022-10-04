@@ -738,7 +738,7 @@ hook_add = '''
 nnoremap <silent> <Leader>p <Cmd>Copilot enable<CR>
 nnoremap <silent> <Leader>pp <Cmd>Copilot disable<CR>
 '''
-lua_source = 'require("biosugar0.plugins.copilot")'
+hook_source = 'lua require("biosugar0.plugins.copilot")'
 
 
 [[plugins]]
