@@ -6,5 +6,5 @@ vim.keymap.set("i", "<c-l>", [[copilot#Accept()]], {
 	script = true,
 })
 
-vim.keymap.set("i", "<M-]>", [[<Cmd>call copilot#Next()<CR>]])
-vim.keymap.set("i", "<M-[>", [[<Cmd>call copilot#Previous()<CR>]])
+vim.keymap.set("i", "<M-]>", [[<Cmd>call copilot#Next()<CR>]], { replace_keycodes = false })
+vim.keymap.set("i", "<M-[>", [[<Cmd>call copilot#Previous()<CR>]], { replace_keycodes = false })

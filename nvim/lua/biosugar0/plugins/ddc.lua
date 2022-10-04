@@ -127,74 +127,74 @@ vim.keymap.set(
 	"i",
 	[[<Tab>]],
 	[[ddc#map#pum_visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : ddc#can_complete() ? ddc#manual_complete() : '<Tab>']],
-	{ noremap = false, expr = true }
+	{ replace_keycodes = false, noremap = false, expr = true }
 )
 vim.keymap.set(
 	"s",
 	[[<Tab>]],
 	[[ddc#map#pum_visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : ddc#can_complete() ? ddc#manual_complete() : '<Tab>']],
-	{ noremap = false, expr = true }
+	{ replace_keycodes = false, noremap = false, expr = true }
 )
 vim.keymap.set(
 	"i",
 	[[<S-Tab>]],
 	[[pum#visible() ? '<Cmd>call pum#map#insert_relative(-1)<CR>' : vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' :  '<S-Tab>']],
-	{ noremap = false, expr = true }
+	{ replace_keycodes = false, noremap = false, expr = true }
 )
 vim.keymap.set(
 	"s",
 	[[<S-Tab>]],
 	[[pum#visible() ? '<Cmd>call pum#map#insert_relative(-1)<CR>' : vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' :  '<S-Tab>']],
-	{ noremap = false, expr = true }
+	{ replace_keycodes = false, noremap = false, expr = true }
 )
 vim.keymap.set(
 	"i",
 	[[<C-p>]],
 	[[pum#visible() ? '<Cmd>call pum#map#select_relative(-1)<CR>' : '<Cmd>call ddc#map#manual_complete()<CR><Cmd>call pum#map#select_relative(-1)<CR>']],
-	{ noremap = false, expr = true }
+	{ replace_keycodes = false, noremap = false, expr = true }
 )
 vim.keymap.set(
 	"i",
 	[[<Esc>]],
 	[[pum#visible() ? '<Cmd>call pum#map#cancel()<CR>' : '<Esc>']],
-	{ noremap = false, expr = true }
+	{ replace_keycodes = false, noremap = false, expr = true }
 )
 vim.keymap.set(
 	"s",
 	[[<C-n>]],
 	[[vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' :  '<C-n>']],
-	{ noremap = false, expr = true }
+	{ replace_keycodes = false, noremap = false, expr = true }
 )
 vim.keymap.set(
 	"i",
 	[[<C-n>]],
 	[[pum#visible() ? '<Cmd>call pum#map#select_relative(+1)<CR>' : '<Cmd>call ddc#map#manual_complete()<CR><Cmd>call pum#map#select_relative(+1)<CR>']],
-	{ noremap = false, expr = true }
+	{ replace_keycodes = false, noremap = false, expr = true }
 )
 vim.keymap.set(
 	"i",
 	[[<CR>]],
 	[[pum#visible() ? '<Cmd>call pum#map#confirm()<CR>' : lexima#expand('<LT>CR>', 'i')]],
-	{ noremap = false, expr = true }
+	{ replace_keycodes = false, noremap = false, expr = true }
 )
 vim.keymap.set(
 	"i",
 	[[<C-e>]],
 	[[pum#visible() ? '<Cmd>call pum#map#cancel()<CR>' : '<C-e>']],
-	{ noremap = true, expr = true }
+	{ replace_keycodes = false, noremap = true, expr = true }
 )
 
 vim.keymap.set(
 	"i",
 	[[<C-k>]],
 	[[vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-k>']],
-	{ noremap = false, expr = true }
+	{ replace_keycodes = false, noremap = false, expr = true }
 )
 vim.keymap.set(
 	"s",
 	[[<C-k>]],
 	[[vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-k>']],
-	{ noremap = false, expr = true }
+	{ replace_keycodes = false, noremap = false, expr = true }
 )
 
 vim.api.nvim_create_autocmd("User", {
@@ -209,16 +209,31 @@ vim.keymap.set(
 	"c",
 	"<Tab>",
 	[[pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : exists('b:ddc_cmdline_completion') ? ddc#manual_complete() : nr2char(&wildcharm)]],
-	{ noremap = true, expr = true }
+	{ replace_keycodes = false, noremap = true, expr = true }
 )
-vim.keymap.set("c", "<S-Tab>", [[<Cmd>call pum#map#insert_relative(-1)<CR>]], { noremap = true, expr = false })
-vim.keymap.set("c", "<C-c>", [[<Cmd>call pum#map#cancel()<CR>]], { noremap = true, expr = false })
-vim.keymap.set("c", "<C-o>", [[<Cmd>call pum#map#confirm()<CR>]], { noremap = true, expr = false })
+vim.keymap.set(
+	"c",
+	"<S-Tab>",
+	[[<Cmd>call pum#map#insert_relative(-1)<CR>]],
+	{ replace_keycodes = false, noremap = true, expr = false }
+)
+vim.keymap.set(
+	"c",
+	"<C-c>",
+	[[<Cmd>call pum#map#cancel()<CR>]],
+	{ replace_keycodes = false, noremap = true, expr = false }
+)
+vim.keymap.set(
+	"c",
+	"<C-o>",
+	[[<Cmd>call pum#map#confirm()<CR>]],
+	{ replace_keycodes = false, noremap = true, expr = false }
+)
 
 local prev_buffer_config
 
 function CommandlinePost()
-	pcall(vim.keymap.del, "c", "<Tab>", { silent = true, buffer = 0 })
+	pcall(vim.keymap.del, "c", "<Tab>", { replace_keycodes = false, silent = true, buffer = 0 })
 	-- Restore sources
 	if prev_buffer_config ~= nil then
 		ddc.set_buffer(prev_buffer_config)
@@ -238,7 +253,7 @@ local function CommandlinePre(mode)
 		"c",
 		"<Tab>",
 		[[pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : exists('b:ddc_cmdline_completion') ? ddc#manual_complete() : "\<C-t>"]],
-		{ noremap = true, expr = true, buffer = 0 }
+		{ replace_keycodes = false, noremap = true, expr = true, buffer = 0 }
 	)
 	-- Overwrite sources
 	if prev_buffer_config == nil then
