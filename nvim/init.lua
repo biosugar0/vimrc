@@ -41,5 +41,5 @@ vim.keymap.set(
 	"i",
 	[[<Tab>]],
 	[[ddc#map#pum_visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : ddc#manual_complete()]],
-	{ noremap = false, expr = true }
+	{ noremap = true, expr = true }
 )
