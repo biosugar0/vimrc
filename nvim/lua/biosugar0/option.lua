@@ -52,7 +52,7 @@ set.wildmode = "list:longest,full" -- コマンドラインモードでTABキー
 set.history = 1000 -- コマンドラインの履歴を1000件保存する
 -- 表示設定
 set.diffopt = "vertical"
-set.laststatus = 3 -- ステータス行を常に表示
+set.laststatus = 3 -- always and ONLY the last window
 set.cmdheight = 1 -- メッセージ表示欄を1行確保
 set.showmatch = true -- 対応する括弧を強調表示
 set.helpheight = 999 -- ヘルプを画面いっぱいに開く
