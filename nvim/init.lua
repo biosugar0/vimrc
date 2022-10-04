@@ -1,6 +1,3 @@
-vim.cmd("syntax enable")
-vim.cmd("filetype plugin indent on")
-
 vim.opt.rtp:append("~/.cache/dein/repos/github.com/vim-denops/denops.vim")
 vim.opt.rtp:append("~/.cache/dein/repos/github.com/Shougo/ddc.vim")
 vim.opt.rtp:append("~/.cache/dein/repos/github.com/Shougo/pum.vim")
@@ -46,4 +43,3 @@ vim.keymap.set(
 	[[ddc#map#pum_visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : ddc#manual_complete()]],
 	{ noremap = false, expr = true }
 )
-
