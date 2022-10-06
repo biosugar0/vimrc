@@ -25,6 +25,7 @@ vim.g["dein#enable_notification"] = true
 vim.g["dein#install_check_remote_threshold"] = 24 * 60 * 60
 vim.g["dein#auto_remote_plugins"] = false
 vim.g["dein#install_copy_vim"] = true
+vim.g["dein#install_github_api_token"] = os.getenv("GITHUB_TOKEN")
 
 if vim.fn["dein#load_state"](dein_dir) == 1 then
 	local toml = vim.g.rc_dir .. "/dein.toml"
