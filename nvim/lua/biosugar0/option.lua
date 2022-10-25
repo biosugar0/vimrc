@@ -51,7 +51,7 @@ set.wildignorecase = true -- コマンド補完で大文字小文字を区別し
 set.wildmode = "list:longest,full" -- コマンドラインモードでTABキーによるファイル名補完を有効にする
 set.history = 1000 -- コマンドラインの履歴を1000件保存する
 -- 表示設定
-set.diffopt = "vertical"
+set.diffopt = "internal,filler,closeoff,vertical"
 set.laststatus = 3 -- always and ONLY the last window
 set.cmdheight = 1 -- メッセージ表示欄を1行確保
 set.showmatch = true -- 対応する括弧を強調表示
