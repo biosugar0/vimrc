@@ -351,6 +351,9 @@ let test#strategy = 'dispatch'
 [[plugins]]
 repo = 'machakann/vim-sandwich'
 on_map = { vonx = ['<Plug>(operator-sandwich-','<Plug>(sandwich-'] }
+hook_post_source = '''
+call operator#sandwich#set('add', 'char', 'skip_space', 1)
+'''
 hook_add = '''
 " add
 let g:sandwich_no_default_key_mappings = 1
@@ -372,11 +375,6 @@ omap ib <Plug>(textobj-sandwich-auto-i)
 xmap ib <Plug>(textobj-sandwich-auto-i)
 omap ab <Plug>(textobj-sandwich-auto-a)
 xmap ab <Plug>(textobj-sandwich-auto-a)
-
-omap is <Plug>(textobj-sandwich-query-i)
-xmap is <Plug>(textobj-sandwich-query-i)
-omap as <Plug>(textobj-sandwich-query-a)
-xmap as <Plug>(textobj-sandwich-query-a)
 '''
 
 [[plugins]]
@@ -604,11 +602,6 @@ on_map = ['vid', 'viD', 'vad', 'vaD']
 repo = 'sgur/vim-textobj-parameter'
 depends = ['vim-textobj-user']
 on_map = ['i,','a,' ]
-
-[[plugins]]
-repo = 'rbtnn/vim-textobj-string'
-depends = ['vim-textobj-user']
-on_map = ['is','as' ]
 
 [[plugins]]
 repo ='mattn/vim-findroot'
