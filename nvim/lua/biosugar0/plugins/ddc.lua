@@ -102,7 +102,7 @@ ddc.patch_global("autoCompleteEvents", {
 	"CmdlineEnter",
 	"CmdlineChanged",
 })
-ddc.patch_global("completionMenu", "pum.vim")
+ddc.patch_global("ui", "pum")
 vim.fn["pum#set_option"]("border", "rounded")
 vim.fn["pum#set_option"]("max_width", 80)
 vim.fn["pum#set_option"]("padding", true)
@@ -126,13 +126,13 @@ vim.fn["ddc#enable"]()
 vim.keymap.set(
 	"i",
 	[[<Tab>]],
-	[[ddc#map#pum_visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : ddc#can_complete() ? ddc#manual_complete() : '<Tab>']],
+	[[pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : ddc#can_complete() ? ddc#map#manual_complete() : '<Tab>']],
 	{ replace_keycodes = false, noremap = false, expr = true }
 )
 vim.keymap.set(
 	"s",
 	[[<Tab>]],
-	[[ddc#map#pum_visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : ddc#can_complete() ? ddc#manual_complete() : '<Tab>']],
+	[[pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : ddc#can_complete() ? ddc#map#manual_complete() : '<Tab>']],
 	{ replace_keycodes = false, noremap = false, expr = true }
 )
 vim.keymap.set(
@@ -208,7 +208,7 @@ vim.api.nvim_create_autocmd("User", {
 vim.keymap.set(
 	"c",
 	"<Tab>",
-	[[pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : exists('b:ddc_cmdline_completion') ? ddc#manual_complete() : nr2char(&wildcharm)]],
+	[[pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : exists('b:ddc_cmdline_completion') ? ddc#map#manual_complete() : nr2char(&wildcharm)]],
 	{ replace_keycodes = false, noremap = true, expr = true }
 )
 vim.keymap.set(
@@ -252,7 +252,7 @@ local function CommandlinePre(mode)
 	vim.keymap.set(
 		"c",
 		"<Tab>",
-		[[pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : exists('b:ddc_cmdline_completion') ? ddc#manual_complete() : "\<C-t>"]],
+		[[pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : exists('b:ddc_cmdline_completion') ? ddc#map#manual_complete() : "\<C-t>"]],
 		{ replace_keycodes = false, noremap = true, expr = true, buffer = 0 }
 	)
 	-- Overwrite sources

@@ -36,11 +36,3 @@ vim.keymap.set("n", "0", [[getline('.')[0 : col('.') - 2] =~# '^\s\+$' ? '0' : '
 
 -- macro playback
 vim.keymap.set("n", "Q", "@a")
-
--- a"などでスペースを入れない
-vim.keymap.set("o", [[a']], [[2i']])
-vim.keymap.set("x", [[a']], [[2i']])
-vim.keymap.set("o", [[a"]], [[2i"]])
-vim.keymap.set("x", [[a"]], [[2i"]])
-vim.keymap.set("o", [[a`]], [[2i`]])
-vim.keymap.set("x", [[a`]], [[2i`]])

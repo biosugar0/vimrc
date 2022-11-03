@@ -50,17 +50,6 @@ nnoremap <Leader>s <Cmd>FuzzyMotion<CR>
 '''
 
 [[plugins]]
-repo = 'tversteeg/registers.nvim'
-depends =['denops.vim']
-if = 'has("nvim")'
-on_map = '"'
-hook_source = '''
-let g:registers_paste_in_normal_mode = 1
-let g:registers_hide_only_whitespace = 1
-let g:registers_show_empty_registers = 0
-'''
-
-[[plugins]]
 repo = 'skanehira/denops-silicon.vim'
 on_cmd = 'Silicon'
 depends = ['denops.vim']
@@ -451,71 +440,7 @@ repo = 'nvim-lua/plenary.nvim'
 [[plugins]]
 repo = 'lewis6991/gitsigns.nvim'
 on_event = ['BufReadPre', 'BufNewFile']
-on_lua = 'gitsigns'
-lua_source = '''
-require('gitsigns').setup {
-signs = {
-  add          = {hl = 'GitSignsAdd'   , text = '+', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
-  change       = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-  delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-  topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-  changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-},
-signcolumn = true,
-numhl      = false,
-linehl     = false,
-word_diff  = false,
-watch_gitdir = {
-  interval = 1000,
-  follow_files = true
-},
-attach_to_untracked = true,
-current_line_blame = false,
-current_line_blame_opts = {
-  virt_text = true,
-  virt_text_pos = 'eol',
-  delay = 1000,
-  ignore_whitespace = false,
-},
-current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
-sign_priority = 6,
-update_debounce = 100,
-status_formatter = nil,
-max_file_length = 40000,
-preview_config = {
-  border = 'single',
-  style = 'minimal',
-  relative = 'cursor',
-  row = 0,
-  col = 1
-},
-yadm = {
-  enable = false
- },
- on_attach = function(bufnr)
-   local gs = package.loaded.gitsigns
-   local function map(mode, l, r, opts)
-     opts = opts or {replace_keycodes = false}
-     opts.buffer = bufnr
-     vim.keymap.set(mode, l, r, opts)
-   end
-   map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", {replace_keycodes = false,expr=true})
-   map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", {replace_keycodes = false,expr=true})
-   map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
-   map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
-   map('n', '<leader>hS', gs.stage_buffer)
-   map('n', '<leader>hu', gs.undo_stage_hunk)
-   map('n', '<leader>hR', gs.reset_buffer)
-   map('n', '<leader>hp', gs.preview_hunk)
-   map('n', '<leader>hb', function() gs.blame_line{full=true} end)
-   map('n', '<leader>tb', gs.toggle_current_line_blame)
-   map('n', '<leader>hd', gs.diffthis)
-   map('n', '<leader>hD', function() gs.diffthis('~') end)
-   map('n', '<leader>td', gs.toggle_deleted)
-   map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
- end
- }
-'''
+hook_source = 'lua require("biosugar0.plugins.gitsigns")'
 
 [[plugins]]
 repo = 'hrsh7th/vim-eft'
@@ -681,6 +606,11 @@ depends = ['vim-textobj-user']
 on_map = ['i,','a,' ]
 
 [[plugins]]
+repo = 'rbtnn/vim-textobj-string'
+depends = ['vim-textobj-user']
+on_map = ['is','as' ]
+
+[[plugins]]
 repo ='mattn/vim-findroot'
 on_event = 'BufRead'
 hook_source = '''
@@ -841,6 +771,22 @@ on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'Shougo/ddc-omni'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-ui-native'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-ui-pum'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-ui-inline'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-ui-none'
 on_source = 'ddc.vim'
 
 [[plugins]]
