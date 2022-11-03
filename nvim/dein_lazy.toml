@@ -767,6 +767,10 @@ repo = 'Shougo/ddc-omni'
 on_source = 'ddc.vim'
 
 [[plugins]]
+repo = 'matsui54/ddc-buffer'
+on_source = 'ddc.vim'
+
+[[plugins]]
 repo = 'Shougo/ddc-ui-native'
 on_source = 'ddc.vim'
 

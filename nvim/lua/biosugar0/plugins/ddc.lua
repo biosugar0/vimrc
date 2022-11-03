@@ -20,6 +20,9 @@ sopts["around"] = {
 	mark = "A",
 	matchers = { "matcher_head", "matcher_length" },
 }
+sopts["buffer"] = {
+	mark = "B",
+}
 sopts["cmdline"] = {
 	mark = "cmdline",
 	forceCompletionPattern = [[\S/\S*]],
@@ -90,7 +93,7 @@ ddc.patch_filetype(
 	{ "input", "nvim-lsp", "around", "vsnip", "dictionary" }
 )
 ddc.patch_filetype({ "FineCmdlinePrompt" }, {
-	keywordPattern = [[[0-9a-zA-Z_:#]*]],
+	keywordPattern = "[0-9a-zA-Z_:#-]*",
 	sources = { "cmdline-history", "cmdline", "around" },
 	specialBufferCompletion = true,
 })
@@ -120,6 +123,19 @@ ddc.patch_global("sourceParams", {
 		smartCase = true,
 		showMenu = false,
 	},
+})
+ddc.patch_global("sourceParams", {
+	buffer = {
+		requireSameFiletype = false,
+		limitBytes = 50000,
+		fromAltBuf = true,
+		forceCollect = true,
+	},
+})
+ddc.patch_filetype("FineCmdlinePrompt", {
+	keywordPattern = [[[0-9a-zA-Z_:#]*]],
+	sources = { "cmdline-history", "around" },
+	specialBufferCompletion = true,
 })
 vim.fn["ddc#enable"]()
 
@@ -261,7 +277,7 @@ local function CommandlinePre(mode)
 	end
 	if mode == ":" then
 		ddc.patch_buffer("cmdlineSources", { "cmdline-history", "cmdline", "around" })
-		ddc.patch_buffer("keywordPattern", [[[0-9a-zA-Z_:#]*]])
+		ddc.patch_buffer("keywordPattern", "[0-9a-zA-Z_:#-]*")
 	else
 		ddc.patch_buffer("cmdlineSources", { "around", "line" })
 	end
@@ -289,13 +305,13 @@ end
 
 vim.keymap.set("n", ":", function()
 	return CommandlinePre(":")
-end, { expr = true })
+end, { replace_keycodes = false, expr = true })
 vim.keymap.set("n", "/", function()
 	return CommandlinePre("/")
-end, { expr = true })
+end, { replace_keycodes = false, expr = true })
 vim.keymap.set("n", "?", function()
 	return CommandlinePre("?")
-end, { expr = true })
+end, { replace_keycodes = false, expr = true })
 
 -- skkeleton
 local function skkeleton_init()
