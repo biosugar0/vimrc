@@ -4,7 +4,7 @@ local ddc = {
 	patch_buffer = vim.fn["ddc#custom#patch_buffer"],
 	patch_filetype = vim.fn["ddc#custom#patch_filetype"],
 	set_buffer = vim.fn["ddc#custom#set_buffer"],
-	set_context = vim.fn["ddc#custom#set_context"],
+	set_context = vim.fn["ddc#custom#set_context_filetype"],
 }
 ddc.patch_global("sources", { "around", "file", "rg", "dictionary" })
 ddc.patch_global("cmdlineSources", { "cmdline-history", "input", "file", "around" })
