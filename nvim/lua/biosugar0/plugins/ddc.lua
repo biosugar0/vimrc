@@ -142,13 +142,13 @@ vim.fn["ddc#enable"]()
 vim.keymap.set(
 	"i",
 	[[<Tab>]],
-	[[pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : ddc#can_complete() ? ddc#map#manual_complete() : '<Tab>']],
+	[[pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : ddc#map#can_complete() ? ddc#map#manual_complete() : '<Tab>']],
 	{ replace_keycodes = false, noremap = false, expr = true }
 )
 vim.keymap.set(
 	"s",
 	[[<Tab>]],
-	[[pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : ddc#can_complete() ? ddc#map#manual_complete() : '<Tab>']],
+	[[pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : ddc#map#can_complete() ? ddc#map#manual_complete() : '<Tab>']],
 	{ replace_keycodes = false, noremap = false, expr = true }
 )
 vim.keymap.set(
