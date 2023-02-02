@@ -80,7 +80,7 @@ sopts["skkeleton"] = {
 	matchers = { "skkeleton" },
 	sorters = {},
 	minAutoCompleteLength = 2,
-	maxCandidates = 50,
+	maxItems = 50,
 	isVolatile = true,
 }
 
