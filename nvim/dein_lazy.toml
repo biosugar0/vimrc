@@ -12,7 +12,9 @@ hook_add = '''
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
 depends = ['impatient.nvim','denops.vim','mason.nvim','mason-lspconfig.nvim','fidget.nvim','denops-popup-preview.vim']
-hook_source = 'lua require("biosugar0.plugins.lsp")'
+lua_source = '''
+require("biosugar0.plugins.lsp")
+'''
 
 [[plugins]]
 repo = 'matsui54/denops-popup-preview.vim'
