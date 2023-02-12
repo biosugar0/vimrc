@@ -142,6 +142,11 @@ mason.setup({ ui = { icons = { package_installed = "✓", package_pending = "➜
 
 [[plugins]]
 repo = 'williamboman/mason-lspconfig.nvim'
+on_source = 'nvim-lspconfig'
+
+[[plugins]]
+repo = 'folke/neodev.nvim'
+on_source = 'nvim-lspconfig'
 
 [[plugins]]
 repo = 'j-hui/fidget.nvim'

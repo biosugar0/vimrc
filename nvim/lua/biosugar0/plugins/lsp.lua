@@ -42,6 +42,7 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 	},
 }
 
+require("neodev").setup()
 local nvim_lsp = require("lspconfig")
 local mason_lspconfig = require("mason-lspconfig")
 
@@ -84,14 +85,8 @@ local settings = {
 	},
 	lua_ls = {
 		Lua = {
-			runtime = {
-				version = "LuaJIT",
-			},
-			diagnostics = {
-				globals = { "vim" },
-			},
-			workspace = {
-				library = vim.api.nvim_get_runtime_file("", true),
+			completion = {
+				callSnippet = "Replace",
 			},
 			telemetry = {
 				enable = false,
