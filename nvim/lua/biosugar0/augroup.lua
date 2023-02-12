@@ -43,6 +43,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 	command = [[if line("'\"") >= 1 && line("'\"") <= line("$")  |   exe "normal! g`\""  | endif]],
 })
 
+-- BufWinEnterでカーソル位置を中央にする
 vim.api.nvim_create_autocmd("BufWinEnter", {
 	group = MyAutoCmd,
 	pattern = "*",
@@ -63,7 +64,7 @@ if vim.fn.executable("osascript") == 1 then
 	})
 end
 
--- for onsidian markdown link
+-- for obsidian markdown link
 local memodir = os.getenv("MEMO_DIRECTORY")
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 	pattern = memodir .. "*",
