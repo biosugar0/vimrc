@@ -35,20 +35,19 @@ local mason_lspconfig = require("mason-lspconfig")
 
 -- auto install lsp servers
 local mason_conf = {
-    ensure_installed = {
-        "bashls",
-        "gopls",
-        "golangci_lint_ls",
-        "yamlls",
-        "sqls",
-        "terraformls",
-        "tsserver",
---      "lua_ls",  -- sumneko_lua renamed to lua_ls.
-    },
-    automatic_installation = true,
+	ensure_installed = {
+		"bashls",
+		"gopls",
+		"golangci_lint_ls",
+		"yamlls",
+		"sqls",
+		"terraformls",
+		"tsserver",
+		--      "lua_ls",  -- sumneko_lua renamed to lua_ls.
+	},
+	automatic_installation = true,
 }
 mason_lspconfig.setup(mason_conf)
-
 
 local settings = {
 	gopls = {
