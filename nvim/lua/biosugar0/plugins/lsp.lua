@@ -17,7 +17,19 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, bufopts)
 	vim.keymap.set("n", "]d", vim.diagnostic.goto_next, bufopts)
 	vim.keymap.set("n", ",f", vim.lsp.buf.format, bufopts)
-	vim.diagnostic.config({ virtual_text = false, float = true })
+
+	local diagnosticConfig = {
+		virtual_text = {
+			prefix = "●",
+			format = function(diagnostic)
+				if diagnostic.code == nil then
+					return string.format("[%s] %s", diagnostic.source, diagnostic.message)
+				end
+				return string.format("[%s: %s] %s", diagnostic.source, diagnostic.code, diagnostic.message)
+			end,
+		},
+	}
+	vim.diagnostic.config(diagnosticConfig)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -30,6 +42,7 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 	},
 }
 
+require("neodev").setup()
 local nvim_lsp = require("lspconfig")
 local mason_lspconfig = require("mason-lspconfig")
 
@@ -43,7 +56,7 @@ local mason_conf = {
 		"sqls",
 		"terraformls",
 		"tsserver",
-		--      "lua_ls",  -- sumneko_lua renamed to lua_ls.
+		"lua_ls",
 	},
 	automatic_installation = true,
 }
@@ -67,6 +80,16 @@ local settings = {
 				compositeLiteralTypes = true,
 				compositeLiteralFields = true,
 				functionTypeParameters = true,
+			},
+		},
+	},
+	lua_ls = {
+		Lua = {
+			completion = {
+				callSnippet = "Replace",
+			},
+			telemetry = {
+				enable = false,
 			},
 		},
 	},

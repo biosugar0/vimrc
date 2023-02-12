@@ -202,14 +202,14 @@ vim.keymap.set(
 
 vim.keymap.set(
 	"i",
-	[[<C-k>]],
-	[[vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-k>']],
+	[[<C-j>]],
+	[[vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>']],
 	{ replace_keycodes = false, noremap = false, expr = true }
 )
 vim.keymap.set(
 	"s",
-	[[<C-k>]],
-	[[vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-k>']],
+	[[<C-j>]],
+	[[vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>']],
 	{ replace_keycodes = false, noremap = false, expr = true }
 )
 
