@@ -655,14 +655,11 @@ nmap mg <Cmd>MemoGrep<CR>
 '''
 
 [[plugins]]
-repo = 'github/copilot.vim'
-on_cmd = 'Copilot'
-hook_add = '''
-nnoremap <silent> <Leader>p <Cmd>Copilot enable<CR>
-nnoremap <silent> <Leader>pp <Cmd>Copilot disable<CR>
+repo = 'zbirenbaum/copilot.lua'
+on_event = 'InsertEnter'
+lua_source = '''
+require("biosugar0.plugins.copilot")
 '''
-hook_source = 'lua require("biosugar0.plugins.copilot")'
-
 
 [[plugins]]
 repo = 'gen740/SmoothCursor.nvim'
