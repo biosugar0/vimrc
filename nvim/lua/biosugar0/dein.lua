@@ -16,36 +16,39 @@ if not (string.match(vim.o.runtimepath, "/dein.vim") == 1) then
 	vim.opt.runtimepath:append(dein_repo_dir)
 end
 
+local dein = require("dein")
 -- dein options
-vim.g["dein#auto_recache"] = true
-vim.g["dein#lazy_rplugins"] = true
-vim.g["dein#install_progress_type"] = "floating"
-vim.g["dein#install_check_diff"] = true
-vim.g["dein#enable_notification"] = true
-vim.g["dein#install_check_remote_threshold"] = 24 * 60 * 60
-vim.g["dein#auto_remote_plugins"] = false
-vim.g["dein#install_copy_vim"] = true
-vim.g["dein#install_github_api_token"] = os.getenv("GITHUB_TOKEN")
+dein.setup({
+	auto_remote_plugins = false,
+	enable_notification = true,
+	auto_recache = true,
+	lazy_rplugins = true,
+	install_progress_type = "floating",
+	install_check_diff = true,
+	install_check_remote_threshold = 24 * 60 * 60,
+	install_copy_vim = true,
+	install_github_api_token = os.getenv("GITHUB_TOKEN"),
+})
 
-if vim.fn["dein#load_state"](dein_dir) == 1 then
+if dein.load_state(dein_dir) == 1 then
 	local toml = vim.g.rc_dir .. "/dein.toml"
 	local lazy_toml = vim.g.rc_dir .. "/dein_lazy.toml"
 	local ft_toml = vim.g.rc_dir .. "/ft.toml"
 
-	vim.fn["dein#begin"](dein_dir, { vim.fn.expand("<sfile>"), toml, lazy_toml, ft_toml })
+	dein.begin(dein_dir, { vim.fn.expand("<sfile>"), toml, lazy_toml, ft_toml })
 
 	if vim.fn.filereadable(vim.fn.expand(toml)) == 1 then
-		vim.fn["dein#load_toml"](toml, { lazy = 0 })
+		dein.load_toml(toml, { lazy = 0 })
 	end
 
 	if vim.fn.filereadable(vim.fn.expand(lazy_toml)) == 1 then
-		vim.fn["dein#load_toml"](lazy_toml, { lazy = 1 })
+		dein.load_toml(lazy_toml, { lazy = 1 })
 	end
 
 	if vim.fn.filereadable(vim.fn.expand(ft_toml)) == 1 then
-		vim.fn["dein#load_toml"](ft_toml, { lazy = 1 })
+		dein.load_toml(ft_toml, { lazy = 1 })
 	end
 
-	vim.fn["dein#end"]()
-	vim.fn["dein#save_state"]()
+	dein.end_()
+	dein.save_state()
 end
