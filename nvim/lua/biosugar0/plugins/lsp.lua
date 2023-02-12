@@ -78,6 +78,7 @@ mason_lspconfig.setup_handlers({
 		}
 		opts.on_attach = on_attach
 		opts.capabilities = capabilities
-		opts.settings = settings[target], nvim_lsp[server_name].setup(opts)
+		opts.settings = settings[server_name]
+		nvim_lsp[server_name].setup(opts)
 	end,
 })
