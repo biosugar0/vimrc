@@ -1,11 +1,19 @@
-vim.g.copilot_no_maps = true
-vim.g.copilot_hide_during_completion = false
-vim.g.copilot_node_command = "~/.volta/bin/node"
-vim.keymap.set("i", "<c-l>", [[copilot#Accept()]], {
-	replace_keycodes = false,
-	expr = true,
-	script = true,
+require("copilot").setup({
+	suggestion = {
+		enabled = true,
+		auto_trigger = true,
+		keymap = {
+			accept = "<c-l>",
+			next = "<M-]>",
+			prev = "<M-[>",
+			dismiss = "<C-]>",
+		},
+	},
+	filetypes = {
+		["."] = true,
+	},
+	copilot_node_command = "node", -- Node.js version must be > 16.x
+	server_opts_overrides = {},
 })
 
-vim.keymap.set("i", "<M-]>", [[<Cmd>call copilot#Next()<CR>]], { replace_keycodes = false })
-vim.keymap.set("i", "<M-[>", [[<Cmd>call copilot#Previous()<CR>]], { replace_keycodes = false })
+require("copilot.auth").signin() -- Sign in to Copilot
