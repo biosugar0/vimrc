@@ -670,7 +670,7 @@ require("biosugar0.plugins.copilot")
 
 [[plugins]]
 repo = 'gen740/SmoothCursor.nvim'
-on_event = 'CursorHold'
+on_event = 'BufRead'
 lua_source = '''
 require("biosugar0.plugins.smooth-cursor")
 '''
