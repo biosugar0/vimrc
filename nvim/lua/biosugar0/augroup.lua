@@ -1,11 +1,17 @@
 require("biosugar0/util")
 local MyAutoCmd = vim.api.nvim_create_augroup("MyAutoCmd", { clear = true })
+-- ftdetect
 -- Note: filetype detect does not work on startup
-vim.api.nvim_create_autocmd({ "FileType", "Syntax", "BufNewFile", "BufNew", "BufRead" }, {
+local ftdetect_event =  { "FileType", "Syntax", "BufNewFile", "BufNew", "BufRead" }
+vim.api.nvim_create_autocmd(ftdetect_event, {
 	group = MyAutoCmd,
 	pattern = "*",
-	command = [[  filetype detect ]],
+	-- this function run 'filetype detect' vim command
+	callback = function()
+		vim.cmd("filetype detect")
+	end,
 })
+
 -- 保存時に存在しないディレクトリを作成
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 	group = MyAutoCmd,

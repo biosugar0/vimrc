@@ -1,5 +1,7 @@
 local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
 ft_to_parser.tf = "hcl"
+ft_to_parser.terraform = "hcl"
+ft_to_parser.tfvars = "hcl"
 
 local conf = {
 	ensure_installed = {
