@@ -101,8 +101,8 @@ depends = ['denops.vim']
 on_source = 'ddc.vim'
 on_cmd= '<Plug>(skkeleton-'
 hook_add = '''
-imap <C-j> <Plug>(skkeleton-toggle)
-cmap <C-j> <Plug>(skkeleton-toggle)
+imap ,, <Plug>(skkeleton-toggle)
+cmap ,, <Plug>(skkeleton-toggle)
 '''
 hook_source = '''
 let g:skk_dir = expand('~/.local/share/skk')
