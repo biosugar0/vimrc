@@ -45,10 +45,11 @@ vim.fn['signature_help#enable']()
 
 [[plugins]]
 repo = 'yuki-yano/fuzzy-motion.vim'
-depends =['denops.vim']
+depends =['denops.vim','kensaku.vim']
 on_cmd = 'FuzzyMotion'
 hook_add = '''
 nnoremap <Leader>s <Cmd>FuzzyMotion<CR>
+let g:fuzzy_motion_matchers=['fzf','kensaku']
 '''
 
 [[plugins]]
@@ -787,3 +788,5 @@ let g:lexima_no_default_rules = v:true
 hook_source = '''
 call lexima#set_default_rules()
 '''
+[[plugins]]
+repo = 'lambdalisue/kensaku.vim'
