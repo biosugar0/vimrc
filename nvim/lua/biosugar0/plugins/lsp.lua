@@ -50,15 +50,16 @@ local mason_lspconfig = require("mason-lspconfig")
 local mason_conf = {
 	ensure_installed = {
 		"bashls",
-		"gopls",
+		"denols",
+		"eslint",
 		"golangci_lint_ls",
-		"yamlls",
+		"gopls",
+		"lua_ls",
+		"pylsp",
 		"sqls",
 		"terraformls",
 		"tsserver",
-		"lua_ls",
-		"denols",
-		"eslint",
+		"yamlls",
 	},
 	automatic_installation = true,
 }
@@ -85,10 +86,22 @@ local settings = {
 			},
 		},
 	},
+	pylsp = {
+		plugins = {
+			pycodestyle = {
+				ignore = { "W391" },
+				maxLineLength = 100,
+			},
+		},
+	},
 	lua_ls = {
 		Lua = {
 			completion = {
 				callSnippet = "Replace",
+			},
+			workspace = {
+				library = vim.api.nvim_get_runtime_file("", true),
+				checkThirdParty = false,
 			},
 			telemetry = {
 				enable = false,
