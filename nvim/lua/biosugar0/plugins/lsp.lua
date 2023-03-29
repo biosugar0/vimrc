@@ -55,10 +55,10 @@ local mason_conf = {
 		"golangci_lint_ls",
 		"gopls",
 		"lua_ls",
-		"pylsp",
 		"sqls",
 		"terraformls",
 		"tsserver",
+		"pyright",
 		"yamlls",
 	},
 	automatic_installation = true,
@@ -86,12 +86,11 @@ local settings = {
 			},
 		},
 	},
-	pylsp = {
-		plugins = {
-			pycodestyle = {
-				ignore = { "W391" },
-				maxLineLength = 100,
-			},
+	python = {
+		analysis = {
+			autoSearchPaths = true,
+			diagnosticMode = "workspace",
+			useLibraryCodeForTypes = true,
 		},
 	},
 	lua_ls = {
