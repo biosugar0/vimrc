@@ -1,7 +1,7 @@
 local vim = vim
 local api = vim.api
 
-function try_catch(what)
+function Try_catch(what)
 	local status, result = pcall(what.try)
 	if not status then
 		what.catch(result)

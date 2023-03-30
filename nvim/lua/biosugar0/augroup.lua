@@ -2,7 +2,7 @@ require("biosugar0/util")
 local MyAutoCmd = vim.api.nvim_create_augroup("MyAutoCmd", { clear = true })
 -- ftdetect
 -- Note: filetype detect does not work on startup
-local ftdetect_event =  { "FileType", "Syntax", "BufNewFile", "BufNew", "BufRead" }
+local ftdetect_event = { "FileType", "Syntax", "BufNewFile", "BufNew", "BufRead" }
 vim.api.nvim_create_autocmd(ftdetect_event, {
 	group = MyAutoCmd,
 	pattern = "*",
@@ -29,7 +29,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 			if not (result == 1) then
 				print("Canceled")
 			end
-			vim.fn.mkdir(vim.fn.iconv(dir, vim.o.encoding, vim.o.encoding), "p")
+			vim.fn.mkdir(dir, "p")
 		end
 	end,
 	once = false,
@@ -69,38 +69,3 @@ if vim.fn.executable("osascript") == 1 then
 		end,
 	})
 end
-
--- for obsidian markdown link
-local memodir = os.getenv("MEMO_DIRECTORY")
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-	pattern = memodir .. "*",
-	group = MyAutoCmd,
-	callback = function()
-		local obsidian_suffix = ".md"
-		vim.opt_local.path:append(memodir .. "/**")
-		vim.opt.suffixesadd:append(obsidian_suffix)
-		local function open_file_or_create_new()
-			local path = vim.fn.expand("<cfile>")
-			if vim.fn.empty(path) == 1 then
-				return
-			end
-			try_catch({
-				try = function()
-					vim.cmd([[exe 'norm!gf']])
-				end,
-				catch = function(error)
-					print("New File.")
-					new_path = vim.fn.fnamemodify(vim.fn.expand("%:p:h") .. "/" .. path, ":p")
-					if not (vim.fn.empty(vim.fn.fnamemodify(new_path, ":e"))) then
-						return vim.fn.execute("edit " .. new_path)
-					end
-				end,
-			})
-			if vim.fn.filereadable(new_path.suffix) then
-				return vim.fn.execute("edit " .. new_path .. obsidian_suffix)
-			end
-			return vim.fn.execute("edit " .. new_path .. obsidian_suffix)
-		end
-		vim.keymap.set("n", "gf", open_file_or_create_new, { noremap = true })
-	end,
-})
