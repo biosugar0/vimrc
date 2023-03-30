@@ -1,47 +1,19 @@
-local on_attach = function(client, bufnr)
-	local bufopts = { replace_keycodes = false, noremap = true, silent = true, buffer = bufnr }
-	vim.keymap.set("n", "gD", vim.lsp.buf.references, bufopts)
-	vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
-	vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
-	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
-	vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, bufopts)
-	vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, bufopts)
-	vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
-	vim.keymap.set("n", "<space>wl", function()
-		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-	end, bufopts)
-	vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, bufopts)
-	vim.keymap.set("n", "gr", vim.lsp.buf.rename, bufopts)
-	vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, bufopts)
-	vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, bufopts)
-	vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, bufopts)
-	vim.keymap.set("n", "]d", vim.diagnostic.goto_next, bufopts)
-	vim.keymap.set("n", ",f", vim.lsp.buf.format, bufopts)
+local formatgroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
-	local diagnosticConfig = {
-		virtual_text = {
-			prefix = "●",
-			format = function(diagnostic)
-				if diagnostic.code == nil then
-					return string.format("[%s] %s", diagnostic.source, diagnostic.message)
-				end
-				return string.format("[%s: %s] %s", diagnostic.source, diagnostic.code, diagnostic.message)
-			end,
+local function setup_capabilities()
+	local capabilities = vim.lsp.protocol.make_client_capabilities()
+	capabilities.textDocument.completion.completionItem.snippetSupport = true
+	capabilities.textDocument.completion.completionItem.resolveSupport = {
+		properties = {
+			"documentation",
+			"detail",
+			"additionalTextEdits",
 		},
 	}
-	vim.diagnostic.config(diagnosticConfig)
+	return capabilities
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-	properties = {
-		"documentation",
-		"detail",
-		"additionalTextEdits",
-	},
-}
-
+local capabilities = setup_capabilities()
 require("neodev").setup()
 local nvim_lsp = require("lspconfig")
 local mason_lspconfig = require("mason-lspconfig")
@@ -76,8 +48,8 @@ local settings = {
 				unusedparams = true,
 			},
 			hints = {
-				comstantValues = true,
-				patameterNames = true,
+				constantValues = true,
+				parameterNames = true,
 				rangeVariableTypes = true,
 				assignVariableTypes = true,
 				compositeLiteralTypes = true,
@@ -124,6 +96,99 @@ local handlers = {
 	["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
 }
 
+local null_ls = require("null-ls")
+
+require("mason-null-ls").setup({
+	ensure_installed = {
+		-- formatters
+		"stylua",
+		"black",
+		"isort",
+		"goimports",
+		"shfmt",
+		"fixjson",
+		"yamlfmt",
+		-- linters
+		"flake8",
+		"actionlint",
+		"tflint",
+		"markdownlint",
+		"sql_formatter", -- sql formatter
+	},
+	automatic_installation = true,
+	automatic_setup = true,
+})
+
+require("mason-null-ls").setup_handlers({
+	function(source_name, methods)
+		require("mason-null-ls.automatic_setup")(source_name, methods)
+	end,
+	---@diagnostic disable-next-line: unused-local
+	stylua = function(source_name, methods)
+		null_ls.register(null_ls.builtins.formatting.stylua.with({
+			extra_args = {
+				"--indent-type",
+				"Tabs",
+			},
+		}))
+	end,
+	---@diagnostic disable-next-line: unused-local
+	isort = function(source_name, methods)
+		null_ls.register(null_ls.builtins.formatting.isort)
+	end,
+	---@diagnostic disable-next-line: unused-local
+	black = function(source_name, methods)
+		null_ls.register(null_ls.builtins.formatting.black.with({
+			extra_args = {
+				"--fast",
+			},
+		}))
+	end,
+	---@diagnostic disable-next-line: unused-local
+	flake8 = function(source_name, methods)
+		null_ls.register(null_ls.builtins.diagnostics.flake8.with({
+			extra_args = { "--max-line-length", "88", "--ignore", "E501,W503,E203" },
+		}))
+	end,
+})
+
+local null_ls_formatting = function(bufnr)
+	-- If the null_ls formatter is available, use it.
+	vim.lsp.buf.format({
+		filter = function(client)
+			return client.name == "null-ls"
+		end,
+		bufnr = bufnr,
+	})
+end
+
+local function is_null_ls_formatter_available(bufnr)
+	local clients = vim.lsp.buf_get_clients(bufnr)
+	for _, client in ipairs(clients) do
+		if client.name == "null-ls" and client.supports_method("textDocument/formatting") then
+			return true
+		end
+	end
+	return false
+end
+
+-- will setup any installed and configured sources above
+null_ls.setup({
+	on_attach = function(client, bufnr)
+		-- If a null_ls formatter is available, it takes precedence over LSP.
+		if client.supports_method("textDocument/formatting") then
+			vim.api.nvim_clear_autocmds({ group = formatgroup, buffer = bufnr })
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				group = formatgroup,
+				buffer = bufnr,
+				callback = function()
+					null_ls_formatting(bufnr)
+				end,
+			})
+		end
+	end,
+})
+
 mason_lspconfig.setup_handlers({
 	function(server_name)
 		local opts = {
@@ -165,7 +230,50 @@ mason_lspconfig.setup_handlers({
 			}
 		end
 
-		opts.on_attach = on_attach
+		---@diagnostic disable-next-line: unused-local
+		opts.on_attach = function(client, bufnr)
+			local bufopts = { replace_keycodes = false, noremap = true, silent = true, buffer = bufnr }
+			vim.keymap.set("n", "gD", vim.lsp.buf.references, bufopts)
+			vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
+			vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
+			vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
+			vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, bufopts)
+			vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, bufopts)
+			vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
+			vim.keymap.set("n", "<space>wl", function()
+				print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+			end, bufopts)
+			vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, bufopts)
+			vim.keymap.set("n", "gr", vim.lsp.buf.rename, bufopts)
+			vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, bufopts)
+			vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, bufopts)
+			vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, bufopts)
+			vim.keymap.set("n", "]d", vim.diagnostic.goto_next, bufopts)
+			if is_null_ls_formatter_available(bufnr) then
+				vim.keymap.set(
+					"n",
+					",f",
+					null_ls_formatting,
+					{ replace_keycodes = false, noremap = true, silent = true, buffer = bufnr }
+				)
+			else
+				vim.keymap.set("n", ",f", vim.lsp.buf.format, bufopts)
+			end
+
+			local diagnosticConfig = {
+				virtual_text = {
+					prefix = "●",
+					format = function(diagnostic)
+						if diagnostic.code == nil then
+							return string.format("[%s] %s", diagnostic.source, diagnostic.message)
+						end
+						return string.format("[%s: %s] %s", diagnostic.source, diagnostic.code, diagnostic.message)
+					end,
+				},
+			}
+			vim.diagnostic.config(diagnosticConfig)
+		end
+
 		opts.capabilities = capabilities
 		opts.settings = settings[server_name]
 		nvim_lsp[server_name].setup(opts)

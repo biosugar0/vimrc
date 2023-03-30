@@ -11,7 +11,7 @@ hook_add = '''
 '''
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
-depends = ['impatient.nvim','denops.vim','mason.nvim','mason-lspconfig.nvim','fidget.nvim','denops-popup-preview.vim']
+depends = ['impatient.nvim','denops.vim','mason.nvim','mason-lspconfig.nvim','mason-null-ls.nvim','null-ls.nvim','fidget.nvim','denops-popup-preview.vim']
 lua_source = '''
 require("biosugar0.plugins.lsp")
 '''
@@ -146,6 +146,16 @@ repo = 'williamboman/mason-lspconfig.nvim'
 on_source = 'nvim-lspconfig'
 
 [[plugins]]
+repo = 'jayp0521/mason-null-ls.nvim'
+depends = ['plenary.nvim']
+on_source = 'mason.vim'
+
+[[plugins]]
+repo = 'jose-elias-alvarez/null-ls.nvim'
+depends = ['plenary.nvim']
+on_source = 'mason.vim'
+
+[[plugins]]
 repo = 'folke/neodev.nvim'
 on_source = 'nvim-lspconfig'
 
@@ -181,13 +191,6 @@ repo ='mattn/vim-goaddtags'
 on_ft = ['go']
 hook_source = '''
 let g:go_addtags_transform = 'camelcase'
-'''
-
-[[plugins]]
-repo ='mattn/vim-goimports'
-on_ft = 'go'
-hook_source = '''
-  let g:goimports_simplify = v:true
 '''
 
 [[plugins]]
