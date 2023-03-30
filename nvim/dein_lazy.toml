@@ -11,7 +11,7 @@ hook_add = '''
 '''
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
-depends = ['impatient.nvim','denops.vim','mason.nvim','mason-lspconfig.nvim','mason-null-ls.nvim','null-ls.nvim','fidget.nvim','denops-popup-preview.vim']
+depends = ['impatient.nvim','denops.vim','mason.nvim', 'schemastore.nvim', 'mason-lspconfig.nvim','mason-null-ls.nvim','null-ls.nvim','fidget.nvim','denops-popup-preview.vim']
 lua_source = '''
 require("biosugar0.plugins.lsp")
 '''
@@ -153,6 +153,10 @@ on_source = 'mason.vim'
 [[plugins]]
 repo = 'jose-elias-alvarez/null-ls.nvim'
 depends = ['plenary.nvim']
+on_source = 'mason.vim'
+
+[[plugins]]
+repo = 'b0o/schemastore.nvim'
 on_source = 'mason.vim'
 
 [[plugins]]
