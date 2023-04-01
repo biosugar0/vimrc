@@ -803,21 +803,5 @@ repo = 'epwalsh/obsidian.nvim'
 depends = ['plenary.nvim']
 on_event = 'BufRead'
 lua_source = '''
-    require("obsidian").setup({
-      dir = "~/memo",
-      notes_subdir = "home",
-      daily_notes = {
-        folder = "home/daily",
-      },
-      use_advanced_uri = true
-    })
-
-    -- obsidian
-    vim.keymap.set("n", "gf", function()
-        if require("obsidian").util.cursor_on_markdown_link() then
-            return "<cmd>ObsidianFollowLink<CR>"
-        else
-            return "gf"
-        end
-    end, { noremap = false, expr = true })
+require("biosugar0.plugins.obsidian")
 '''
