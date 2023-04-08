@@ -4,7 +4,6 @@ vim.treesitter.language.register("terraform", "tf")
 vim.treesitter.language.register("terraform", "tfvars")
 vim.treesitter.language.register("bash", "zsh")
 vim.treesitter.language.register("gitcommit", "gina-commit")
-vim.treesitter.language.register("diff", "gina-diff")
 
 local conf = {
 	ensure_installed = {
@@ -16,7 +15,6 @@ local conf = {
 		"yaml",
 		"bash",
 		"sql",
-		"diff",
 		"json",
 		"terraform",
 		"lua",
