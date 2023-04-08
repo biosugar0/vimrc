@@ -19,10 +19,4 @@ require("copilot").setup({
 	server_opts_overrides = {},
 })
 
-vim.api.nvim_create_autocmd("BufWinEnter", {
-	group = "MyAutoCmd",
-	pattern = "*",
-	command = [[if &filetype == 'gina-commit' | setlocal buflisted | endif]],
-})
-
 require("copilot.auth").signin() -- Sign in to Copilot
