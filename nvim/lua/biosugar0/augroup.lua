@@ -7,8 +7,12 @@ vim.api.nvim_create_autocmd(ftdetect_event, {
 	group = MyAutoCmd,
 	pattern = "*",
 	-- this function run 'filetype detect' vim command
+	-- if filetype gina-commit , set buflisted
 	callback = function()
 		vim.cmd("filetype detect")
+		if vim.bo.filetype == "gina-commit" then
+			vim.bo.buflisted = true
+		end
 	end,
 })
 
