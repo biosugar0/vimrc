@@ -29,7 +29,7 @@ local function setup_mason_lspconfig()
 			"golangci_lint_ls",
 			"gopls",
 			"lua_ls",
-			"sqls",
+			"sqlls",
 			"terraformls",
 			"tsserver",
 			"yamlls",
@@ -166,6 +166,14 @@ local function setup_mason_null_ls_handlers()
 		flake8 = function(source_name, methods)
 			null_ls.register(null_ls.builtins.diagnostics.flake8.with({
 				extra_args = { "--max-line-length", "88", "--ignore", "E501,W503,E203" },
+			}))
+		end,
+		---@diagnostic disable-next-line: unused-local
+		markdownlint = function(source_name, methods)
+			-- ignore ai-review buffer
+			null_ls.register(null_ls.builtins.diagnostics.markdownlint.with({
+				filetypes = { "markdown" },
+				extra_args = { "--ignore", "MD013,MD033,MD041" },
 			}))
 		end,
 	})
