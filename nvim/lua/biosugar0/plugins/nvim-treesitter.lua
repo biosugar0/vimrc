@@ -1,12 +1,12 @@
 -- treesitter configuration
-vim.treesitter.language.register("hcl", "terraform")
-vim.treesitter.language.register("hcl", "tf")
-vim.treesitter.language.register("hcl", "tfvars")
+vim.treesitter.language.register("json", "tfstate")
+vim.treesitter.language.register("terraform", "tf")
+vim.treesitter.language.register("terraform", "tfvars")
 vim.treesitter.language.register("bash", "zsh")
 vim.treesitter.language.register("gitcommit", "gina-commit")
+vim.treesitter.language.register("diff", "gina-diff")
 
 local conf = {
-	auto_install = true,
 	ensure_installed = {
 		"vim",
 		"toml",
@@ -17,6 +17,8 @@ local conf = {
 		"bash",
 		"sql",
 		"diff",
+		"json",
+		"terraform",
 		"lua",
 		"gitcommit",
 	},
