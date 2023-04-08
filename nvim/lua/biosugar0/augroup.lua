@@ -8,10 +8,14 @@ vim.api.nvim_create_autocmd(ftdetect_event, {
 	pattern = "*",
 	-- this function run 'filetype detect' vim command
 	-- if filetype gina-commit , set buflisted
+	-- if buffer name prefix ai-review, set filetype ai-review
 	callback = function()
 		vim.cmd("filetype detect")
 		if vim.bo.filetype == "gina-commit" then
 			vim.bo.buflisted = true
+		end
+		if vim.fn.match(vim.fn.expand("%"), "ai-review") == 0 then
+			vim.bo.filetype = "ai-review"
 		end
 	end,
 })
