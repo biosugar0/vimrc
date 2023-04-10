@@ -1,7 +1,9 @@
-local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
-ft_to_parser.tf = "hcl"
-ft_to_parser.terraform = "hcl"
-ft_to_parser.tfvars = "hcl"
+-- treesitter configuration
+vim.treesitter.language.register("json", "tfstate")
+vim.treesitter.language.register("terraform", "tf")
+vim.treesitter.language.register("terraform", "tfvars")
+vim.treesitter.language.register("bash", "zsh")
+vim.treesitter.language.register("gitcommit", "gina-commit")
 
 local conf = {
 	ensure_installed = {
@@ -13,12 +15,15 @@ local conf = {
 		"yaml",
 		"bash",
 		"sql",
+		"json",
+		"terraform",
+		"lua",
+		"gitcommit",
 	},
 
 	highlight = {
 		enable = true,
 		disable = {
-			"lua",
 			"ruby",
 			"c_sharp",
 			"vue",
@@ -27,5 +32,15 @@ local conf = {
 	indent = {
 		enable = true,
 	},
+	context_commentstring = {
+		enable = true,
+		enable_autocmd = false,
+		config = {
+			lua = "-- %s",
+			toml = "# %s",
+			yaml = "# %s",
+		},
+	},
+	matchup = { enable = true, include_match_words = true },
 }
 require("nvim-treesitter.configs").setup(conf)

@@ -29,7 +29,7 @@ local function setup_mason_lspconfig()
 			"golangci_lint_ls",
 			"gopls",
 			"lua_ls",
-			"sqls",
+			"sqlls",
 			"terraformls",
 			"tsserver",
 			"yamlls",
@@ -113,31 +113,23 @@ local handlers = {
 -- Null-ls setup
 local null_ls = require("null-ls")
 
-local function setup_mason_null_ls()
-	require("mason-null-ls").setup({
-		ensure_installed = {
-			-- formatters
-			"stylua",
-			"black",
-			"isort",
-			"goimports",
-			"shfmt",
-			"fixjson",
-			-- linters
-			"flake8",
-			"tflint",
-			"markdownlint",
-			"sql_formatter", -- sql formatter
-		},
-		automatic_installation = true,
-		automatic_setup = true,
-	})
-end
-setup_mason_null_ls()
-
--- Null-ls handler setup
-local function setup_mason_null_ls_handlers()
-	require("mason-null-ls").setup_handlers({
+require("mason-null-ls").setup({
+	ensure_installed = {
+		-- formatters
+		"stylua",
+		"black",
+		"isort",
+		"goimports",
+		"shfmt",
+		"fixjson",
+		-- linters
+		"flake8",
+		"tflint",
+		"markdownlint",
+		"sql_formatter", -- sql formatter
+	},
+	automatic_installation = true,
+	handlers = {
 		function(source_name, methods)
 			require("mason-null-ls.automatic_setup")(source_name, methods)
 		end,
@@ -168,9 +160,16 @@ local function setup_mason_null_ls_handlers()
 				extra_args = { "--max-line-length", "88", "--ignore", "E501,W503,E203" },
 			}))
 		end,
-	})
-end
-setup_mason_null_ls_handlers()
+		---@diagnostic disable-next-line: unused-local
+		markdownlint = function(source_name, methods)
+			-- ignore ai-review buffer
+			null_ls.register(null_ls.builtins.diagnostics.markdownlint.with({
+				filetypes = { "markdown" },
+				extra_args = { "--ignore", "MD013,MD033,MD041" },
+			}))
+		end,
+	},
+})
 
 -- Null-ls formatting helper functions
 local null_ls_formatting = function(bufnr)

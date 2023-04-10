@@ -53,6 +53,14 @@ let g:fuzzy_motion_matchers=['fzf','kensaku']
 '''
 
 [[plugins]]
+repo = 'yuki-yano/ai-review.nvim'
+on_cmd = ['AiReview','AiReviewResponse','AiReviewCancel']
+depends = ['denops.vim','nui.nvim']
+
+[[plugins]]
+repo = 'MunifTanjim/nui.nvim'
+
+[[plugins]]
 repo = 'skanehira/denops-silicon.vim'
 on_cmd = 'Silicon'
 depends = ['denops.vim']
