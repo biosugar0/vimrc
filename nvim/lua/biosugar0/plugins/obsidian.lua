@@ -2,7 +2,7 @@ require("obsidian").setup({
 	dir = "~/memo",
 	notes_subdir = "home",
 	daily_notes = {
-		folder = "home/daily",
+		folder = "daily",
 	},
 	templates = {
 		subdir = "home/template/",
