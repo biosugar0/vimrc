@@ -1,11 +1,10 @@
 require("obsidian").setup({
 	dir = "~/memo",
-	notes_subdir = "home",
 	daily_notes = {
 		folder = "daily",
 	},
 	templates = {
-		subdir = "home/template/",
+		subdir = "template/",
 		date_format = "%Y-%m-%d",
 		time_format = "%H:%M",
 	},
