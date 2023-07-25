@@ -93,7 +93,7 @@ depends = [
     'pum.vim',
     'vim-vsnip',
     'nvim-lspconfig',
-    'vim-vsnip-integ',
+    'ddc-source-vsnip',
     'skkeleton',
     'lexima.vim',
     'denops-signature_help',
@@ -799,10 +799,10 @@ on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'hrsh7th/vim-vsnip'
-on_source = 'vim-vsnip-integ'
+on_source = 'ddc-source-vsnip'
 
 [[plugins]]
-repo = 'hrsh7th/vim-vsnip-integ'
+repo = 'uga-rosa/ddc-source-vsnip'
 on_source = 'ddc.vim'
 depends = ['vim-vsnip']
 
