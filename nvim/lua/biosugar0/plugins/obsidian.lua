@@ -3,11 +3,6 @@ require("obsidian").setup({
 	daily_notes = {
 		folder = "daily",
 	},
-	templates = {
-		subdir = "template/",
-		date_format = "%Y-%m-%d",
-		time_format = "%H:%M",
-	},
 	use_advanced_uri = true,
 })
 
