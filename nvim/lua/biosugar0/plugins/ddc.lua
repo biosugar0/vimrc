@@ -213,13 +213,6 @@ vim.keymap.set(
 	{ replace_keycodes = false, noremap = false, expr = true }
 )
 
-vim.api.nvim_create_autocmd("User", {
-	pattern = "PumCompleteDone",
-	callback = function()
-		vim.fn["vsnip_integ#on_complete_done"](vim.g["pum#completed_item"])
-	end,
-})
-
 -- For command line mode completion
 vim.keymap.set(
 	"c",

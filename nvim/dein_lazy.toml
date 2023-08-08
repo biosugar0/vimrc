@@ -60,6 +60,7 @@ lua_source = '''
 require('ai-review').setup({
   chat_gpt = {
     model = 'gpt-4',
+    backend = 'nui',
   },
 })
 '''
@@ -826,6 +827,3 @@ on_event = 'BufRead'
 lua_source = '''
 require("biosugar0.plugins.obsidian")
 '''
-[[plugins]]
-repo = 'aduros/ai.vim'
-on_cmd = 'AI'
