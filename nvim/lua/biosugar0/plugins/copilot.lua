@@ -12,7 +12,7 @@ require("copilot").setup({
 	filetypes = {
 		yaml = true,
 		markdown = true,
-		["gina-commit"] = true,
+		["gitcommit"] = true,
 		["."] = true,
 	},
 	copilot_node_command = "node", -- Node.js version must be > 16.x
