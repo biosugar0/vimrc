@@ -271,6 +271,18 @@ gin-branch = '''
 '''
 
 [[plugins]]
+repo = 'lambdalisue/gina.vim'
+on_cmd = 'Gina'
+hook_add = '''
+nnoremap <silent> <leader>aw <Cmd>Gina browse --scheme=pr<CR>
+'''
+hook_post_source = '''
+call extend(g:gina#command#browse#translation_patterns['github\.com'][1],
+              \ {'pr':'https://\1/\2/\3/pull/new/%c0'}
+              \)
+'''
+
+[[plugins]]
 repo =  'tpope/vim-dispatch'
 on_event = 'CursorHold'
 hook_add = '''
