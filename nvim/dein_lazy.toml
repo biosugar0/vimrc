@@ -230,7 +230,7 @@ set helplang=ja " help日本語化
 repo = 'lambdalisue/gin.vim'
 on_func = 'gin#component*'
 on_cmd = ['Gin', 'Gin*']
-depends = ['denops.vim', 'gina.vim']
+depends = ['denops.vim']
 hook_add = '''
 nnoremap <silent> <Leader>aa <Cmd>GinStatus<CR>
 nnoremap <silent> <Leader>ab <Cmd>GinBranch --all<CR>
@@ -239,8 +239,8 @@ nnoremap <silent> <Leader>ac <Cmd>Gin commit<CR>
 nnoremap <silent> <Leader>aC <Cmd>Gin commit --amend<CR>
 nnoremap <silent> <Leader>al :<C-u>GinLog<CR>
 nnoremap <silent> <Leader>aL :<C-u>GinLog -- %<CR>
-nnoremap <silent> <Leader>ao <Cmd>GinBrowse --permalink<CR>
-xnoremap <silent> <Leader>ao :GinBrowse --permalink<CR>
+nnoremap <silent> <Leader>ao <Cmd>GinBrowse <CR>
+xnoremap <silent> <Leader>ao :GinBrowse <CR>
 nnoremap <silent> <leader>aw <Cmd>GinBrowse --pr<CR>
 '''
 hook_source = '''
@@ -249,6 +249,10 @@ autocmd User GinComponentPost redrawtabline
 call gin#component#branch#ascii()
 let g:gin_diff_default_args = [
       \ '++processor=delta --diff-highlight --keep-plus-minus-markers',
+      \]
+let g:gin_browse_default_args = [
+      \ '--remote=origin',
+      \ '--permalink',
       \]
 let g:gin_log_default_args = [
       \ '++emojify',
