@@ -1,8 +1,5 @@
 # denops plugins {{{
 [[plugins]]
-repo = 'vim-denops/denops.vim'
-
-[[plugins]]
 repo = 'lambdalisue/guise.vim'
 on_ft = 'terminal'
 depends = ['denops.vim']
@@ -18,7 +15,7 @@ require("biosugar0.plugins.lsp")
 
 [[plugins]]
 repo = 'matsui54/denops-popup-preview.vim'
-on_source = 'ddc.vim'
+depends = ['denops.vim']
 hook_add = '''
 let g:popup_preview_config = {
         \ 'delay': 1,
@@ -115,7 +112,6 @@ let g:context_filetype#ignore_patterns = {
 [[plugins]]
 repo = 'vim-skk/skkeleton'
 depends = ['denops.vim']
-on_source = 'ddc.vim'
 on_cmd= '<Plug>(skkeleton-'
 hook_add = '''
 imap ,, <Plug>(skkeleton-toggle)

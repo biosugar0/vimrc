@@ -57,3 +57,6 @@ repo ='tpope/vim-repeat'
 
 [[plugins]]
 repo ='kana/vim-operator-user'
+
+[[plugins]]
+repo = 'vim-denops/denops.vim'
