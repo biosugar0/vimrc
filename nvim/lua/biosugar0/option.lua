@@ -6,7 +6,6 @@ set.shell = "zsh"
 set.nrformats:append("octal") -- 10進数のみ
 set.nrformats:append("unsigned") --数字の増加減少でマイナスを扱わない
 
-set.virtualedit = all -- allow virtual editing in all modes
 set.clipboard = "unnamed,unnamedplus" -- OSのクリップボードをレジスタ指定無しで Yank, Put 出来るようにする
 let.completeopt = "menuone"
 
@@ -72,7 +71,14 @@ set.fillchars = {
 	verthoriz = "╋",
 }
 -- 不可視文字の表示記号指定
-set.listchars = [[tab:|-,trail:-,nbsp:%,eol:↲,extends:❯,precedes:❮]]
+vim.opt.listchars = {
+	tab = "|-",
+	trail = "-",
+	nbsp = "%",
+	eol = "↲",
+	extends = "❯",
+	precedes = "❮",
+}
 set.ttyfast = true
 vim.o.pumblend = 20 -- ポップアップメニューを半透明に
 -- タブ、インデント設定
@@ -82,3 +88,13 @@ set.shiftwidth = 4 -- 自動インデントでずれる幅
 set.softtabstop = 4 -- 連続した空白に対してタブキーやバックスペースキーでカーソルが動く幅
 set.autoindent = true -- 改行時に前の行のインデントを継続する
 set.smartindent = true -- 改行時に入力された行の末尾に合わせて次の行のインデントを増減する
+
+vim.g.python3_host_prog = vim.fn.trim(vim.fn.system("which python3"))
+
+vim.cmd([[
+if empty(glob(g:python3_host_prog))
+    echo 'create environment'
+    execute '!python3 -m venv ~/.local/share/nvim/venv --prompt nvim'
+    execute '!~/.local/share/nvim/venv/bin/python -m pip install --upgrade pip pynvim'
+endif
+]])
