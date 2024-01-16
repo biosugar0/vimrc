@@ -26,7 +26,6 @@ local function setup_mason_lspconfig()
 			"bashls",
 			"denols",
 			"eslint",
-			"golangci_lint_ls",
 			"gopls",
 			"lua_ls",
 			"sqlls",
@@ -127,6 +126,7 @@ require("mason-null-ls").setup({
 		"tflint",
 		"markdownlint",
 		"sql_formatter", -- sql formatter
+		"golangci-lint",
 	},
 	automatic_installation = true,
 	handlers = {
@@ -168,9 +168,21 @@ require("mason-null-ls").setup({
 				extra_args = { "--ignore", "MD013,MD033,MD041" },
 			}))
 		end,
+		--@diagnostic disable-next-line: unused-local
+		["golangci-lint"] = function(source_name, methods)
+			null_ls.register(null_ls.builtins.diagnostics.golangci_lint.with({
+				filetypes = { "go" },
+				extra_args = {
+					"run",
+					"--fix=false",
+					"--out-format=json",
+					"--enable-all",
+					"--allow-parallel-runners",
+				},
+			}))
+		end,
 	},
 })
-
 -- Null-ls formatting helper functions
 local null_ls_formatting = function(bufnr)
 	-- If the null_ls formatter is available, use it.
