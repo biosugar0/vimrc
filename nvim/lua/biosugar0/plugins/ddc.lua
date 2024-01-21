@@ -4,10 +4,14 @@ local ddc = {
 	patch_buffer = vim.fn["ddc#custom#patch_buffer"],
 	patch_filetype = vim.fn["ddc#custom#patch_filetype"],
 	set_buffer = vim.fn["ddc#custom#set_buffer"],
-	set_context = vim.fn["ddc#custom#set_context_filetype"],
+	set_context_buffer = vim.fn["ddc#custom#set_context_buffer"],
+	set_context_filetype = vim.fn["ddc#custom#set_context_filetype"],
+	enable_cmdline_completion = vim.fn["ddc#enable_cmdline_completion"],
+	get_buffer = vim.fn["ddc#custom#get_buffer"],
 }
 ddc.patch_global("sources", { "around", "file", "rg", "dictionary" })
 ddc.patch_global("cmdlineSources", { "cmdline-history", "input", "file", "around" })
+ddc.patch_global("ui", "pum")
 
 local sopts = {}
 sopts["_"] = {
@@ -105,12 +109,11 @@ ddc.patch_global("autoCompleteEvents", {
 	"CmdlineEnter",
 	"CmdlineChanged",
 })
-ddc.patch_global("ui", "pum")
 vim.fn["pum#set_option"]("border", "rounded")
 vim.fn["pum#set_option"]("max_width", 80)
 vim.fn["pum#set_option"]("padding", true)
 
-ddc.set_context("go", function()
+ddc.set_context_filetype("go", function()
 	local syntaxIn = vim.fn["ddc#syntax#in"]("TSComment")
 	if syntaxIn == 1 then
 		return { sources = { "around" } }
@@ -131,11 +134,6 @@ ddc.patch_global("sourceParams", {
 		fromAltBuf = true,
 		forceCollect = true,
 	},
-})
-ddc.patch_filetype("FineCmdlinePrompt", {
-	keywordPattern = [[[0-9a-zA-Z_:#]*]],
-	sources = { "cmdline-history", "around" },
-	specialBufferCompletion = true,
 })
 vim.fn["ddc#enable"]()
 
@@ -254,7 +252,6 @@ function CommandlinePost()
 end
 
 local function CommandlinePre(mode)
-	-- Note: It disables default command line completion!
 	vim.opt.wildchar = ("<C-t>"):byte()
 	vim.opt.wildcharm = vim.fn.char2nr(util.replace_termcodes("<C-t>"))
 
@@ -266,11 +263,24 @@ local function CommandlinePre(mode)
 	)
 	-- Overwrite sources
 	if prev_buffer_config == nil then
-		prev_buffer_config = vim.fn["ddc#custom#get_buffer"]()
+		prev_buffer_config = ddc.get_buffer()
 	end
 	if mode == ":" then
-		ddc.patch_buffer("cmdlineSources", { "cmdline-history", "cmdline", "around" })
-		ddc.patch_buffer("keywordPattern", "[0-9a-zA-Z_:#-]*")
+		ddc.patch_buffer("sourceOptions", {
+			_ = {
+				keywordPattern = "[0-9a-zA-Z_:#-]*",
+			},
+		})
+		ddc.set_context_buffer(function()
+			local cmdline = vim.fn.getcmdline()
+			if string.find(cmdline, "!", 1, true) == 1 then
+				return {
+					cmdlineSources = { "cmdline", "cmdline-history", "around" },
+				}
+			else
+				return {}
+			end
+		end)
 	else
 		ddc.patch_buffer("cmdlineSources", { "around", "line" })
 	end
@@ -308,12 +318,16 @@ end, { replace_keycodes = false, expr = true })
 
 -- skkeleton
 local function skkeleton_init()
+	local dicts = {
+		vim.g.skk_dir .. "/SKK-JISYO.user",
+	}
 	vim.fn["skkeleton#config"]({
 		eggLikeNewline = true,
+		markerHenkan = "",
+		markerHenkanSelect = "",
 		registerConvertResult = true,
 		showCandidatesCount = 1,
-		globalJisyo = vim.g.globalJisyo,
-		userJisyo = vim.g.skk_dir .. "/SKK-JISYO.user",
+		globalDictionaries = dicts,
 	})
 
 	local kanaTable = {}
