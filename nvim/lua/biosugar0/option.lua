@@ -55,6 +55,7 @@ set.laststatus = 3 -- always and ONLY the last window
 set.cmdheight = 1 -- メッセージ表示欄を1行確保
 set.showmatch = true -- 対応する括弧を強調表示
 set.helpheight = 999 -- ヘルプを画面いっぱいに開く
+set.conceallevel = 2
 set.list = true -- 不可視文字を表示
 set.breakindent = true -- インデントされた行の折り返しを綺麗に
 set.signcolumn = "auto"
