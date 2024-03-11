@@ -29,7 +29,7 @@ M.sections = {
 	lualine_y = {
 		{
 			"diagnostics",
-			source = { "nvim-lsp" },
+			source = { "nvim_diagnostic" },
 		},
 	},
 	lualine_z = { "location" },
