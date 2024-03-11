@@ -38,7 +38,7 @@ sopts["input"] = {
 	isVolatile = true,
 	dup = true,
 }
-sopts["nvim-lsp"] = {
+sopts["lsp"] = {
 	mark = "lsp",
 	forceCompletionPattern = [[\.|=|->|"\w+/*]],
 	ignoreCase = true,
@@ -94,7 +94,7 @@ ddc.patch_filetype({ "help", "markdown", "gitcommit" }, "sources", { "input", "a
 ddc.patch_filetype(
 	{ "typescript", "go", "python", "hcl", "toml" },
 	"sources",
-	{ "input", "nvim-lsp", "around", "vsnip", "dictionary" }
+	{ "input", "lsp", "around", "vsnip", "dictionary" }
 )
 ddc.patch_filetype({ "FineCmdlinePrompt" }, {
 	keywordPattern = "[0-9a-zA-Z_:#-]*",

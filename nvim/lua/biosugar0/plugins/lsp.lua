@@ -122,7 +122,6 @@ require("mason-null-ls").setup({
 		"shfmt",
 		"fixjson",
 		-- linters
-		"flake8",
 		"tflint",
 		"markdownlint",
 		"sql_formatter", -- sql formatter
@@ -152,12 +151,6 @@ require("mason-null-ls").setup({
 				extra_args = {
 					"--fast",
 				},
-			}))
-		end,
-		---@diagnostic disable-next-line: unused-local
-		flake8 = function(source_name, methods)
-			null_ls.register(null_ls.builtins.diagnostics.flake8.with({
-				extra_args = { "--max-line-length", "88", "--ignore", "E501,W503,E203" },
 			}))
 		end,
 		---@diagnostic disable-next-line: unused-local

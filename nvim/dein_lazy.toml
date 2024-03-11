@@ -50,16 +50,25 @@ let g:fuzzy_motion_matchers=['fzf','kensaku']
 '''
 
 [[plugins]]
+repo = 'Shougo/ddu.vim'
+depends = ['denops.vim']
+
+[[plugins]]
 repo = 'yuki-yano/ai-review.nvim'
 on_cmd = ['AiReview','AiReviewResponse','AiReviewCancel']
-depends = ['denops.vim','nui.nvim']
-lua_source = '''
-require('ai-review').setup({
-  chat_gpt = {
-    model = 'gpt-4-1106-preview',
-    backend = 'nui',
-  },
-})
+depends = ['denops.vim','ddu.vim']
+hook_source = '''
+call ddu#custom#patch_global({
+  \ 'kindOptions': {
+  \   'ai-review-request': {
+  \     'defaultAction': 'open',
+  \   },
+  \   'ai-review-log': {
+  \     'defaultAction': 'resume',
+  \   },
+  \ }
+  \ })
+call ai_review#config({ 'chat_gpt': { 'model': 'gpt-4-turbo-preview' } })
 '''
 
 [[plugins]]
@@ -667,7 +676,7 @@ repo = 'Shougo/ddc-source-line'
 on_source = 'ddc.vim'
 
 [[plugins]]
-repo = 'Shougo/ddc-source-nvim-lsp'
+repo = 'Shougo/ddc-source-lsp'
 on_source = 'ddc.vim'
 
 [[plugins]]
