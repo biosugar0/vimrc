@@ -63,13 +63,6 @@ require('ai-review').setup({
 '''
 
 [[plugins]]
-repo = 'madox2/vim-ai'
-on_cmd = ["AI", "AIEdit", "AIChat"]
-lua_add = '''
-require("biosugar0.plugins.vim-ai")
-'''
-
-[[plugins]]
 repo = 'MunifTanjim/nui.nvim'
 
 [[plugins]]
