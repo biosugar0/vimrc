@@ -33,6 +33,7 @@ local function setup_mason_lspconfig()
 			"tsserver",
 			"yamlls",
 			"pyright",
+			"ruff_lsp",
 		},
 		automatic_installation = true,
 	}
@@ -68,11 +69,39 @@ local settings = {
 			},
 		},
 	},
-	python = {
-		analysis = {
-			autoSearchPaths = true,
-			diagnosticMode = "workspace",
-			useLibraryCodeForTypes = true,
+	pyright = {
+		pyright = {
+			-- Using Ruff's import organizer
+			disableOrganizeImports = true,
+		},
+		python = {
+			analysis = {
+				autoImportCompletions = false,
+				autoSearchPaths = true,
+				diagnosticMode = "workspace",
+				logLevel = "Warning",
+				-- These diagnostics are useless, therefore disable them.
+				diagnosticSeverityOverrides = {
+					reportArgumentType = "none",
+					reportAttributeAccessIssue = "none",
+					reportCallIssue = "none",
+					reportFunctionMemberAccess = "none",
+					reportGeneralTypeIssues = "none",
+					reportIncompatibleMethodOverride = "none",
+					reportIncompatibleVariableOverride = "none",
+					reportIndexIssue = "none",
+					reportOptionalMemberAccess = "none",
+					reportOptionalSubscript = "none",
+					reportPrivateImportUsage = "none",
+				},
+				indexing = true,
+				inlayHints = {
+					functionReturnTypes = true,
+					variableTypes = true,
+				},
+				typeCheckingMode = "off",
+				useLibraryCodeForTypes = true,
+			},
 		},
 	},
 	lua_ls = {
@@ -116,8 +145,6 @@ require("mason-null-ls").setup({
 	ensure_installed = {
 		-- formatters
 		"stylua",
-		"black",
-		"isort",
 		"goimports",
 		"shfmt",
 		"fixjson",
@@ -138,18 +165,6 @@ require("mason-null-ls").setup({
 				extra_args = {
 					"--indent-type",
 					"Tabs",
-				},
-			}))
-		end,
-		---@diagnostic disable-next-line: unused-local
-		isort = function(source_name, methods)
-			null_ls.register(null_ls.builtins.formatting.isort)
-		end,
-		---@diagnostic disable-next-line: unused-local
-		black = function(source_name, methods)
-			null_ls.register(null_ls.builtins.formatting.black.with({
-				extra_args = {
-					"--fast",
 				},
 			}))
 		end,
@@ -228,42 +243,10 @@ local function setup_server_handlers()
 				handlers = handlers,
 			}
 
-			local node_root_dir = nvim_lsp.util.root_pattern("package.json")
-			local is_node_repo = node_root_dir(vim.api.nvim_buf_get_name(0)) ~= nil
-			if server_name == "tsserver" then
-				if not is_node_repo then
-					return
-				end
-
-				opts.root_dir = node_root_dir
-			elseif server_name == "eslint" then
-				if not is_node_repo then
-					return
-				end
-
-				opts.root_dir = node_root_dir
-			elseif server_name == "denols" then
-				if is_node_repo then
-					return
-				end
-
-				opts.root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc", "deps.ts", "import_map.json")
-				opts.init_options = {
-					lint = true,
-					unstable = true,
-					suggest = {
-						imports = {
-							hosts = {
-								["https://deno.land"] = true,
-								["https://cdn.nest.land"] = true,
-								["https://crux.land"] = true,
-							},
-						},
-					},
-				}
-			end
-
-			opts.on_attach = function(client, bufnr)
+			-- 共通のcapabilities設定
+			local cap = vim.lsp.protocol.make_client_capabilities()
+			-- 共通のon_attach関数を定義
+			local function on_attach_common(client, bufnr)
 				local bufopts = { replace_keycodes = false, noremap = true, silent = true, buffer = bufnr }
 				vim.keymap.set("n", "gD", vim.lsp.buf.references, bufopts)
 				vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
@@ -307,7 +290,76 @@ local function setup_server_handlers()
 				vim.diagnostic.config(diagnosticConfig)
 			end
 
-			opts.capabilities = capabilities
+			local node_root_dir = nvim_lsp.util.root_pattern("package.json")
+			local is_node_repo = node_root_dir(vim.api.nvim_buf_get_name(0)) ~= nil
+			if server_name == "tsserver" or server_name == "eslint" then
+				if not is_node_repo then
+					return
+				end
+				opts.root_dir = node_root_dir
+			elseif server_name == "denols" then
+				if is_node_repo then
+					return
+				end
+				opts.root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc", "deps.ts", "import_map.json")
+				opts.init_options = {
+					lint = true,
+					unstable = true,
+					suggest = {
+						imports = {
+							hosts = {
+								["https://deno.land"] = true,
+								["https://cdn.nest.land"] = true,
+								["https://crux.land"] = true,
+							},
+						},
+					},
+				}
+			elseif server_name == "pyright" then
+				-- Pyright固有の設定
+				-- lintingをRuffに任せる
+				cap.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
+			elseif server_name == "ruff_lsp" then
+				-- Ruff LSP固有の設定
+				opts.on_attach = function(client, bufnr)
+					on_attach_common(client, bufnr)
+					-- Ruff LSP固有の設定をここに記述
+					client.server_capabilities.hoverProvider = true
+					local ruff_lsp_client = require("lspconfig.util").get_active_client_by_name(bufnr, "ruff_lsp")
+					local request = function(method, params)
+						ruff_lsp_client.request(method, params, nil, bufnr)
+					end
+
+					local organize_imports = function()
+						request("workspace/executeCommand", {
+							command = "ruff.applyOrganizeImports",
+							arguments = {
+								{ uri = vim.uri_from_bufnr(bufnr) },
+							},
+						})
+					end
+
+					vim.api.nvim_create_user_command(
+						"RuffOrganizeImports",
+						organize_imports,
+						{ desc = "Ruff: Organize Imports" }
+					)
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						buffer = bufnr,
+						callback = function()
+							vim.cmd("RuffOrganizeImports")
+						end,
+					})
+				end
+			end
+
+			-- 共通のon_attachを設定
+			if not opts.on_attach then
+				opts.on_attach = on_attach_common
+			end
+
+			-- 共通のcapabilitiesを設定
+			opts.capabilities = cap
 			opts.settings = settings[server_name]
 			nvim_lsp[server_name].setup(opts)
 		end,
