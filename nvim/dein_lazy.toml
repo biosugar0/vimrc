@@ -1,6 +1,6 @@
 # denops plugins {{{
 [[plugins]]
-repo = 'lambdalisue/guise.vim'
+repo = 'lambdalisue/vim-guise'
 on_ft = 'terminal'
 depends = ['denops.vim']
 hook_add = '''
@@ -54,7 +54,7 @@ repo = 'Shougo/ddu.vim'
 depends = ['denops.vim']
 
 [[plugins]]
-repo = 'yuki-yano/ai-review.nvim'
+repo = 'yuki-yano/ai-review.vim'
 on_cmd = ['AiReview','AiReviewResponse','AiReviewCancel']
 depends = ['denops.vim','ddu.vim']
 hook_source = '''
@@ -68,7 +68,7 @@ call ddu#custom#patch_global({
   \   },
   \ }
   \ })
-call ai_review#config({ 'chat_gpt': { 'model': 'gpt-4-turbo-preview' } })
+call ai_review#config({ 'chat_gpt': { 'model': 'gpt-4-turbo' } })
 '''
 
 [[plugins]]
@@ -232,7 +232,7 @@ set helplang=ja " help日本語化
 '''
 
 [[plugins]]
-repo = 'lambdalisue/gin.vim'
+repo = 'lambdalisue/vim-gin'
 on_func = 'gin#component*'
 on_cmd = ['Gin', 'Gin*']
 depends = ['denops.vim']
@@ -276,7 +276,7 @@ gin-branch = '''
 '''
 
 [[plugins]]
-repo = 'lambdalisue/gina.vim'
+repo = 'lambdalisue/vim-gina'
 on_cmd = 'Gina'
 hook_add = '''
 nnoremap <silent> <leader>aw <Cmd>Gina browse --scheme=pr<CR>
@@ -750,7 +750,7 @@ hook_source = '''
 call lexima#set_default_rules()
 '''
 [[plugins]]
-repo = 'lambdalisue/kensaku.vim'
+repo = 'lambdalisue/vim-kensaku'
 
 [[plugins]]
 repo = 'epwalsh/obsidian.nvim'
