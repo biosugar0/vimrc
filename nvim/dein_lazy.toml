@@ -50,29 +50,55 @@ let g:fuzzy_motion_matchers=['fzf','kensaku']
 '''
 
 [[plugins]]
-repo = 'Shougo/ddu.vim'
-depends = ['denops.vim']
-
-[[plugins]]
-repo = 'yuki-yano/ai-review.vim'
-on_cmd = ['AiReview','AiReviewResponse','AiReviewCancel']
-depends = ['denops.vim','ddu.vim']
-hook_source = '''
-call ddu#custom#patch_global({
-  \ 'kindOptions': {
-  \   'ai-review-request': {
-  \     'defaultAction': 'open',
-  \   },
-  \   'ai-review-log': {
-  \     'defaultAction': 'resume',
-  \   },
-  \ }
-  \ })
-call ai_review#config({ 'chat_gpt': { 'model': 'gpt-4-turbo' } })
+repo = 'jackMort/ChatGPT.nvim'
+depends = ['nui.nvim', 'plenary.nvim', 'telescope.nvim', 'trouble.nvim']
+on_cmd = ['ChatGPT','ChatGPTRun']
+lua_source = '''
+    local chatgpt = require("chatgpt")
+    chatgpt.setup({
+        openai_params = {
+          model = "gpt-4-turbo",
+          frequency_penalty = 0,
+          presence_penalty = 0,
+          max_tokens = 4000,
+          temperature = 0,
+          top_p = 1,
+          n = 1,
+        },
+        openai_edit_params = {
+          model = "gpt-4-turbo",
+          frequency_penalty = 0,
+          presence_penalty = 0,
+          temperature = 0,
+          top_p = 1,
+          n = 1,
+        },
+    })
 '''
+lua_add = '''
+    vim.keymap.set({ "n", "v" }, "<leader>cc", "<cmd>ChatGPT<CR>", { desc = "ChatGPT" })
+    vim.keymap.set({ "n", "v" }, "<leader>ce", "<cmd>ChatGPTEditWithInstruction<CR>", { desc = "Edit with instruction" })
+    vim.keymap.set({ "n", "v" }, "<leader>cg", "<cmd>ChatGPTRun grammar_correction<CR>", { desc = "Grammar Correction" })
+    vim.keymap.set({ "n", "v" }, "<leader>ct", "<cmd>ChatGPTRun translate<CR>", { desc = "Translate" })
+    vim.keymap.set({ "n", "v" }, "<leader>ck", "<cmd>ChatGPTRun keywords<CR>", { desc = "Keywords" })
+    vim.keymap.set({ "n", "v" }, "<leader>cd", "<cmd>ChatGPTRun docstring<CR>", { desc = "Docstring" })
+    vim.keymap.set({ "n", "v" }, "<leader>ca", "<cmd>ChatGPTRun add_tests<CR>", { desc = "Add Tests" })
+    vim.keymap.set({ "n", "v" }, "<leader>co", "<cmd>ChatGPTRun optimize_code<CR>", { desc = "Optimize Code" })
+    vim.keymap.set({ "n", "v" }, "<leader>cs", "<cmd>ChatGPTRun summarize<CR>", { desc = "Summarize" })
+    vim.keymap.set({ "n", "v" }, "<leader>cf", "<cmd>ChatGPTRun fix_bugs<CR>", { desc = "Fix Bugs" })
+    vim.keymap.set({ "n", "v" }, "<leader>cx", "<cmd>ChatGPTRun explain_code<CR>", { desc = "Explain Code" })
+    vim.keymap.set({ "n", "v" }, "<leader>cr", "<cmd>ChatGPTRun roxygen_edit<CR>", { desc = "Roxygen Edit" })
+'''
+
 
 [[plugins]]
 repo = 'MunifTanjim/nui.nvim'
+
+[[plugins]]
+repo = 'nvim-telescope/telescope.nvim'
+
+[[plugins]]
+repo = 'folke/trouble.nvim'
 
 [[plugins]]
 repo = 'skanehira/denops-silicon.vim'
