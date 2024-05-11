@@ -1,3 +1,14 @@
+vim.loader.enable()
+
+if vim.env.LSP == nil then
+  vim.env.LSP = 'nvim'
+end
+
+if vim.env.NVIM_COLORSCHEME == nil then
+  vim.env.NVIM_COLORSCHEME = 'catppuccin'
+end
+
+
 vim.env.VIMHOME = vim.fn.expand("<sfile>:p:h")
 vim.g.rc_dir = vim.env.VIMHOME
 vim.g.mapleader = " " -- デフォルトのマップリーダーをスペースに変更
@@ -13,7 +24,6 @@ if vim.fn.has("vim_starting") == 1 then
 		vim.o.termguicolors = true -- true color
 	end
 	-- 必要ないデフォルトプラグインを読み込まない
-	--
 	vim.g.did_install_default_menus = 1
 	vim.g.did_install_syntax_menu = 1
 	vim.g.loaded_2html_plugin = 1
@@ -50,5 +60,8 @@ if vim.fn.has("vim_starting") == 1 then
 	vim.env.CACHE = vim.fn.expand("~/.cache")
 end
 
-require("biosugar0")
+require('rc.plugin_manager').lazy_init()
+require('rc.preload')
+require('rc.plugin_manager').lazy_setup()
+require('rc.postload')
 set.secure = true -- セキュアモード (セキュアモードでは、外部からのコマンド実行を禁止)

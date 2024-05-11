@@ -1,11 +1,6 @@
 local set = vim.opt
 local let = vim.o
 
-if vim.fn.executable("rg") then
-	let.grepprg = "rg --vimgrep --hidden"
-	set.grepformat = [[%f:%l:%c:%m]]
-end
-
 local autoQuickfix = vim.api.nvim_create_augroup("AutoQuickfix", { clear = true })
 vim.api.nvim_create_autocmd({ "QuickFixCmdPost" }, {
 	group = "AutoQuickfix",

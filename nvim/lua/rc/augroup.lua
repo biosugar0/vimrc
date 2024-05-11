@@ -1,5 +1,3 @@
-require("biosugar0/util")
-
 local api = vim.api
 local fn = vim.fn
 local bo = vim.bo

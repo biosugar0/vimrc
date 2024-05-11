@@ -1,3 +1,6 @@
+vim.cmd([[filetype plugin indent on]])
+vim.cmd([[syntax enable]])
+
 local set = vim.opt
 local let = vim.o
 
