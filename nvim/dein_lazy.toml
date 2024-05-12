@@ -639,7 +639,7 @@ lua_source = '''
 require("project_nvim").setup {
   manual_mode = false,
   detection_methods = { "lsp", "pattern" },
-  patterns = { ".git","Makefile", "package.json" },
+  patterns = { ".git","Makefile", "package.json", "go.mod", "pyproject.toml" }
   ignore_lsp = {},
   exclude_dirs = {},
   show_hidden = false,
