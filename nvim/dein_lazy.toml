@@ -90,6 +90,42 @@ lua_add = '''
     vim.keymap.set({ "n", "v" }, "<leader>cr", "<cmd>ChatGPTRun roxygen_edit<CR>", { desc = "Roxygen Edit" })
 '''
 
+[[plugins]]
+repo = 'shellRaining/hlchunk.nvim'
+on_event = 'BufRead'
+lua_source = '''
+require('hlchunk').setup({
+  chunk = {
+    enable = true,
+    notify = true,
+    use_treesitter = true,
+    chars = {
+      horizontal_line = "─",
+      vertical_line = "│",
+      left_top = "╭",
+      left_bottom = "╰",
+      right_arrow = ">",
+    },
+    textobject = "",
+    max_file_size = 1024 * 1024,
+    error_sign = true,
+  },
+  indent = {
+    enable = true,
+    use_treesitter = true,
+    chars = {
+      "│",
+    },
+  },
+  line_num = {
+    enable = false,
+    use_treesitter = true,
+  },
+  blank = {
+    enable = false,
+  },
+})
+'''
 
 [[plugins]]
 repo = 'MunifTanjim/nui.nvim'
@@ -597,10 +633,20 @@ depends = ['vim-textobj-user']
 on_map = ['i,','a,' ]
 
 [[plugins]]
-repo ='mattn/vim-findroot'
+repo = 'ahmedkhalf/project.nvim'
 on_event = 'BufRead'
-hook_source = '''
-let g:findroot_not_for_subdir = 0
+lua_source = '''
+require("project_nvim").setup {
+  manual_mode = false,
+  detection_methods = { "lsp", "pattern" },
+  patterns = { ".git","Makefile", "package.json" },
+  ignore_lsp = {},
+  exclude_dirs = {},
+  show_hidden = false,
+  silent_chdir = false,
+  scope_chdir = 'global',
+  datapath = vim.fn.stdpath("data"),
+}
 '''
 
 [[plugins]]
