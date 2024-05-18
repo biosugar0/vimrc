@@ -38,7 +38,6 @@ if vim.fn.has("vim_starting") == 1 then
 	vim.g.loaded_tutor_mode_plugin = 1
 	-- ビジュアルベルを無効化
 	set.visualbell = false
-	vim.o.t_vb = ""
 	if vim.fn.exists("&belloff") then
 		set.belloff = "all"
 	end
