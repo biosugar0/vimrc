@@ -151,7 +151,7 @@ require("mason-null-ls").setup({
 		-- linters
 		"tflint",
 		"markdownlint",
-		"sql_formatter", -- sql formatter
+		"sqlfluff",
 		"golangci-lint",
 	},
 	automatic_installation = true,
@@ -186,6 +186,18 @@ require("mason-null-ls").setup({
 					"--out-format=json",
 					"--enable-all",
 					"--allow-parallel-runners",
+				},
+			}))
+		end,
+		--@diagnostic disable-next-line: unused-local
+		["sqlfluff"] = function(source_name, methods)
+			null_ls.register(null_ls.builtins.formatting.sqlfluff.with({
+				command = "sqlfluff",
+				extra_args = {
+					"--dialect",
+					"mysql",
+					"--exclude-rules",
+					"LT05,L019",
 				},
 			}))
 		end,
